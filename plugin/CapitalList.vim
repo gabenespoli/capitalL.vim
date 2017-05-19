@@ -1,4 +1,4 @@
-" CapitalListList Plugin: Easier quickfix and location lists
+" CapitalList Plugin: Easier quickfix and location lists
 " Ideas >>
 "   - function for grepping
 "       - Lgreppattern and Cgreppattern vars that can be set in ftplugin
@@ -40,7 +40,10 @@ function! CapitalList_lopen()
     let position = CapitalList_getPosition(g:CapitalList_Lposition)
     execute "topleft vertical lopen"
     execute "vertical resize ".g:CapitalList_Lwidth
+    set modifiable
     silent %s/\v^([^|]*\|){2,2} //e
+    setlocal nowrap
+    set nomodified nomodifiable cursorline
     nnoremap <buffer> q :Lclose<CR>
     nnoremap <localleader>l :Lclose<CR>
 endfunction
@@ -49,7 +52,10 @@ function! CapitalList_copen()
     let position = CapitalList_getPosition(g:CapitalList_Cposition)
     execute "vertical copen"
     execute "vertical resize ".g:CapitalList_Cwidth
+    set modifiable
     silent %s/\v^([^|]*\|){2,2} //e
+    setlocal nowrap
+    set nomodified nomodifiable cursorline
     nnoremap <buffer> q :Cclose<CR>
     nnoremap <localleader>q :Cclose<CR>
 endfunction
