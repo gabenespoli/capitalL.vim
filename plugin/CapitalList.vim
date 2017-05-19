@@ -7,35 +7,59 @@
 "       - Lformatpattern and Cformatpattern vars that can be set in ftplugin
 "       - same keybinding as grepping function?
 "   - put the default grep pattern in a plugin-specific ftplugin folder
+"   - make keybindings customizable
 
-let g:CapitalLwidth = 30
-let g:CapitalCwidth = 30
+"" Defaults
+let g:CapitalLwidth = 40
+let g:CapitalCwidth = 40
+let g:CapitalLposition = "left"
+let g:CapitalCposition = "right"
+nnoremap <localleader>l :Lopen<CR>
+nnoremap <localleader>q :Copen<CR>
+nnoremap <localleader>L :Lvimgrep<CR>
+nnoremap <localleader>Q :Cvimgrep<CR>
 
-function! CapitalLopen()
+"" Commands
+command Lopen execute ":call Capital#lopen()"
+command Copen execute ":call Capital#copen()"
+command Lclose execute ":call Capital#lclose()"
+command Cclose execute ":call Capital#cclose()"
+command Lvimgrep execute ":call Capital#lvimgrep()"
+command Cvimgrep execute ":call Capital#vimgrep()"
+
+"" Functions
+function! Capital#lvimgrep()
+    execute "lvimgrep /".b:CapitalLpattern."/g %"
+endfunction
+function! Capital#vimgrep()
+    execute "vimgrep /".b:CapitalCpattern."/g %"
+endfunction
+
+function! Capital#format()
+    silent %s/\v^([^|]*\|){2,2} //e
+endfunction
+
+function! Capital#lopen()
     execute "topleft vertical lopen"
     execute "vertical resize ".g:CapitalLwidth
-    nnoremap <buffer> q :Lclose<CR>
-    nnoremap <localleader>l :Lclose<CR>
+    silent %s/\v^([^|]*\|){2,2} //e
+    nnoremap <buffer> q :call Capital#lclose<CR>
+    nnoremap <localleader>l :call Capital#lclose<CR>
 endfunction
-function! CapitalLclose()
+function! Capital#copen()
+    execute "vertical copen"
+    execute "vertical resize ".g:CapitalCwidth
+    silent %s/\v^([^|]*\|){2,2} //e
+    nnoremap <buffer> q :call Capital#cclose<CR>
+    nnoremap <localleader>q :call Capital#cclose<CR>
+endfunction
+
+function! Capital#lclose()
     execute "lclose"
     nnoremap <localleader>l :Lopen<CR>
 endfunction
-function! CapitalCopen()
-    execute "vertical copen"
-    execute "vertical resize ".g:CapitalCwidth
-    nnoremap <buffer> q :Cclose<CR>
-    nnoremap <localleader>q :Cclose<CR>
-endfunction
-function! CapitalCclose()
+function! Capital#cclose()
     execute "cclose"
     nnoremap <localleader>q :Copen<CR>
 endfunction
 
-command Lopen execute ":call CapitalLopen()"
-command Lclose execute ":call CapitalLclose()"
-command Copen execute ":call CapitalCopen()"
-command Cclose execute ":call CapitalCclose()"
-
-nnoremap <localleader>q :Copen<CR>
-nnoremap <localleader>l :Lopen<CR>
