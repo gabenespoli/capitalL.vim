@@ -48,7 +48,7 @@ endfunction
 "" Open the lists
 function! CapitalList_lopen()
     let position = CapitalList_getPosition(g:CapitalList_Lposition)
-    execute "topleft vertical lopen"
+    execute position." lopen"
     execute "vertical resize ".g:CapitalList_Lwidth
     set modifiable
     silent %s/\v^([^|]*\|){2,2} //e
@@ -59,7 +59,7 @@ function! CapitalList_lopen()
 endfunction
 function! CapitalList_copen()
     let position = CapitalList_getPosition(g:CapitalList_Cposition)
-    execute "vertical copen"
+    execute position." copen"
     execute "vertical resize ".g:CapitalList_Cwidth
     set modifiable
     silent %s/\v^([^|]*\|){2,2} //e
