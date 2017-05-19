@@ -4,6 +4,8 @@
 "   - put the default grep pattern in a plugin-specific ftplugin folder
 "   - make keybindings customizable
 "   - width should be a width or a height depending on position
+"   - get filename for grepping from current window using ls
+"   - grab current cursor position stuff from cenwin
 
 "" Defaults
 if !exists("g:CapitalList_Lwidth")
@@ -70,7 +72,7 @@ function! CapitalList_lopen()
     setlocal nowrap
     set nomodified nomodifiable cursorline
     nnoremap <buffer> q :Lclose<CR>
-    nnoremap <localleader>l :Lclose<CR>
+    nnoremap <buffer> l <CR>zt
 endfunction
 function! CapitalList_copen()
     let position = CapitalList_getPosition(g:CapitalList_Cposition)
@@ -81,7 +83,7 @@ function! CapitalList_copen()
     setlocal nowrap
     set nomodified nomodifiable cursorline
     nnoremap <buffer> q :Cclose<CR>
-    nnoremap <localleader>q :Cclose<CR>
+    nnoremap <buffer> l <CR>zt
 endfunction
 
 " parse the position
@@ -102,11 +104,9 @@ endfunction
 "" Closing the windows
 function! CapitalList_lclose()
     execute "lclose"
-    nnoremap <localleader>l :Lopen<CR>
 endfunction
 function! CapitalList_cclose()
     execute "cclose"
-    nnoremap <localleader>q :Copen<CR>
 endfunction
 
 "" Functions for toggling the lists
