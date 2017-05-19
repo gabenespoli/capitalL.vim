@@ -16,7 +16,7 @@ if !exists("g:CapitalList_Lposition")
     let g:CapitalList_Lposition = "left"
 endif
 if !exists("g:CapitalList_Cposition")
-    let g:CapitalList_Cposition = "right"
+    let g:CapitalList_Cposition = "left"
 endif
 if !exists("g:CapitalList_DefaultKeybindings")
     let g:CapitalList_DefaultKeybindings = 1
