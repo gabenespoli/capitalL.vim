@@ -23,18 +23,19 @@ if !exists("g:CapitalList_Cposition")
     let g:CapitalList_Cposition = "right"
 endif
 
+"" Commands
+command! Lopen execute ":call CapitalList_lopen()"
+command! Copen execute ":call CapitalList_copen()"
+command! Lclose execute ":call CapitalList_lclose()"
+command! Cclose execute ":call CapitalList_cclose()"
+command! Lvimgrep execute ":call CapitalList_lvimgrep()"
+command! Cvimgrep execute ":call CapitalList_cvimgrep()"
+
+"" Keybindings
 nnoremap <localleader>l :Lopen<CR>
 nnoremap <localleader>q :Copen<CR>
 nnoremap <localleader>L :Lvimgrep<CR>
 nnoremap <localleader>Q :Cvimgrep<CR>
-
-"" Commands
-command Lopen execute ":call CapitalList_lopen()"
-command Copen execute ":call CapitalList_copen()"
-command Lclose execute ":call CapitalList_lclose()"
-command Cclose execute ":call CapitalList_cclose()"
-command Lvimgrep execute ":call CapitalList_lvimgrep()"
-command Cvimgrep execute ":call CapitalList_cvimgrep()"
 
 "" Grep to populate lists
 function! CapitalList_lvimgrep()
