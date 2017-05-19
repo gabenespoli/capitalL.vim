@@ -20,33 +20,33 @@ nnoremap <localleader>L :Lvimgrep<CR>
 nnoremap <localleader>Q :Cvimgrep<CR>
 
 "" Commands
-command Lopen execute ":call Capital#lopen()"
-command Copen execute ":call Capital#copen()"
-command Lclose execute ":call Capital#lclose()"
-command Cclose execute ":call Capital#cclose()"
-command Lvimgrep execute ":call Capital#lvimgrep()"
-command Cvimgrep execute ":call Capital#vimgrep()"
+command Lopen execute ":call Capital_lopen()"
+command Copen execute ":call Capital_copen()"
+command Lclose execute ":call Capital_lclose()"
+command Cclose execute ":call Capital_cclose()"
+command Lvimgrep execute ":call Capital_lvimgrep()"
+command Cvimgrep execute ":call Capital_vimgrep()"
 
 "" Functions
-function! Capital#lvimgrep()
+function! Capital_lvimgrep()
     execute "lvimgrep /".b:CapitalLpattern."/g %"
 endfunction
-function! Capital#vimgrep()
+function! Capital_vimgrep()
     execute "vimgrep /".b:CapitalCpattern."/g %"
 endfunction
 
-function! Capital#format()
+function! Capital_format()
     silent %s/\v^([^|]*\|){2,2} //e
 endfunction
 
-function! Capital#lopen()
+function! Capital_lopen()
     execute "topleft vertical lopen"
     execute "vertical resize ".g:CapitalLwidth
     silent %s/\v^([^|]*\|){2,2} //e
     nnoremap <buffer> q :call Capital#lclose<CR>
     nnoremap <localleader>l :call Capital#lclose<CR>
 endfunction
-function! Capital#copen()
+function! Capital_copen()
     execute "vertical copen"
     execute "vertical resize ".g:CapitalCwidth
     silent %s/\v^([^|]*\|){2,2} //e
@@ -54,11 +54,11 @@ function! Capital#copen()
     nnoremap <localleader>q :call Capital#cclose<CR>
 endfunction
 
-function! Capital#lclose()
+function! Capital_lclose()
     execute "lclose"
     nnoremap <localleader>l :Lopen<CR>
 endfunction
-function! Capital#cclose()
+function! Capital_cclose()
     execute "cclose"
     nnoremap <localleader>q :Copen<CR>
 endfunction
