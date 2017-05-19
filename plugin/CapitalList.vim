@@ -3,6 +3,7 @@
 "   - Lgreppattern and Cgreppattern vars that can be set in ftplugin
 "   - put the default grep pattern in a plugin-specific ftplugin folder
 "   - make keybindings customizable
+"   - width should be a width or a height depending on position
 
 "" Defaults
 if !exists("g:CapitalList_Lwidth")
@@ -125,8 +126,11 @@ function! ToggleList(bufname, pfx)
           return
         endif
     endfor
+    " call custom grep functions if list is empty
     if a:pfx == 'l' && len(getloclist(0)) == 0
         execute "call CapitalList_lvimgrep()"
+    elseif a:pfx == 'c' && len(getqflist(0)) == 0
+        execute "call CapitalList_cvimgrep()"
     endif
     let winnr = winnr()
     exec(toupper(a:pfx).'open')
