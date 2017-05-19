@@ -11,14 +11,8 @@
 if !exists("g:CapitalList_Lwidth")
     let g:CapitalList_Lwidth = 40
 endif
-if !exists("g:CapitalList_Cwidth")
-    let g:CapitalList_Cwidth = 40
-endif
 if !exists("g:CapitalList_Lposition")
     let g:CapitalList_Lposition = "left"
-endif
-if !exists("g:CapitalList_Cposition")
-    let g:CapitalList_Cposition = "left"
 endif
 if !exists("g:CapitalList_DefaultKeybindings")
     let g:CapitalList_DefaultKeybindings = 1
@@ -26,20 +20,14 @@ endif
 
 "" Commands
 command! Ltoggle execute ":call Ltoggle()"
-command! Ctoggle execute ":call Ctoggle()"
 command! Lopen execute ":call CapitalList_lopen()"
-command! Copen execute ":call CapitalList_copen()"
 command! Lclose execute ":call CapitalList_lclose()"
-command! Cclose execute ":call CapitalList_cclose()"
 command! Lvimgrep execute ":call CapitalList_lvimgrep()"
-command! Cvimgrep execute ":call CapitalList_cvimgrep()"
 
 "" Keybindings
 if g:CapitalList_DefaultKeybindings == 1
     nnoremap <localleader>l :Ltoggle<CR>
-    nnoremap <localleader>q :Ctoggle<CR>
     nnoremap <localleader>L :Lvimgrep<CR>
-    nnoremap <localleader>Q :Cvimgrep<CR>
 endif
 
 "" Grep to populate lists
@@ -50,15 +38,6 @@ function! CapitalList_lvimgrep()
         return
     else
         execute "lvimgrep /".b:CapitalList_Lpattern."/g %"
-    endif
-endfunction
-function! CapitalList_cvimgrep()
-    if !exists("b:CapitalList_Cpattern")
-        echohl ErrorMsg
-        echo "No grep pattern set for this buffer. Set b:CaptialList_Cpattern"
-        return
-    else
-        execute "vimgrep /".b:CapitalList_Cpattern."/g %"
     endif
 endfunction
 
@@ -72,17 +51,6 @@ function! CapitalList_lopen()
     setlocal nowrap
     set nomodified nomodifiable cursorline
     nnoremap <buffer> q :Lclose<CR>
-    nnoremap <buffer> l <CR>zt
-endfunction
-function! CapitalList_copen()
-    let position = CapitalList_getPosition(g:CapitalList_Cposition)
-    execute position." copen"
-    execute "vertical resize ".g:CapitalList_Cwidth
-    set modifiable
-    silent %s/\v^([^|]*\|){2,2} //e
-    setlocal nowrap
-    set nomodified nomodifiable cursorline
-    nnoremap <buffer> q :Cclose<CR>
     nnoremap <buffer> l <CR>zt
 endfunction
 
@@ -104,9 +72,6 @@ endfunction
 "" Closing the windows
 function! CapitalList_lclose()
     execute "lclose"
-endfunction
-function! CapitalList_cclose()
-    execute "cclose"
 endfunction
 
 "" Functions for toggling the lists
@@ -142,7 +107,7 @@ endfunction
 function! Ltoggle()
     execute "call CapitalList_ToggleList('Location List', 'l')"
 endfunction
-function! Ctoggle()
-    execute "call CapitalList_ToggleList('Quickfix List', 'c')"
-endfunction
+"function! Ctoggle()
+"    execute "call CapitalList_ToggleList('Quickfix List', 'c')"
+"endfunction
 
