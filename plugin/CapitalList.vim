@@ -1,4 +1,4 @@
-" CapitalList Plugin: Easier quickfix and location lists
+" CapitalListList Plugin: Easier quickfix and location lists
 " Ideas >>
 "   - function for grepping
 "       - Lgreppattern and Cgreppattern vars that can be set in ftplugin
@@ -10,56 +10,71 @@
 "   - make keybindings customizable
 
 "" Defaults
-let g:CapitalLwidth = 40
-let g:CapitalCwidth = 40
-let g:CapitalLposition = "left"
-let g:CapitalCposition = "right"
+if !exists("g:CapitalList_Lwidth")
+    let g:CapitalList_Lwidth = 40
+endif
+if !exists("g:CapitalList_Cwidth")
+    let g:CapitalList_Cwidth = 40
+endif
+if !exists("g:CapitalList_Lposition")
+    let g:CapitalList_Lposition = "left"
+endif
+if !exists("g:CapitalList_Cposition")
+    let g:CapitalList_Cposition = "right"
+endif
+
 nnoremap <localleader>l :Lopen<CR>
 nnoremap <localleader>q :Copen<CR>
 nnoremap <localleader>L :Lvimgrep<CR>
 nnoremap <localleader>Q :Cvimgrep<CR>
 
 "" Commands
-command Lopen execute ":call Capital_lopen()"
-command Copen execute ":call Capital_copen()"
-command Lclose execute ":call Capital_lclose()"
-command Cclose execute ":call Capital_cclose()"
-command Lvimgrep execute ":call Capital_lvimgrep()"
-command Cvimgrep execute ":call Capital_vimgrep()"
+command Lopen execute ":call CapitalList_lopen()"
+command Copen execute ":call CapitalList_copen()"
+command Lclose execute ":call CapitalList_lclose()"
+command Cclose execute ":call CapitalList_cclose()"
 
-"" Functions
-function! Capital_lvimgrep()
-    execute "lvimgrep /".b:CapitalLpattern."/g %"
-endfunction
-function! Capital_vimgrep()
-    execute "vimgrep /".b:CapitalCpattern."/g %"
-endfunction
-
-function! Capital_format()
-    silent %s/\v^([^|]*\|){2,2} //e
-endfunction
-
-function! Capital_lopen()
+"" Populate and open each list
+function! CapitalList_lopen()
+    execute "lvimgrep /".b:CapitalList_Lpattern."/g %"
+    let position = CapitalList_getPosition(g:CapitalList_Lposition)
     execute "topleft vertical lopen"
-    execute "vertical resize ".g:CapitalLwidth
+    execute "vertical resize ".g:CapitalList_Lwidth
     silent %s/\v^([^|]*\|){2,2} //e
-    nnoremap <buffer> q :call Capital#lclose<CR>
-    nnoremap <localleader>l :call Capital#lclose<CR>
+    nnoremap <buffer> q :Lclose<CR>
+    nnoremap <localleader>l :Lclose<CR>
 endfunction
-function! Capital_copen()
+function! CapitalList_copen()
+    execute "vimgrep /".b:CapitalList_Cpattern."/g %"
+    let position = CapitalList_getPosition(g:CapitalList_Cposition)
     execute "vertical copen"
-    execute "vertical resize ".g:CapitalCwidth
+    execute "vertical resize ".g:CapitalList_Cwidth
     silent %s/\v^([^|]*\|){2,2} //e
-    nnoremap <buffer> q :call Capital#cclose<CR>
-    nnoremap <localleader>q :call Capital#cclose<CR>
+    nnoremap <buffer> q :Cclose<CR>
+    nnoremap <localleader>q :Cclose<CR>
 endfunction
 
-function! Capital_lclose()
+" parse the position
+function! CapitalList_getPosition(position)
+    if a:position == "right"
+        return "vertical"
+    elseif a:position == "left"
+        return "topleft vertical"
+    elseif a:position == "top"
+        return "topleft"
+    elseif a:position == "bottom"
+        return "botright"
+    else
+        return "vertical"
+    endif
+endfunction
+
+"" Closing the windows
+function! CapitalList_lclose()
     execute "lclose"
     nnoremap <localleader>l :Lopen<CR>
 endfunction
-function! Capital_cclose()
+function! CapitalList_cclose()
     execute "cclose"
     nnoremap <localleader>q :Copen<CR>
 endfunction
-

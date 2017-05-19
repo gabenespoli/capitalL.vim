@@ -1,5 +1,5 @@
-let b:CapitalLpattern = '^\#\#'
-let b:CapitalLformat = ''
+let b:CapitalList_Lpattern = '^\#\#'
+let b:CapitalList_Lformat = ''
 
-let b:CapitalCpattern = '^def'
-let b:CapitalCformat = ''
+let b:CapitalList_Cpattern = '^def'
+let b:CapitalList_Cformat = ''
