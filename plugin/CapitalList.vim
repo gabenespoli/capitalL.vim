@@ -1,11 +1,6 @@
 " CapitalList Plugin: Easier quickfix and location lists
-" Ideas >>
-"   - function for grepping
-"       - Lgreppattern and Cgreppattern vars that can be set in ftplugin
-"       - keybinding: <localleader>L and C maybe?
-"   - function for formatting the lists
-"       - Lformatpattern and Cformatpattern vars that can be set in ftplugin
-"       - same keybinding as grepping function?
+" Todo
+"   - Lgreppattern and Cgreppattern vars that can be set in ftplugin
 "   - put the default grep pattern in a plugin-specific ftplugin folder
 "   - make keybindings customizable
 
@@ -22,8 +17,13 @@ endif
 if !exists("g:CapitalList_Cposition")
     let g:CapitalList_Cposition = "right"
 endif
+if !exists("g:CapitalList_DefaultKeybindings")
+    let g:CapitalList_DefaultKeybindings = 1
+endif
 
 "" Commands
+command! Ltoggle execute ":call Ltoggle()"
+command! Ctoggle execute ":call Ctoggle()"
 command! Lopen execute ":call CapitalList_lopen()"
 command! Copen execute ":call CapitalList_copen()"
 command! Lclose execute ":call CapitalList_lclose()"
@@ -32,17 +32,31 @@ command! Lvimgrep execute ":call CapitalList_lvimgrep()"
 command! Cvimgrep execute ":call CapitalList_cvimgrep()"
 
 "" Keybindings
-nnoremap <localleader>l :Lopen<CR>
-nnoremap <localleader>q :Copen<CR>
-nnoremap <localleader>L :Lvimgrep<CR>
-nnoremap <localleader>Q :Cvimgrep<CR>
+if g:CapitalList_DefaultKeybindings == 1
+    nnoremap <localleader>l :Ltoggle<CR>
+    nnoremap <localleader>q :Ctoggle<CR>
+    nnoremap <localleader>L :Lvimgrep<CR>
+    nnoremap <localleader>Q :Cvimgrep<CR>
+endif
 
 "" Grep to populate lists
 function! CapitalList_lvimgrep()
-    execute "lvimgrep /".b:CapitalList_Lpattern."/g %"
+    if !exists("b:CapitalList_Lpattern")
+        echohl ErrorMsg
+        echo "No grep pattern set for this buffer. Set b:CaptialList_Lpattern"
+        return
+    else
+        execute "lvimgrep /".b:CapitalList_Lpattern."/g %"
+    endif
 endfunction
 function! CapitalList_cvimgrep()
-    execute "vimgrep /".b:CapitalList_Cpattern."/g %"
+    if !exists("b:CapitalList_Cpattern")
+        echohl ErrorMsg
+        echo "No grep pattern set for this buffer. Set b:CaptialList_Cpattern"
+        return
+    else
+        execute "vimgrep /".b:CapitalList_Cpattern."/g %"
+    endif
 endfunction
 
 "" Open the lists
@@ -92,5 +106,39 @@ endfunction
 function! CapitalList_cclose()
     execute "cclose"
     nnoremap <localleader>q :Copen<CR>
+endfunction
+
+"" Functions for toggling the lists
+" taken from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
+function! GetBufferList()
+    redir =>buflist
+    silent! ls!
+    redir END
+    return buflist
+endfunction
+
+function! ToggleList(bufname, pfx)
+    let buflist = GetBufferList()
+    for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+        if bufwinnr(bufnum) != -1
+          exec(a:pfx.'close')
+          return
+        endif
+    endfor
+    if a:pfx == 'l' && len(getloclist(0)) == 0
+        execute "call CapitalList_lvimgrep()"
+    endif
+    let winnr = winnr()
+    exec(toupper(a:pfx).'open')
+    if winnr() != winnr
+        wincmd p
+    endif
+endfunction
+
+function! Ltoggle()
+    execute "call ToggleList('Location List', 'l')"
+endfunction
+function! Ctoggle()
+    execute "call ToggleList('Quickfix List', 'c')"
 endfunction
 
