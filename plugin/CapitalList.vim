@@ -111,15 +111,15 @@ endfunction
 
 "" Functions for toggling the lists
 " taken from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
-function! GetBufferList()
+function! CapitalList_GetBufferList()
     redir =>buflist
     silent! ls!
     redir END
     return buflist
 endfunction
 
-function! ToggleList(bufname, pfx)
-    let buflist = GetBufferList()
+function! CapitalList_ToggleList(bufname, pfx)
+    let buflist = CapitalList_GetBufferList()
     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
         if bufwinnr(bufnum) != -1
           exec(a:pfx.'close')
@@ -140,9 +140,9 @@ function! ToggleList(bufname, pfx)
 endfunction
 
 function! Ltoggle()
-    execute "call ToggleList('Location List', 'l')"
+    execute "call CapitalList_ToggleList('Location List', 'l')"
 endfunction
 function! Ctoggle()
-    execute "call ToggleList('Quickfix List', 'c')"
+    execute "call CapitalList_ToggleList('Quickfix List', 'c')"
 endfunction
 
