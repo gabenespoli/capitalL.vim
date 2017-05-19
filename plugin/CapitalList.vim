@@ -33,10 +33,19 @@ command Lopen execute ":call CapitalList_lopen()"
 command Copen execute ":call CapitalList_copen()"
 command Lclose execute ":call CapitalList_lclose()"
 command Cclose execute ":call CapitalList_cclose()"
+command Lvimgrep execute ":call CapitalList_lvimgrep()"
+command Cvimgrep execute ":call CapitalList_cvimgrep()"
 
-"" Populate and open each list
-function! CapitalList_lopen()
+"" Grep to populate lists
+function! CapitalList_lvimgrep()
     execute "lvimgrep /".b:CapitalList_Lpattern."/g %"
+endfunction
+function! CapitalList_cvimgrep()
+    execute "vimgrep /".b:CapitalList_Cpattern."/g %"
+endfunction
+
+"" Open the lists
+function! CapitalList_lopen()
     let position = CapitalList_getPosition(g:CapitalList_Lposition)
     execute "topleft vertical lopen"
     execute "vertical resize ".g:CapitalList_Lwidth
@@ -48,7 +57,6 @@ function! CapitalList_lopen()
     nnoremap <localleader>l :Lclose<CR>
 endfunction
 function! CapitalList_copen()
-    execute "vimgrep /".b:CapitalList_Cpattern."/g %"
     let position = CapitalList_getPosition(g:CapitalList_Cposition)
     execute "vertical copen"
     execute "vertical resize ".g:CapitalList_Cwidth
@@ -84,3 +92,4 @@ function! CapitalList_cclose()
     execute "cclose"
     nnoremap <localleader>q :Copen<CR>
 endfunction
+
