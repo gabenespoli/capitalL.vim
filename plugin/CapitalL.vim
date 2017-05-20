@@ -114,7 +114,7 @@ function! CapitalL_lopen()
     set modifiable
     silent %s/\v^([^|]*\|){2,2} //e
     setlocal nowrap
-    set nomodified nomodifiable cursorline
+    set nomodified cursorline
 
     nnoremap <buffer> q :Lclose<CR>
     nnoremap <buffer> l <CR>zt
