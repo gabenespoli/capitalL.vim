@@ -12,17 +12,17 @@ Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 ## Default Keybindings
 
-### Editor (`if g:CapitalL_defaultKeybindings == 1`)
+### Editor
 
-Note that `<localleader>` usually defaults to backslash (\)
+These keybindings are enabled when `g:CapitalL_defaultKeybindings == 1`. Note that `<localleader>` usually defaults to `\``
 
 `<localleader>l :Ltoggle<CR>`
 
 `<localleader>L :Lcycle<CR>`
 
-### Location List (`if g:CapitalL_defaultLocationListKeybindings == 1`)
+### Location List
 
-Note that these keybindings will only be available in the Location List buffer.
+These keybindings are enabled when `g:CapitalL_defaultLocationListKeybindings == 1`. Note that these keybindings will only be available in the Location List buffer.
 
 `q` = Close the Location List (`Lclose`)
 
