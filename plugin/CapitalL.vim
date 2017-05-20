@@ -39,11 +39,18 @@ function! CapitalL_cycle()
     if !exists("b:CapitalL_currentPattern")
         let b:CapitalL_currentPattern = 0
     endif
-    let b:CapitalL_currentPattern += 1
-    if b:CapitalL_currentPattern > len(b:CapitalL_patterns) - 1
-        let b:CapitalL_currentPattern = 0
-    endif
-    execute ":call CapitalL_lvimgrep()"
+
+    let goodgrep = 0
+    while goodgrep == 0
+        let b:CapitalL_currentPattern += 1
+        if b:CapitalL_currentPattern > len(b:CapitalL_patterns) - 1
+            let b:CapitalL_currentPattern = 0
+        endif
+        execute ":call CapitalL_lvimgrep()"
+        if len(getloclist(0)) > 0
+            let goodgrep = 1
+        endif
+    endwhile
     execute ":call CapitalL_lopen()"
 endfunction
 
@@ -65,7 +72,7 @@ function! CapitalL_lvimgrep()
     else
         let filename = '%'
     endif
-    execute "lvimgrep /".b:CapitalL_patterns[b:CapitalL_currentPattern]."/g ".filename
+    execute "silent! lvimgrep /".b:CapitalL_patterns[b:CapitalL_currentPattern]."/g ".filename
 endfunction
 
 function! CapitalL_lopen()
