@@ -14,9 +14,9 @@ Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 `Lclose` = Close the Location List buffer.
 
-`Ltoggle`
+`Ltoggle` = Toggle whether the Location List is open or closed.
 
-`Lcycle`
+`Lcycle` = Populate the Location List with the next pattern in `b:CaptitalL_patterns`. This will keep cycling through patterns until either the Location List is non-empty, or it has tried all of the patterns.
 
 ## Global Variables
 
