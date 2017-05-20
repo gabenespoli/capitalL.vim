@@ -58,7 +58,7 @@ function! CapitalL_cycle()
         endif
 
         "exit if we've tried all the possible patterns
-        if b:CapitalL_currentPattern = startPattern
+        if b:CapitalL_currentPattern == startPattern
             let stopCycle = 1
         endif
     endwhile
