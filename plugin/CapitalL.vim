@@ -71,13 +71,27 @@ endfunction
 "" Open the lists
 function! CapitalL_lopen()
     let associatedFile = expand('%:p')
-    let position = CapitalL_getPosition(g:CapitalL_position)
+    
+
+    "get position and open
+    if !exists("b:CapitalL_position")
+        let b:CapitalL_position = g:CapitalL_defaultPosition
+    endif
+    let position = CapitalL_parsePosition(b:CapitalL_position)
     execute position." lopen"
+
     "TODO make sure we're focused on the loclist window before adjusting it
+
+    "resize
     if !exists("b:CapitalL_size")
         let b:CapitalL_size = g:CapitalL_defaultSize
     endif
-    execute "vertical resize ".b:CapitalL_size
+    if position == "left" 
+        "|| position == "right"
+        execute "vertical resize ".b:CapitalL_size
+    else
+        execute "resize ".b:CapitalL_size
+    endif
     let b:CapitalL_filename = associatedFile
     set modifiable
     silent %s/\v^([^|]*\|){2,2} //e
@@ -88,7 +102,7 @@ function! CapitalL_lopen()
 endfunction
 
 " parse the position
-function! CapitalL_getPosition(position)
+function! CapitalL_parsePosition(position)
     if a:position == "right"
         return "vertical"
     elseif a:position == "left"
