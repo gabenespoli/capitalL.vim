@@ -2,9 +2,9 @@
 
 CapitalL is basically a wrapper for the Location List commands in vim (`lvimgrep`, `lopen`, and `lclose`). The corresponding CapitalL functions using an uppercase `L` instead, hence the name. It cycles through a list of patterns to use for `lvimgrep` and displays matches in the location list. The position and size of the list can be specified with global defaults and/or buffer-specific variables. If the list is positioned on the left or right, the filename and line number information are removed to make the list more readable.
 
-![CapitalL.vim photo 1](http://i.imgur.com/nAOs0em.png)
+![CapitalL.vim photo 1 light](http://i.imgur.com/4STLmH2.png)
 
-![CapitalL.vim photo 2](http://i.imgur.com/3f51Iym.png)
+![CapitalL.vim photo 2 light](http://i.imgur.com/7gsOUNf.png)
 
 ## Installation
 
