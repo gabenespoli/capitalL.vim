@@ -28,7 +28,7 @@ These variables can be set in your vimrc if you don't want the defaults.
 
 `g:CapitalL_defaultKeybindings` = Enter 1 or 0 to use or not use these keybindings. Default 0.
 
-`g:CapitalL_defaultLocationListKeybindings`= Enter 1 or 0 to use or not use these keybindings. Default 1.
+`g:CapitalL_defaultLocationListKeybindings` = Enter 1 or 0 to use or not use these keybindings. Default 1.
 
 ## Buffer-Specific Variables
 
