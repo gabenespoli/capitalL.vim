@@ -1,21 +1,16 @@
-" CapitalL Plugin: Easier quickfix and location lists
-" Todo
-"   - Lgreppattern and Cgreppattern vars that can be set in ftplugin
-"   - put the default grep pattern in a plugin-specific ftplugin folder
-"   - make keybindings customizable
-"   - width should be a width or a height depending on position
-"   - get filename for grepping from current window using ls
-"   - grab current cursor position stuff from cenwin
-
+"" CapitalL Plugin: Easier location lists in vim.  
 "" Defaults
-if !exists("g:CapitalL_size")
-    let g:CapitalL_defaultSize = 40
-endif
 if !exists("g:CapitalL_defaultPosition")
     let g:CapitalL_defaultPosition = "left"
 endif
-if !exists("g:CapitalL_DefaultKeybindings")
-    let g:CapitalL_DefaultKeybindings = 0
+if !exists("g:CapitalL_width")
+    let g:CapitalL_defaultWidth = 40
+endif
+if !exists("g:CapitalL_defaultKeybindings")
+    let g:CapitalL_defaultKeybindings = 0
+endif
+if !exists("g:CapitalL_defaultLocationListKeybindings")
+    let g:CapitalL_defaultKeybindings = 1
 endif
 
 "" Commands
@@ -26,7 +21,7 @@ command! Lvimgrep execute ":call CapitalL_lvimgrep()"
 command! Lcycle execute ":call CapitalL_cycle()"
 
 "" Keybindings
-if g:CapitalL_DefaultKeybindings == 1
+if g:CapitalL_defaultKeybindings == 1
     nnoremap <localleader>l :Ltoggle<CR>
     nnoremap <localleader>L :Lcycle<CR>
 endif
@@ -93,48 +88,50 @@ function! CapitalL_lopen()
     if !exists("b:CapitalL_position")
         let b:CapitalL_position = g:CapitalL_defaultPosition
     endif
-    if !exists("b:CapitalL_size")
-        let b:CapitalL_size = g:CapitalL_defaultSize
+    if !exists("b:CapitalL_width")
+        let b:CapitalL_width = g:CapitalL_defaultWidth
     endif
     let position = CapitalL_parsePosition(b:CapitalL_position)
-    let size = b:CapitalL_size
+    let width = b:CapitalL_width
     let associatedFile = expand('%:p')
 
     execute position." lopen"
 
     "TODO make sure we're focused on the loclist window before adjusting it
-    "resize
+    "if the position is vertical, format and resize
     if position == "topleft vertical" || position == "vertical"
-        execute "vertical resize ".size
-    else
-        execute "resize ".size
+        execute "vertical resize ".width
+        set modifiable
+        silent %s/\v^([^|]*\|){2,2} //e
+        set nomodified cursorline
     endif
 
-    let b:CapitalL_filename = associatedFile
-    set modifiable
-    silent %s/\v^([^|]*\|){2,2} //e
+    set cursorline
     setlocal nowrap
-    set nomodified cursorline
 
-    nnoremap <buffer> q :Ltoggle<CR>
-    nnoremap <buffer> l <CR>zt
-    "keybindings for staying in loclist after doing something
-    if position == "topleft vertical"
-        nnoremap <buffer> J j<CR>zt<C-w>h
-        nnoremap <buffer> K k<CR>zt<C-w>h
-        nnoremap <buffer> o <CR>zt<C-w>h
-    elseif position == "vertical"
-        nnoremap <buffer> J j<CR>zt<C-w>l
-        nnoremap <buffer> K k<CR>zt<C-w>l
-        nnoremap <buffer> o <CR>zt<C-w>l
-    elseif position == "topleft"
-        nnoremap <buffer> J j<CR>zt<C-w>k
-        nnoremap <buffer> K k<CR>zt<C-w>k
-        nnoremap <buffer> o <CR>zt<C-w>k
-    elseif position == "botright"
-        nnoremap <buffer> J j<CR>zt<C-w>j
-        nnoremap <buffer> K k<CR>zt<C-w>j
-        nnoremap <buffer> o <CR>zt<C-w>j
+    let b:CapitalL_filename = associatedFile
+
+    if g:CapitalL_defaultLocationListKeybindings == 1
+        nnoremap <buffer> q :Lclose<CR>
+        nnoremap <buffer> l <CR>zt
+        "keybindings for staying in loclist after doing something
+        if position == "topleft vertical"
+            nnoremap <buffer> J j<CR>zt<C-w>h
+            nnoremap <buffer> K k<CR>zt<C-w>h
+            nnoremap <buffer> o <CR>zt<C-w>h
+        elseif position == "vertical"
+            nnoremap <buffer> J j<CR>zt<C-w>l
+            nnoremap <buffer> K k<CR>zt<C-w>l
+            nnoremap <buffer> o <CR>zt<C-w>l
+        elseif position == "topleft"
+            nnoremap <buffer> J j<CR>zt<C-w>k
+            nnoremap <buffer> K k<CR>zt<C-w>k
+            nnoremap <buffer> o <CR>zt<C-w>k
+        elseif position == "botright"
+            nnoremap <buffer> J j<CR>zt<C-w>j
+            nnoremap <buffer> K k<CR>zt<C-w>j
+            nnoremap <buffer> o <CR>zt<C-w>j
+        endif
     endif
 
     normal! gg
