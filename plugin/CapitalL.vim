@@ -15,7 +15,7 @@ if !exists("g:CapitalL_defaultPosition")
     let g:CapitalL_defaultPosition = "left"
 endif
 if !exists("g:CapitalL_DefaultKeybindings")
-    let g:CapitalL_DefaultKeybindings = 1
+    let g:CapitalL_DefaultKeybindings = 0
 endif
 
 "" Commands
@@ -32,10 +32,11 @@ if g:CapitalL_DefaultKeybindings == 1
     nnoremap <localleader>L :Lvimgrep<CR>
 endif
 
-"" Cycle between grep patterns
+function! CapitalL_cycle()
+"" Lcycle() Cycle between grep patterns
 " - current pattern is indexed by b:CapitalL_pattern
 " - it is an index of the list b:CapitalL_patterns
-function! CapitalL_cycle()
+    execute ":call CapitalL_lclose()"
     if !exists("b:CapitalL_currentPattern")
         let b:CapitalL_currentPattern = 0
     endif
@@ -47,10 +48,10 @@ function! CapitalL_cycle()
     execute ":call CapitalL_lopen()"
 endfunction
 
-"" Grep to populate lists
+function! CapitalL_lvimgrep()
+"" Lvimgrep() Grep to populate lists
 " by default uses the values of patterns and currentPattern
 " - todo: if an input is given, grep that, else grep like normal
-function! CapitalL_lvimgrep()
     if !exists("b:CapitalL_patterns")
         echohl ErrorMsg
         echo "No CapitalL patterns are set for this buffer. Set b:CaptialL_patterns"
@@ -68,37 +69,55 @@ function! CapitalL_lvimgrep()
     execute "lvimgrep /".b:CapitalL_patterns[b:CapitalL_currentPattern]."/g ".filename
 endfunction
 
-"" Open the lists
 function! CapitalL_lopen()
-    let associatedFile = expand('%:p')
-    
+"" Lopen() Open the lists
 
-    "get position and open
+    "get buffer variables together before switching to loclist buffer
     if !exists("b:CapitalL_position")
         let b:CapitalL_position = g:CapitalL_defaultPosition
     endif
-    let position = CapitalL_parsePosition(b:CapitalL_position)
-    execute position." lopen"
-
-    "TODO make sure we're focused on the loclist window before adjusting it
-
-    "resize
     if !exists("b:CapitalL_size")
         let b:CapitalL_size = g:CapitalL_defaultSize
     endif
-    if position == "left" 
-        "|| position == "right"
-        execute "vertical resize ".b:CapitalL_size
+    let position = CapitalL_parsePosition(b:CapitalL_position)
+    let size = b:CapitalL_size
+    let associatedFile = expand('%:p')
+
+    execute position." lopen"
+
+    "TODO make sure we're focused on the loclist window before adjusting it
+    "resize
+    if position == "topleft vertical" || position == "vertical"
+        execute "vertical resize ".size
     else
-        execute "resize ".b:CapitalL_size
+        execute "resize ".size
     endif
+
     let b:CapitalL_filename = associatedFile
     set modifiable
     silent %s/\v^([^|]*\|){2,2} //e
     setlocal nowrap
     set nomodified nomodifiable cursorline
+
     nnoremap <buffer> q :Lclose<CR>
     nnoremap <buffer> l <CR>zt
+    nnoremap <buffer> J j
+    nnoremap <buffer> K k
+    if position == "topleft vertical"
+        nnoremap <buffer> j j<CR>zt<C-w>h
+        nnoremap <buffer> k k<CR>zt<C-w>h
+    elseif position == "vertical"
+        nnoremap <buffer> j j<CR>zt<C-w>l
+        nnoremap <buffer> k k<CR>zt<C-w>l
+    elseif position == "topleft"
+        nnoremap <buffer> j j<CR>zt<C-w>k
+        nnoremap <buffer> k k<CR>zt<C-w>k
+    elseif position == "botright"
+        nnoremap <buffer> j j<CR>zt<C-w>j
+        nnoremap <buffer> k k<CR>zt<C-w>j
+    endif
+
+    normal! gg
 endfunction
 
 " parse the position
@@ -116,12 +135,12 @@ function! CapitalL_parsePosition(position)
     endif
 endfunction
 
-"" Closing the windows
+"" Lclose() Closing the windows
 function! CapitalL_lclose()
     execute "lclose"
 endfunction
 
-"" Functions for toggling the lists
+"" Ltoggle() Functions for toggling the lists
 " taken from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
 function! CapitalL_GetBufferList()
     redir =>buflist
