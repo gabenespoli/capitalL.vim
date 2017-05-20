@@ -64,7 +64,7 @@ Note that these keybindings will only be available in the Location List buffer.
 
 `J` and `K` = Go to the next item in the list, open it, and move focus back to the list. It's like typing `jo` or `ko`.
 
-# TODO
+## TODO
 
 - add special formatting of Location List for markdown files (replace #'s with indent, use default markdown heading formatting)
 
