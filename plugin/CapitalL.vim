@@ -8,11 +8,11 @@
 "   - grab current cursor position stuff from cenwin
 
 "" Defaults
-if !exists("g:CapitalL_width")
-    let g:CapitalL_width = 40
+if !exists("g:CapitalL_size")
+    let g:CapitalL_defaultSize = 40
 endif
-if !exists("g:CapitalL_position")
-    let g:CapitalL_position = "left"
+if !exists("g:CapitalL_defaultPosition")
+    let g:CapitalL_defaultPosition = "left"
 endif
 if !exists("g:CapitalL_DefaultKeybindings")
     let g:CapitalL_DefaultKeybindings = 1
@@ -56,6 +56,9 @@ function! CapitalL_lvimgrep()
         echo "No CapitalL patterns are set for this buffer. Set b:CaptialL_patterns"
         return
     end
+    if !exists("b:CapitalL_currentPattern")
+        let b:CapitalL_currentPattern = 0
+    endif
     " if we're in a loclist, get filename of associated file
     if exists("b:CapitalL_associatedFile")
         let filename = b:CapitalL_associatedfile
@@ -67,11 +70,14 @@ endfunction
 
 "" Open the lists
 function! CapitalL_lopen()
-    let associatedFile = %
+    let associatedFile = expand('%:p')
     let position = CapitalL_getPosition(g:CapitalL_position)
     execute position." lopen"
     "TODO make sure we're focused on the loclist window before adjusting it
-    execute "vertical resize ".g:CapitalL_width
+    if !exists("b:CapitalL_size")
+        let b:CapitalL_size = g:CapitalL_defaultSize
+    endif
+    execute "vertical resize ".b:CapitalL_size
     let b:CapitalL_filename = associatedFile
     set modifiable
     silent %s/\v^([^|]*\|){2,2} //e
