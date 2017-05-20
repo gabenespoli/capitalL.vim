@@ -1,4 +1,5 @@
-"" CapitalL Plugin: Easier location lists in vim.  
+"" CapitalL.vim: Easier location lists in vim.  
+
 "" Defaults
 if !exists("g:CapitalL_defaultPosition")
     let g:CapitalL_defaultPosition = "left"
