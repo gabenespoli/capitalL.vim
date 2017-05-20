@@ -10,6 +10,28 @@ CapitalL is basically a wrapper for the Location List commands in vim (`lvimgrep
 
 Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
+## Default Keybindings
+
+### Editor (`if g:CapitalL_defaultKeybindings == 1`)
+
+Note that `<localleader>` usually defaults to backslash (\)
+
+`<localleader>l :Ltoggle<CR>`
+
+`<localleader>L :Lcycle<CR>`
+
+### Location List (`if g:CapitalL_defaultLocationListKeybindings == 1`)
+
+Note that these keybindings will only be available in the Location List buffer.
+
+`q` = Close the Location List (`Lclose`)
+
+`l` = Go to the currently selected line in the associated file, and put that line at the top of the screen.
+
+`o` = Same as `l` except keep the cursor in the Location List.
+
+`J` and `K` = Go to the next item in the list, open it, and move focus back to the list. It's like typing `jo` or `ko`.
+
 ## Commands
 
 `Lvimgrep` = Populate the Location List by using `lvimgrep` and the string present in `b:CapitalL_patterns[b:CapitalL_currentPattern]`.
@@ -45,28 +67,6 @@ These variables can be set in a file in the `ftplugin` folder. `b:CapitalL_patte
 `b:CapitalL_patterns` = A list of patterns to use with `lvimgrep` to create the location lists. The defaults can be found in the `ftplugin` folder of this repository. For example, the default for vim files is `['^\"\"', '^\s*function', 'TODO']`.
 
 `b:CaptialL_currentPattern` = An index specifying which pattern in `b:CapitalL_patterns` is being used for this buffer's Location List.
-
-## Default Keybindings
-
-### Editor (`if g:CapitalL_defaultKeybindings == 1`)
-
-Note that `<localleader>` usually defaults to backslash (\)
-
-`<localleader>l :Ltoggle<CR>`
-
-`<localleader>L :Lcycle<CR>`
-
-### Location List (`if g:CapitalL_defaultLocationListKeybindings == 1`)
-
-Note that these keybindings will only be available in the Location List buffer.
-
-`q` = Close the Location List (`Lclose`)
-
-`l` = Go to the currently selected line in the associated file, and put that line at the top of the screen.
-
-`o` = Same as `l` except keep the cursor in the Location List.
-
-`J` and `K` = Go to the next item in the list, open it, and move focus back to the list. It's like typing `jo` or `ko`.
 
 ## TODO
 
