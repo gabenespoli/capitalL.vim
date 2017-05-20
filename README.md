@@ -14,7 +14,7 @@ Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 ### Editor
 
-These keybindings are enabled when `g:CapitalL_defaultKeybindings == 1`. Note that `<localleader>` usually defaults to `\``
+These keybindings are enabled when `g:CapitalL_defaultKeybindings == 1`. Note that `<localleader>` usually defaults to `\\`
 
 `<localleader>l :Ltoggle<CR>`
 
