@@ -20,6 +20,7 @@ command! Lopen execute ":call CapitalL_lopen()"
 command! Lclose execute ":call CapitalL_lclose()"
 command! Lvimgrep execute ":call CapitalL_lvimgrep()"
 command! Lcycle execute ":call CapitalL_cycle()"
+command! LcycleBack execute ":call CapitalL_cycle(-1)"
 
 "" Keybindings
 if g:CapitalL_defaultKeybindings == 1
@@ -27,7 +28,7 @@ if g:CapitalL_defaultKeybindings == 1
     nnoremap <localleader>L :Lcycle<CR>
 endif
 
-function! CapitalL_cycle()
+function! CapitalL_cycle(...)
 "" Lcycle() Cycle between grep patterns
 " - current pattern is indexed by b:CapitalL_pattern
 " - it is an index of the list b:CapitalL_patterns
@@ -36,13 +37,22 @@ function! CapitalL_cycle()
         let b:CapitalL_currentPattern = 0
     endif
 
+    if a:0 == 0
+        let adj = 1
+    else
+        let adj = a:1
+    endif
+
     let startPattern = b:CapitalL_currentPattern
     let stopCycle = 0
     while stopCycle == 0
         "cycle to the next grep pattern
-        let b:CapitalL_currentPattern += 1
+        let b:CapitalL_currentPattern = b:CapitalL_currentPattern + adj
         if b:CapitalL_currentPattern > len(b:CapitalL_patterns) - 1
             let b:CapitalL_currentPattern = 0
+        endif
+        if b:CapitalL_currentPattern < 0
+            let b:CapitalL_currentPattern = len(b:CapitalL_patterns) - 1
         endif
 
         "do the grep
@@ -116,6 +126,10 @@ function! CapitalL_lopen()
     if g:CapitalL_defaultLocationListKeybindings == 1
         nnoremap <buffer> q :Lclose<CR>
         nnoremap <buffer> l <CR>zt
+        nnoremap <buffer> } :call CapitalL_cycle(1)<CR>
+        nnoremap <buffer> { :call CapitalL_cycle(-1)<CR>
+        nnoremap <buffer> ]] :call CapitalL_cycle(1)<CR>
+        nnoremap <buffer> [[ :call CapitalL_cycle(-1)<CR>
         "keybindings for staying in loclist after doing something
         if position == "topleft vertical"
             nnoremap <buffer> J j<CR>zt<C-w>h
