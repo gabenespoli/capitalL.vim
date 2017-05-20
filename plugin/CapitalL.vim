@@ -10,7 +10,7 @@ if !exists("g:CapitalL_defaultKeybindings")
     let g:CapitalL_defaultKeybindings = 0
 endif
 if !exists("g:CapitalL_defaultLocationListKeybindings")
-    let g:CapitalL_defaultKeybindings = 1
+    let g:CapitalL_defaultLocationListKeybindings = 1
 endif
 
 "" Commands
