@@ -40,15 +40,26 @@ function! CapitalL_cycle()
         let b:CapitalL_currentPattern = 0
     endif
 
-    let goodgrep = 0
-    while goodgrep == 0
+    let startPattern = b:CapitalL_currentPattern
+    let stopCycle = 0
+    while stopCycle == 0
+        "cycle to the next grep pattern
         let b:CapitalL_currentPattern += 1
         if b:CapitalL_currentPattern > len(b:CapitalL_patterns) - 1
             let b:CapitalL_currentPattern = 0
         endif
+
+        "do the grep
         execute ":call CapitalL_lvimgrep()"
+
+        "exit if grep returns something
         if len(getloclist(0)) > 0
-            let goodgrep = 1
+            let stopCycle = 1
+        endif
+
+        "exit if we've tried all the possible patterns
+        if b:CapitalL_currentPattern = startPattern
+            let stopCycle = 1
         endif
     endwhile
     execute ":call CapitalL_lopen()"
