@@ -27,8 +27,8 @@ command! Lcycle execute ":call CapitalL_cycle()"
 
 "" Keybindings
 if g:CapitalL_DefaultKeybindings == 1
-    nnoremap <leader>l :Ltoggle<CR>
-    nnoremap <localleader>l :Lcycle<CR>
+    nnoremap <localleader>l :Ltoggle<CR>
+    nnoremap <localleader>L :Lcycle<CR>
 endif
 
 function! CapitalL_cycle()
@@ -123,15 +123,19 @@ function! CapitalL_lopen()
     if position == "topleft vertical"
         nnoremap <buffer> j j<CR>zt<C-w>h
         nnoremap <buffer> k k<CR>zt<C-w>h
+        nnoremap <buffer> o <CR>zt<C-w>h
     elseif position == "vertical"
         nnoremap <buffer> j j<CR>zt<C-w>l
         nnoremap <buffer> k k<CR>zt<C-w>l
+        nnoremap <buffer> o <CR>zt<C-w>l
     elseif position == "topleft"
         nnoremap <buffer> j j<CR>zt<C-w>k
         nnoremap <buffer> k k<CR>zt<C-w>k
+        nnoremap <buffer> o <CR>zt<C-w>k
     elseif position == "botright"
         nnoremap <buffer> j j<CR>zt<C-w>j
         nnoremap <buffer> k k<CR>zt<C-w>j
+        nnoremap <buffer> o <CR>zt<C-w>j
     endif
 
     normal! gg
