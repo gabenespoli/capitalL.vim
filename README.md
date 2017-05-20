@@ -4,7 +4,7 @@ CapitalL is basically a wrapper for the Location List commands in vim (`lvimgrep
 
 ![CapitalL.vim photo 1](http://i.imgur.com/nAOs0em.png)
 
-![CapitalL.vim photo 2](http://i.imgur.com/3f51Iym.png)
+![CapitalL.vim photo 2](http://i.imgur.com/B4o7yFi.png)
 
 ## Installation
 
