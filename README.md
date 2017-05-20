@@ -4,47 +4,65 @@ CapitalL is basically a wrapper for the Location List commands in vim (`lvimgrep
 
 ## Installation
 
-Vundle: `Plugin 'gabenespoli/CapitalL.vim'`
+Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 ## Commands
 
-`Lvimgrep`
+`Lvimgrep` = Populate the Location List by using `lvimgrep` and the string present in `b:CapitalL_patterns[b:CapitalL_currentPattern]`.
 
-`Lopen`
+`Lopen` = Open the Location List buffer. If it is on the left or right, reformat it.
 
-`Lclose`
+`Lclose` = Close the Location List buffer.
 
 `Ltoggle`
 
 `Lcycle`
 
-## Keybindings
-
-The default keybindings are (`<localleader>` is usually backslash).
-
-`nnoremap <localleader>l :Ltoggle<CR>`
-
-`nnoremap <localleader>L :Lcycle<CR>`
-
-Add `let g:CapitalL_DefaultKeybindings = 1` to your vimrc to use the default keybindings.
-
 ## Global Variables
 
-`g:CapitalL_defaultPosition` The default position of the Location List. Can be `'left'`, `'right'`, `'top'`, or `'bottom'`. Default `'left'`.
+These variables can be set in your vimrc if you don't want the defaults.
 
-`g:CapitalL_defaultWidth` The default width of a Location List positioned on the left or right. Default 40.
+`g:CapitalL_defaultPosition` = The default position of the Location List. Can be `'left'`, `'right'`, `'top'`, or `'bottom'`. Default `'left'`.
 
-`g:CapitalL_defaultKeybindings` Enter 1 to use the default keybindings. Default 0.
+`g:CapitalL_defaultWidth` = The default width of a Location List positioned on the left or right. Default 40.
+
+`g:CapitalL_defaultKeybindings` = Enter 1 or 0 to use or not use these keybindings. Default 0.
+
+`g:CapitalL_defaultLocationListKeybindings`= Enter 1 or 0 to use or not use these keybindings. Default 1.
 
 ## Buffer-Specific Variables
 
-`b:CapitalL_position` The position of the Location List associated with the buffer. Defaults to `g:CapitalL_defaultPosition`.
+These variables can be set in a file in the `ftplugin` folder. `b:CapitalL_patterns` is required for this plugin to do anything.
 
-`b:CapitalL_width` The width of the Location List associated with the buffer if it is on the left or right. Defaults to `g:CapitalL_defaultWidth`.
+`b:CapitalL_position` = The position of the Location List associated with the buffer. Defaults to `g:CapitalL_defaultPosition`.
 
-`b:CapitalL_patterns` A list of patterns to use with `lvimgrep` to create the location lists. By default this is set in the relevant ftplugin file. For example, the default for vim files is `['^\"\"', '^\s*function', 'TODO']`.
+`b:CapitalL_width` = The width of the Location List associated with the buffer if it is on the left or right. Defaults to `g:CapitalL_defaultWidth`.
 
-`b:CaptialL_currentPattern` An index specifying which pattern in `b:CapitalL_patterns` is being used for this buffer's Location List.
+`b:CapitalL_patterns` = A list of patterns to use with `lvimgrep` to create the location lists. The defaults can be found in the `ftplugin` folder of this repository. For example, the default for vim files is `['^\"\"', '^\s*function', 'TODO']`.
+
+`b:CaptialL_currentPattern` = An index specifying which pattern in `b:CapitalL_patterns` is being used for this buffer's Location List.
+
+## Default Keybindings
+
+### Editor (`if g:CapitalL_defaultKeybindings == 1`)
+
+Note that `<localleader>` usually defaults to backslash (\)
+
+`<localleader>l :Ltoggle<CR>`
+
+`<localleader>L :Lcycle<CR>`
+
+### Location List (`if g:CapitalL_defaultLocationListKeybindings == 1`)
+
+Note that these keybindings will only be available in the Location List buffer.
+
+`q` = Close the Location List (`Lclose`)
+
+`l` = Go to the currently selected line in the associated file, and put that line at the top of the screen.
+
+`o` = Same as `l` except keep the cursor in the Location List.
+
+`J` and `K` = Go to the next item in the list, open it, and move focus back to the list. It's like typing `jo` or `ko`.
 
 # TODO
 
