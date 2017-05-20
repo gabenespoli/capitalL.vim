@@ -65,9 +65,10 @@ function! CapitalL_lvimgrep()
 " by default uses the values of patterns and currentPattern
 " - todo: if an input is given, grep that, else grep like normal
     if !exists("b:CapitalL_patterns")
-        echohl ErrorMsg
-        echo "No CapitalL patterns are set for this buffer. Set b:CaptialL_patterns"
-        return
+        let b:CapitalL_patterns = ['^\#\#', 'TODO']
+        "echohl ErrorMsg
+        "echo "No CapitalL patterns are set for this buffer. Set b:CaptialL_patterns"
+        "return
     end
     if !exists("b:CapitalL_currentPattern")
         let b:CapitalL_currentPattern = 0

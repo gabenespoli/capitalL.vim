@@ -14,7 +14,7 @@ Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 ### Editor
 
-These keybindings are enabled when `g:CapitalL_defaultKeybindings == 1`. Note that `<localleader>` usually defaults to `\`.
+These keybindings are enabled when `g:CapitalL_defaultKeybindings == 1`. Note that `<localleader>` usually defaults to backslash.
 
 `<localleader>l :Ltoggle<CR>`
 
@@ -64,7 +64,7 @@ These variables can be set in a file in the `ftplugin` folder. `b:CapitalL_patte
 
 `b:CapitalL_width` = The width of the Location List associated with the buffer if it is on the left or right. Defaults to `g:CapitalL_defaultWidth`.
 
-`b:CapitalL_patterns` = A list of patterns to use with `lvimgrep` to create the location lists. The defaults can be found in the `ftplugin` folder of this repository. For example, the default for vim files is `['^\"\"', '^\s*function', 'TODO']`.
+`b:CapitalL_patterns` = A list of patterns to use with `lvimgrep` to create the location lists. The defaults can be found in the `ftplugin` folder of this repository. For example, the default for vim files is `['^\"\"', '^\s*function', 'TODO']`. The default is `['^\#\#', 'TODO']'`.
 
 `b:CaptialL_currentPattern` = An index specifying which pattern in `b:CapitalL_patterns` is being used for this buffer's Location List.
 
