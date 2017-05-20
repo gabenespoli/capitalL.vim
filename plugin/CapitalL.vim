@@ -27,9 +27,8 @@ command! Lcycle execute ":call CapitalL_cycle()"
 
 "" Keybindings
 if g:CapitalL_DefaultKeybindings == 1
-    nnoremap <localleader>l :Ltoggle<CR>
-    nnoremap <localleader><localleader>l :Lcycle<CR>
-    nnoremap <localleader>L :Lvimgrep<CR>
+    nnoremap <leader>l :Ltoggle<CR>
+    nnoremap <localleader>l :Lcycle<CR>
 endif
 
 function! CapitalL_cycle()
@@ -120,8 +119,8 @@ function! CapitalL_lopen()
     normal! gg
 endfunction
 
-" parse the position
 function! CapitalL_parsePosition(position)
+" parse the position
     if a:position == "right"
         return "vertical"
     elseif a:position == "left"
@@ -135,14 +134,13 @@ function! CapitalL_parsePosition(position)
     endif
 endfunction
 
-"" Lclose() Closing the windows
 function! CapitalL_lclose()
+"" Lclose() Closing the windows
     execute "lclose"
 endfunction
 
-"" Ltoggle() Functions for toggling the lists
-" taken from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
 function! CapitalL_GetBufferList()
+" taken from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
     redir =>buflist
     silent! ls!
     redir END
@@ -150,6 +148,8 @@ function! CapitalL_GetBufferList()
 endfunction
 
 function! CapitalL_ToggleList(bufname, pfx)
+"" Ltoggle() Functions for toggling the lists
+" taken from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
     let buflist = CapitalL_GetBufferList()
     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
         if bufwinnr(bufnum) != -1
