@@ -116,25 +116,24 @@ function! CapitalL_lopen()
     setlocal nowrap
     set nomodified cursorline
 
-    nnoremap <buffer> q :Lclose<CR>
+    nnoremap <buffer> q :Ltoggle<CR>
     nnoremap <buffer> l <CR>zt
-    nnoremap <buffer> J j
-    nnoremap <buffer> K k
+    "keybindings for staying in loclist after doing something
     if position == "topleft vertical"
-        nnoremap <buffer> j j<CR>zt<C-w>h
-        nnoremap <buffer> k k<CR>zt<C-w>h
+        nnoremap <buffer> J j<CR>zt<C-w>h
+        nnoremap <buffer> K k<CR>zt<C-w>h
         nnoremap <buffer> o <CR>zt<C-w>h
     elseif position == "vertical"
-        nnoremap <buffer> j j<CR>zt<C-w>l
-        nnoremap <buffer> k k<CR>zt<C-w>l
+        nnoremap <buffer> J j<CR>zt<C-w>l
+        nnoremap <buffer> K k<CR>zt<C-w>l
         nnoremap <buffer> o <CR>zt<C-w>l
     elseif position == "topleft"
-        nnoremap <buffer> j j<CR>zt<C-w>k
-        nnoremap <buffer> k k<CR>zt<C-w>k
+        nnoremap <buffer> J j<CR>zt<C-w>k
+        nnoremap <buffer> K k<CR>zt<C-w>k
         nnoremap <buffer> o <CR>zt<C-w>k
     elseif position == "botright"
-        nnoremap <buffer> j j<CR>zt<C-w>j
-        nnoremap <buffer> k k<CR>zt<C-w>j
+        nnoremap <buffer> J j<CR>zt<C-w>j
+        nnoremap <buffer> K k<CR>zt<C-w>j
         nnoremap <buffer> o <CR>zt<C-w>j
     endif
 
