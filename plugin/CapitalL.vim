@@ -32,6 +32,7 @@ function! CapitalL_lopen()
     let position = CapitalL_parsePosition(b:CapitalL_position)
     let width = b:CapitalL_width
     let associatedFile = expand('%:p')
+    let filetype = &filetype
 
     execute position." lopen"
 
@@ -41,6 +42,7 @@ function! CapitalL_lopen()
         execute "vertical resize ".width
         set modifiable
         silent %s/\v^([^|]*\|){2,2} //e
+        set syntax=filetype
         set nomodified cursorline
     endif
 
