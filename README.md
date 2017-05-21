@@ -28,6 +28,8 @@ Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 `Ladd <pattern>` = Add a pattern to the list. This is useful for "on-the-fly" location lists, instead of adding a pattern to the ftplugin file.
 
+`Lposition <position>` = Change the position of the Location List for the current buffer. Can be 'left', 'right', 'top', or 'bottom'.
+
 ## Keybindings in the Location List Window
 
 These keybindings are available in the Location List window only. They can be enabled or disabled with the `g:CapitalL_enableKeybindings` variable.
@@ -68,9 +70,9 @@ These variables can be set in a file in the `ftplugin` folder. `b:CapitalL_patte
 
 ## TODO
 
-- Add command `Ladd` to easily add a pattern to the current `b:CapitalL_patterns` variable. Currently you have to do something like `:let b:CaptialL_patterns = b:CapitalL_patterns + ['newpattern']`. It would be better to do `:Ladd newpattern`.
+- Add command to remove an item from the patterns list `Lrm`.
 
-- Add command `Lposition` to easily change the position. E.g., `:Lpos bottom`
+- Add default pattern to show all patterns at once
 
 - Add special formatting of Location List for markdown files (replace #'s with indent, use default markdown heading formatting).
 
