@@ -1,1 +1,1 @@
-let b:CapitalL_patterns = ['^\"\"', '^function', 'TODO']
+let b:CapitalL_patterns = ['\(^\"\"\|^function\)', '^\"\"', '^function', 'TODO']
