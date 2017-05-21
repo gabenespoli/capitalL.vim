@@ -7,29 +7,20 @@ endif
 if !exists("g:CapitalL_width")
     let g:CapitalL_defaultWidth = 40
 endif
-if !exists("g:CapitalL_defaultKeybindings")
-    let g:CapitalL_defaultKeybindings = 0
-endif
-if !exists("g:CapitalL_defaultLocationListKeybindings")
-    let g:CapitalL_defaultLocationListKeybindings = 1
+if !exists("g:CapitalL_enableKeybindings")
+    let g:CapitalL_enableKeybindings = 1
 endif
 
 "" Commands
 command! Ltoggle execute ":call Ltoggle()"
+command! Lnext execute ":call CapitalL_cycle(1)"
+command! Lprevious execute ":call CapitalL_cycle(-1)"
+command! Lvimgrep execute ":call CapitalL_lvimgrep()"
 command! Lopen execute ":call CapitalL_lopen()"
 command! Lclose execute ":call CapitalL_lclose()"
-command! Lvimgrep execute ":call CapitalL_lvimgrep()"
-command! Lcycle execute ":call CapitalL_cycle()"
-command! LcycleBack execute ":call CapitalL_cycle(-1)"
-
-"" Keybindings
-if g:CapitalL_defaultKeybindings == 1
-    nnoremap <localleader>l :Ltoggle<CR>
-    nnoremap <localleader>L :Lcycle<CR>
-endif
 
 function! CapitalL_cycle(...)
-"" Lcycle() Cycle between grep patterns
+"" Lnext() and Lprevious() Cycle between grep patterns
 " - current pattern is indexed by b:CapitalL_pattern
 " - it is an index of the list b:CapitalL_patterns
     execute ":call CapitalL_lclose()"
@@ -123,7 +114,7 @@ function! CapitalL_lopen()
 
     let b:CapitalL_filename = associatedFile
 
-    if g:CapitalL_defaultLocationListKeybindings == 1
+    if g:CapitalL_enableKeybindings == 1
         nnoremap <buffer> q :Lclose<CR>
         nnoremap <buffer> l <CR>zt
         nnoremap <buffer> } :call CapitalL_cycle(1)<CR>
