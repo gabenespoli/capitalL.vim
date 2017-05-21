@@ -72,7 +72,5 @@ These variables can be set in a file in the `ftplugin` folder. `b:CapitalL_patte
 
 - Add command to remove an item from the patterns list `Lrm`.
 
-- Add default pattern to show all patterns at once
-
 - Add special formatting of Location List for markdown files (replace #'s with indent, use default markdown heading formatting).
 
