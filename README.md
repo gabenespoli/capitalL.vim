@@ -12,19 +12,23 @@ This plugin was designed for quickly jumping around a file with many functions (
 
 Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
-## Default Keybindings
+## Commands
 
-### Editor
+`Ltoggle` = Toggle whether the Location List is open or closed. I set this to `<localleader>l` in my vimrc.
 
-These keybindings are enabled when `g:CapitalL_defaultKeybindings == 1`. Note that `<localleader>` usually defaults to backslash.
+`Lnext` = Populate the Location List with the next pattern in `b:CaptitalL_patterns`. This will keep cycling through patterns until either the Location List is non-empty, or it has tried all of the patterns.
 
-`<localleader>l :Ltoggle<CR>`
+`Lprevious` = Same as `Lnext`, but cycles through patterns in the opposite direction.
 
-`<localleader>L :Lcycle<CR>`
+`Lvimgrep` = Populate the Location List by using `lvimgrep` and the string present in `b:CapitalL_patterns[b:CapitalL_currentPattern]`.
 
-### Location List
+`Lopen` = Open the Location List buffer. If it is on the left or right, reformat it.
 
-These keybindings are enabled when `g:CapitalL_defaultLocationListKeybindings == 1`. Note that these keybindings will only be available in the Location List buffer.
+`Lclose` = Close the Location List buffer.
+
+## Keybindings in the Location List Window
+
+These keybindings are available in the Location List window only. They can be enabled or disabled with the `g:CapitalL_enableKeybindings` variable.
 
 `q` = Close the Location List (`Lclose`)
 
@@ -34,17 +38,9 @@ These keybindings are enabled when `g:CapitalL_defaultLocationListKeybindings ==
 
 `J` and `K` = Go to the next item in the list, open it, and move focus back to the list. It's like typing `jo` or `ko`.
 
-## Commands
+`}` and `]]` = Cycle to the next pattern (`Lnext`).
 
-`Lvimgrep` = Populate the Location List by using `lvimgrep` and the string present in `b:CapitalL_patterns[b:CapitalL_currentPattern]`.
-
-`Lopen` = Open the Location List buffer. If it is on the left or right, reformat it.
-
-`Lclose` = Close the Location List buffer.
-
-`Ltoggle` = Toggle whether the Location List is open or closed.
-
-`Lcycle` = Populate the Location List with the next pattern in `b:CaptitalL_patterns`. This will keep cycling through patterns until either the Location List is non-empty, or it has tried all of the patterns.
+`{` and `[[` = Cycle to the previous pattern (`Lprevious`).
 
 ## Global Variables
 
@@ -54,9 +50,7 @@ These variables can be set in your vimrc if you don't want the defaults.
 
 `g:CapitalL_defaultWidth` = The default width of a Location List positioned on the left or right. Default 40.
 
-`g:CapitalL_defaultKeybindings` = Enter 1 or 0 to use or not use these keybindings. Default 0.
-
-`g:CapitalL_defaultLocationListKeybindings` = Enter 1 or 0 to use or not use these keybindings. Default 1.
+`g:CapitalL_enableKeybindings` = Enter 1 or 0 to enable or disable the default keybindings in the Location List buffer. Default 1.
 
 ## Buffer-Specific Variables
 
