@@ -22,7 +22,7 @@ command! Lnext call CapitalL_cycle(1)
 command! Lprevious call CapitalL_cycle(-1)
 command! -nargs=1 Lpos let b:CapitalL_position = <f-args>
 
-"" CapitalL_lopen()
+"" Functions
 function! CapitalL_lopen()
     execute "call CapitalL_lvimgrep()"
 
@@ -85,7 +85,6 @@ function! CapitalL_lopen()
     normal! gg
 endfunction
 
-"" CapitalL_parsePosition(position)
 function! CapitalL_parsePosition(position)
     if a:position == "right"
         return "vertical"
