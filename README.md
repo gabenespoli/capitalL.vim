@@ -2,6 +2,8 @@
 
 The vim Location List is a buffer containing links to certain lines of file which match a pattern. It can be populated using `lvimgrep` and a regex pattern, and opened using `lopen`. CapitalL is a vim plugin which stores multiple patterns in a variable, so that you can cycle through different patterns easily. For instance, one pattern could be lines beginning with two comment characters (e.g., `""` in vim), and another could be lines beginning with a function definition (e.g., `function` in vim).
 
+The Location List is specified as the same filetype as the file, and so it inherits the same syntax highlighting. This is only apparent when the Location List is positioned on the left or right, when CapitalL reformats the list (i.e., strips the filename and line/col number information).
+
 ![CapitalL.vim. Search pattern is ^\"\"](http://i.imgur.com/nAOs0em.png)
 
 ![CapitalL.vim. Search pattern is ^function](http://i.imgur.com/B4o7yFi.png)
@@ -65,6 +67,8 @@ These variables can be set in a file in the `ftplugin` folder. `b:CapitalL_patte
 ## TODO
 
 - Add command `Ladd` to easily add a pattern to the current `b:CapitalL_patterns` variable. Currently you have to do something like `:let b:CaptialL_patterns = b:CapitalL_patterns + ['newpattern']`. It would be better to do `:Ladd newpattern`.
+
+- Add command `Lposition` to easily change the position. E.g., `:Lpos bottom`
 
 - Add special formatting of Location List for markdown files (replace #'s with indent, use default markdown heading formatting).
 
