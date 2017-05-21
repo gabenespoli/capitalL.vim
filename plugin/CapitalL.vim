@@ -22,6 +22,8 @@ command! Lprevious execute ":call CapitalL_cycle(-1)"
 
 "" CapitalL_lopen()
 function! CapitalL_lopen()
+    execute "call CapitalL_lvimgrep()"
+
     "get buffer variables together before switching to loclist buffer
     if !exists("b:CapitalL_position")
         let b:CapitalL_position = g:CapitalL_defaultPosition
@@ -141,7 +143,7 @@ function! CapitalL_lvimgrep()
 " by default uses the values of patterns and currentPattern
 " - todo: if an input is given, grep that, else grep like normal
     if !exists("b:CapitalL_patterns")
-        let b:CapitalL_patterns = ['^\#\#', 'TODO']
+        let b:CapitalL_patterns = ['TODO']
         "echohl ErrorMsg
         "echo "No CapitalL patterns are set for this buffer. Set b:CaptialL_patterns"
         "return
@@ -156,6 +158,12 @@ function! CapitalL_lvimgrep()
         let filename = '%'
     endif
     execute "silent! lvimgrep /".b:CapitalL_patterns[b:CapitalL_currentPattern]."/g ".filename
+endfunction
+
+"" CapitalL_add(pattern)
+function! CapitalL_add(pattern)
+    if !exists(b:CapitalL_patterns)
+    endif
 endfunction
 
 "" CapitalL_cycle(...) Cycle between grep patterns
