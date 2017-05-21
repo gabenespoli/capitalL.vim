@@ -1,8 +1,8 @@
 # CapitalL: Easier location lists in vim.
 
-The vim Location List is a buffer containing links to certain lines of file which match a pattern. It can be populated using `lvimgrep` and a regex pattern, and opened using `lopen`. CapitalL is a vim plugin which stores multiple patterns in a variable, so that you can cycle through different patterns easily. For instance, one pattern could be lines beginning with two comment characters (e.g., `""` in vim), and another could be lines beginning with a function definition (e.g., `function` in vim).
+The vim Location List is a buffer containing links to certain lines of file which match a pattern. It can be populated using `lvimgrep` and a regex pattern, and opened using `lopen`. CapitalL is a vim plugin which stores multiple patterns in a variable, so that you can cycle through different patterns easily. For instance, one pattern could be lines beginning with two comment characters (e.g., `""` in vim, `##` in bash/python, `%%` in octave/matlab), and another could be lines beginning with a function definition (e.g., `function` in vim/octave/matlab, `class` and `def` in python). It can also be used to list TODOs present in a file.
 
-The Location List is specified as the same filetype as the file, and so it inherits the same syntax highlighting. This is only apparent when the Location List is positioned on the left or right, when CapitalL reformats the list (i.e., strips the filename and line/col number information).
+The Location List is specified as the same filetype as the file so that it inherits the same syntax highlighting. This is only apparent when the Location List is positioned on the left or right, when CapitalL reformats the list (i.e., strips the filename and line/col number information).
 
 ![CapitalL.vim. Search pattern is ^\"\"](http://i.imgur.com/nAOs0em.png)
 
@@ -14,7 +14,7 @@ Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 ## Commands
 
-`Ltoggle` = Toggle whether the Location List is open or closed. I set this to `<localleader>l` in my vimrc.
+`Ltoggle` = Toggle whether the Location List is open or closed. You might want to associate this with a keybinding in your vimrc: `nnoremap <localleader>l :Ltoggle<CR>`.
 
 `Lopen` = Open the Location List buffer. If it is on the left or right, reformat it. This runs `Lvimgrep` first to make sure the Location List is updated and for the current file.
 
@@ -26,6 +26,8 @@ Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 `Lprevious` = Same as `Lnext`, but cycles through patterns in the opposite direction.
 
+`Ladd <pattern>` = Add a pattern to the list. This is useful for "on-the-fly" location lists, instead of adding a pattern to the ftplugin file.
+
 ## Keybindings in the Location List Window
 
 These keybindings are available in the Location List window only. They can be enabled or disabled with the `g:CapitalL_enableKeybindings` variable.
@@ -34,13 +36,13 @@ These keybindings are available in the Location List window only. They can be en
 
 `l` = Go to the currently selected line in the associated file, and put that line at the top of the screen.
 
-`o` = Same as `l` except keep the cursor in the Location List.
+`o` = Same as `l` except keep move the cursor back to Location List.
 
-`J` and `K` = Go to the next item in the list, open it, and move focus back to the list. It's like typing `jo` or `ko`.
+`J` and `K` = Go to the next or previous item in the list, open it, and move focus back to the list. It's like typing `jo` or `ko`.
 
-`}` and `]]` = Cycle to the next pattern (`Lnext`).
+`}` or `]]` = Cycle to the next pattern (`Lnext`).
 
-`{` and `[[` = Cycle to the previous pattern (`Lprevious`).
+`{` or `[[` = Cycle to the previous pattern (`Lprevious`).
 
 ## Global Variables
 
