@@ -42,7 +42,7 @@ function! CapitalL_lopen()
         execute "vertical resize ".width
         set modifiable
         silent %s/\v^([^|]*\|){2,2} //e
-        set syntax=filetype
+        execute "set syntax=".filetype
         set nomodified cursorline
     endif
 
