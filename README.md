@@ -16,7 +16,7 @@ Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 `Ltoggle` = Toggle whether the Location List is open or closed. I set this to `<localleader>l` in my vimrc.
 
-`Lopen` = Open the Location List buffer. If it is on the left or right, reformat it.
+`Lopen` = Open the Location List buffer. If it is on the left or right, reformat it. This runs `Lvimgrep` first to make sure the Location List is updated and for the current file.
 
 `Lclose` = Close the Location List buffer.
 
