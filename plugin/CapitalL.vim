@@ -12,81 +12,16 @@ if !exists("g:CapitalL_enableKeybindings")
 endif
 
 "" Commands
-command! Ltoggle execute ":call Ltoggle()"
-command! Lnext execute ":call CapitalL_cycle(1)"
-command! Lprevious execute ":call CapitalL_cycle(-1)"
-command! Lvimgrep execute ":call CapitalL_lvimgrep()"
+command! Ltoggle execute ":call CapitalL_toggle()"
 command! Lopen execute ":call CapitalL_lopen()"
 command! Lclose execute ":call CapitalL_lclose()"
+command! Lvimgrep execute ":call CapitalL_lvimgrep()"
+command! Ladd execute ":call CapitalL_add(pattern)"
+command! Lnext execute ":call CapitalL_cycle(1)"
+command! Lprevious execute ":call CapitalL_cycle(-1)"
 
-function! CapitalL_cycle(...)
-"" Lnext() and Lprevious() Cycle between grep patterns
-" - current pattern is indexed by b:CapitalL_pattern
-" - it is an index of the list b:CapitalL_patterns
-    execute ":call CapitalL_lclose()"
-    if !exists("b:CapitalL_currentPattern")
-        let b:CapitalL_currentPattern = 0
-    endif
-
-    if a:0 == 0
-        let adj = 1
-    else
-        let adj = a:1
-    endif
-
-    let startPattern = b:CapitalL_currentPattern
-    let stopCycle = 0
-    while stopCycle == 0
-        "cycle to the next grep pattern
-        let b:CapitalL_currentPattern = b:CapitalL_currentPattern + adj
-        if b:CapitalL_currentPattern > len(b:CapitalL_patterns) - 1
-            let b:CapitalL_currentPattern = 0
-        endif
-        if b:CapitalL_currentPattern < 0
-            let b:CapitalL_currentPattern = len(b:CapitalL_patterns) - 1
-        endif
-
-        "do the grep
-        execute ":call CapitalL_lvimgrep()"
-
-        "exit if grep returns something
-        if len(getloclist(0)) > 0
-            let stopCycle = 1
-        endif
-
-        "exit if we've tried all the possible patterns
-        if b:CapitalL_currentPattern == startPattern
-            let stopCycle = 1
-        endif
-    endwhile
-    execute ":call CapitalL_lopen()"
-endfunction
-
-function! CapitalL_lvimgrep()
-"" Lvimgrep() Grep to populate lists
-" by default uses the values of patterns and currentPattern
-" - todo: if an input is given, grep that, else grep like normal
-    if !exists("b:CapitalL_patterns")
-        let b:CapitalL_patterns = ['^\#\#', 'TODO']
-        "echohl ErrorMsg
-        "echo "No CapitalL patterns are set for this buffer. Set b:CaptialL_patterns"
-        "return
-    end
-    if !exists("b:CapitalL_currentPattern")
-        let b:CapitalL_currentPattern = 0
-    endif
-    " if we're in a loclist, get filename of associated file
-    if exists("b:CapitalL_associatedFile")
-        let filename = b:CapitalL_associatedfile
-    else
-        let filename = '%'
-    endif
-    execute "silent! lvimgrep /".b:CapitalL_patterns[b:CapitalL_currentPattern]."/g ".filename
-endfunction
-
+"" CapitalL_lopen()
 function! CapitalL_lopen()
-"" Lopen() Open the lists
-
     "get buffer variables together before switching to loclist buffer
     if !exists("b:CapitalL_position")
         let b:CapitalL_position = g:CapitalL_defaultPosition
@@ -144,8 +79,8 @@ function! CapitalL_lopen()
     normal! gg
 endfunction
 
+"" CapitalL_parsePosition(position)
 function! CapitalL_parsePosition(position)
-" parse the position
     if a:position == "right"
         return "vertical"
     elseif a:position == "left"
@@ -159,9 +94,14 @@ function! CapitalL_parsePosition(position)
     endif
 endfunction
 
+"" CapitalL_lclose()
 function! CapitalL_lclose()
-"" Lclose() Closing the windows
     execute "lclose"
+endfunction
+
+"" CapitalL_toggle() Functions for toggling the lists
+function! CapitalL_toggle()
+    execute "call CapitalL_ToggleList('Location List', 'l')"
 endfunction
 
 function! CapitalL_GetBufferList()
@@ -173,8 +113,7 @@ function! CapitalL_GetBufferList()
 endfunction
 
 function! CapitalL_ToggleList(bufname, pfx)
-"" Ltoggle() Functions for toggling the lists
-" taken from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
+" modified from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
     let buflist = CapitalL_GetBufferList()
     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
         if bufwinnr(bufnum) != -1
@@ -195,10 +134,67 @@ function! CapitalL_ToggleList(bufname, pfx)
     endif
 endfunction
 
-function! Ltoggle()
-    execute "call CapitalL_ToggleList('Location List', 'l')"
+"" CapitalL_lvimgrep() Grep to populate lists
+function! CapitalL_lvimgrep()
+" by default uses the values of patterns and currentPattern
+" - todo: if an input is given, grep that, else grep like normal
+    if !exists("b:CapitalL_patterns")
+        let b:CapitalL_patterns = ['^\#\#', 'TODO']
+        "echohl ErrorMsg
+        "echo "No CapitalL patterns are set for this buffer. Set b:CaptialL_patterns"
+        "return
+    end
+    if !exists("b:CapitalL_currentPattern")
+        let b:CapitalL_currentPattern = 0
+    endif
+    " if we're in a loclist, get filename of associated file
+    if exists("b:CapitalL_associatedFile")
+        let filename = b:CapitalL_associatedfile
+    else
+        let filename = '%'
+    endif
+    execute "silent! lvimgrep /".b:CapitalL_patterns[b:CapitalL_currentPattern]."/g ".filename
 endfunction
-"function! Ctoggle()
-"    execute "call CapitalL_ToggleList('Quickfix List', 'c')"
-"endfunction
 
+"" CapitalL_cycle(...) Cycle between grep patterns
+function! CapitalL_cycle(...)
+" - current pattern is indexed by b:CapitalL_pattern
+" - it is an index of the list b:CapitalL_patterns
+    execute ":call CapitalL_lclose()"
+    if !exists("b:CapitalL_currentPattern")
+        let b:CapitalL_currentPattern = 0
+    endif
+
+    if a:0 == 0
+        let adj = 1
+    else
+        let adj = a:1
+    endif
+
+    let startPattern = b:CapitalL_currentPattern
+    let stopCycle = 0
+    while stopCycle == 0
+        "cycle to the next grep pattern
+        let b:CapitalL_currentPattern = b:CapitalL_currentPattern + adj
+        if b:CapitalL_currentPattern > len(b:CapitalL_patterns) - 1
+            let b:CapitalL_currentPattern = 0
+        endif
+        if b:CapitalL_currentPattern < 0
+            let b:CapitalL_currentPattern = len(b:CapitalL_patterns) - 1
+        endif
+
+        "do the grep
+        execute ":call CapitalL_lvimgrep()"
+
+        "exit if grep returns something
+        if len(getloclist(0)) > 0
+            let stopCycle = 1
+        endif
+
+        "exit if we've tried all the possible patterns
+        if b:CapitalL_currentPattern == startPattern
+            let stopCycle = 1
+        endif
+    endwhile
+    execute ":call CapitalL_lopen()"
+endfunction
