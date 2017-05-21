@@ -1,12 +1,10 @@
 # CapitalL: Easier location lists in vim.
 
-CapitalL is basically a wrapper for the Location List commands in vim (`lvimgrep`, `lopen`, and `lclose`). The corresponding CapitalL functions use an uppercase L instead, hence the name. It cycles through a list of patterns to use for `lvimgrep` and displays matches in the location list. The position and size of the list can be specified with global defaults and/or buffer-specific variables. If the list is positioned on the left or right, the filename and line number information are removed to make the list more readable.
+The vim Location List is a buffer containing links to certain lines of file which match a pattern. It can be populated using `lvimgrep` and a regex pattern, and opened using `lopen`. CapitalL is a vim plugin which stores multiple patterns in a variable, so that you can cycle through different patterns easily. For instance, one pattern could be lines beginning with two comment characters (e.g., `""` in vim), and another could be lines beginning with a function definition (e.g., `function` in vim).
 
 ![CapitalL.vim. Search pattern is ^\"\"](http://i.imgur.com/nAOs0em.png)
 
 ![CapitalL.vim. Search pattern is ^function](http://i.imgur.com/B4o7yFi.png)
-
-This plugin was designed for quickly jumping around a file with many functions (e.g., pull a list of `def` or `class` in python, or `function` in vim or octave), or jumping around to lines beginning with a double comment character (e.g., `##` in python or bash, `""` in vim, or `%%` in octave), as well as easily switching between these two schemes. However, any pattern can be used and cycled through with other patterns.
 
 ## Installation
 
@@ -16,15 +14,15 @@ Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 `Ltoggle` = Toggle whether the Location List is open or closed. I set this to `<localleader>l` in my vimrc.
 
-`Lnext` = Populate the Location List with the next pattern in `b:CaptitalL_patterns`. This will keep cycling through patterns until either the Location List is non-empty, or it has tried all of the patterns.
-
-`Lprevious` = Same as `Lnext`, but cycles through patterns in the opposite direction.
-
-`Lvimgrep` = Populate the Location List by using `lvimgrep` and the string present in `b:CapitalL_patterns[b:CapitalL_currentPattern]`.
-
 `Lopen` = Open the Location List buffer. If it is on the left or right, reformat it.
 
 `Lclose` = Close the Location List buffer.
+
+`Lvimgrep` = Populate the Location List by using `lvimgrep` and the string present in `b:CapitalL_patterns[b:CapitalL_currentPattern]`.
+
+`Lnext` = Populate the Location List with the next pattern in `b:CaptitalL_patterns`. This will keep cycling through patterns until either the Location List is non-empty, or it has tried all of the patterns.
+
+`Lprevious` = Same as `Lnext`, but cycles through patterns in the opposite direction.
 
 ## Keybindings in the Location List Window
 
@@ -66,5 +64,7 @@ These variables can be set in a file in the `ftplugin` folder. `b:CapitalL_patte
 
 ## TODO
 
-- add special formatting of Location List for markdown files (replace #'s with indent, use default markdown heading formatting)
+- Add command `Ladd` to easily add a pattern to the current `b:CapitalL_patterns` variable. Currently you have to do something like `:let b:CaptialL_patterns = b:CapitalL_patterns + ['newpattern']`. It would be better to do `:Ladd newpattern`.
+
+- Add special formatting of Location List for markdown files (replace #'s with indent, use default markdown heading formatting).
 
