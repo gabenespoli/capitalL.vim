@@ -12,13 +12,13 @@ if !exists("g:CapitalL_enableKeybindings")
 endif
 
 "" Commands
-command! Ltoggle execute ":call CapitalL_toggle()"
-command! Lopen execute ":call CapitalL_lopen()"
-command! Lclose execute ":call CapitalL_lclose()"
-command! Lvimgrep execute ":call CapitalL_lvimgrep()"
-command! Ladd execute ":call CapitalL_add(pattern)"
-command! Lnext execute ":call CapitalL_cycle(1)"
-command! Lprevious execute ":call CapitalL_cycle(-1)"
+command! Ltoggle call CapitalL_toggle()
+command! Lopen call CapitalL_lopen()
+command! Lclose call CapitalL_lclose()
+command! Lvimgrep call CapitalL_lvimgrep()
+command! -nargs=1 Ladd call CapitalL_add(<f-args>)
+command! Lnext call CapitalL_cycle(1)
+command! Lprevious call CapitalL_cycle(-1)
 
 "" CapitalL_lopen()
 function! CapitalL_lopen()
@@ -162,8 +162,10 @@ endfunction
 
 "" CapitalL_add(pattern)
 function! CapitalL_add(pattern)
-    if !exists(b:CapitalL_patterns)
-    endif
+    "if !exists(b:CapitalL_patterns)
+    "    let b:CapitalL_patterns = []
+    "endif
+    let b:CapitalL_patterns = b:CapitalL_patterns + [a:pattern]
 endfunction
 
 "" CapitalL_cycle(...) Cycle between grep patterns
