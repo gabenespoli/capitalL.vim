@@ -17,6 +17,7 @@ command! Lopen call CapitalL_lopen()
 command! Lclose call CapitalL_lclose()
 command! Lvimgrep call CapitalL_lvimgrep()
 command! -nargs=1 Ladd call CapitalL_add(<f-args>)
+command! Lshow call CapitalL_showPatterns()
 command! Lnext call CapitalL_cycle(1)
 command! Lprevious call CapitalL_cycle(-1)
 
@@ -98,12 +99,10 @@ function! CapitalL_parsePosition(position)
     endif
 endfunction
 
-"" CapitalL_lclose()
 function! CapitalL_lclose()
     execute "lclose"
 endfunction
 
-"" CapitalL_toggle() Functions for toggling the lists
 function! CapitalL_toggle()
     execute "call CapitalL_ToggleList('Location List', 'l')"
 endfunction
@@ -138,7 +137,6 @@ function! CapitalL_ToggleList(bufname, pfx)
     endif
 endfunction
 
-"" CapitalL_lvimgrep() Grep to populate lists
 function! CapitalL_lvimgrep()
 " by default uses the values of patterns and currentPattern
 " - todo: if an input is given, grep that, else grep like normal
@@ -160,15 +158,21 @@ function! CapitalL_lvimgrep()
     execute "silent! lvimgrep /".b:CapitalL_patterns[b:CapitalL_currentPattern]."/g ".filename
 endfunction
 
-"" CapitalL_add(pattern)
 function! CapitalL_add(pattern)
-    "if !exists(b:CapitalL_patterns)
-    "    let b:CapitalL_patterns = []
-    "endif
+    if !exists("b:CapitalL_patterns")
+        let b:CapitalL_patterns = []
+    endif
     let b:CapitalL_patterns = b:CapitalL_patterns + [a:pattern]
 endfunction
 
-"" CapitalL_cycle(...) Cycle between grep patterns
+function! CapitalL_showPatterns()
+    if !exists("b:CapitalL_patterns")
+        echo No CapitalL patterns are currently specified.
+    else
+        echo b:CapitalL_patterns
+    endif
+endfunction
+
 function! CapitalL_cycle(...)
 " - current pattern is indexed by b:CapitalL_pattern
 " - it is an index of the list b:CapitalL_patterns
