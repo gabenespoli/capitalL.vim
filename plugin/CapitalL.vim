@@ -20,6 +20,7 @@ command! -nargs=1 Ladd call CapitalL_add(<f-args>)
 command! Lshow call CapitalL_showPatterns()
 command! Lnext call CapitalL_cycle(1)
 command! Lprevious call CapitalL_cycle(-1)
+command! -nargs=1 Lpos let b:CapitalL_position = <f-args>
 
 "" CapitalL_lopen()
 function! CapitalL_lopen()
