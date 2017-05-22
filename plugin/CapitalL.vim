@@ -15,6 +15,9 @@ endif
 if !exists("g:CapitalL_enableKeybindings")
     let g:CapitalL_enableKeybindings = 1
 endif
+if !exists("g:CapitalL_defaultPattern")
+    let g:CapitalL_defaultPattern = ['TODO']
+endif
 
 "" Commands
 command! Ltoggle call CapitalL_toggle()
@@ -156,24 +159,33 @@ function! CapitalL_lvimgrep()
 " by default uses the values of patterns and currentPattern
 " - todo: if an input is given, grep that, else grep like normal
 
-    execute ":call CapitalL_lclose()"
+    " if we're in a loclist, get filename of associated file
+    if exists("b:CapitalL_associatedFile")
+        let filename = b:CapitalL_associatedfile
+    else
+        let filename = '%'
+    endif
 
     if !exists("b:CapitalL_patterns")
-        let b:CapitalL_patterns = ['TODO']
+        echo "No CapitalL patterns are associated with this buffer. Use :Ladd to add some."
+        return
     endif
+    if !exists("b:CapitalL_currentPattern")
+        let b:CapitalL_currentPattern = 0
+    endif
+
     " make sure it is a list variable
     if type(b:CapitalL_patterns) != 3
         let b:CapitalL_patterns = [b:CapitalL_patterns]
     end
-    if !exists("b:CapitalL_currentPattern")
-        let b:CapitalL_currentPattern = 0
-    endif
+
     " make sure current pattern ind doesn't exceed number of patterns
     if b:CapitalL_currentPattern < 0
         echohl ErrorMsg
         echo "CapitalL.vim: The current pattern index exceeds the number of patterns."
         return
     endif
+
     execute "silent! lvimgrep /".b:CapitalL_patterns[b:CapitalL_currentPattern]."/g %"
 endfunction
 
@@ -218,11 +230,11 @@ function! CapitalL_cycle(...)
     execute ":call CapitalL_lclose()"
 " - current pattern is indexed by b:CapitalL_pattern
 " - it is an index of the list b:CapitalL_patterns
+    if !exists("b:CapitalL_patterns")
+        let b:CapitalL_patterns = g:CapitalL_defaultPattern
+    endif
     if !exists("b:CapitalL_currentPattern")
         let b:CapitalL_currentPattern = 0
-    endif
-    if !exists("b:CapitalL_patterns")
-        let b:CapitalL_patterns = ['TODO']
     endif
     " make sure it is a list variable
     if type(b:CapitalL_patterns) != 3
