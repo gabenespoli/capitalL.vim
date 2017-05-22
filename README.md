@@ -54,6 +54,8 @@ These variables can be set in your vimrc if you don't want the defaults.
 
 `g:CapitalL_defaultWidth` = The default width of a Location List positioned on the left or right. Default 40.
 
+`g:CapitalL_defaultPattern` = This defaults to `['TODO']`
+
 `g:CapitalL_enableKeybindings` = Enter 1 or 0 to enable or disable the default keybindings in the Location List buffer. Default 1.
 
 ## Buffer-Specific Variables
@@ -70,7 +72,7 @@ These variables can be set in a file in the `ftplugin` folder. `b:CapitalL_patte
 
 ## TODO
 
-- Add command to remove an item from the patterns list `Lrm`.
+- Allow for multiple inputs into Ladd and combine them with logical or: `\(pattern1\|pattern2\)`
 
 - Add special formatting of Location List for markdown files (replace #'s with indent, use default markdown heading formatting).
 
