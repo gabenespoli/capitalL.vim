@@ -30,6 +30,7 @@ command! Lshow call CapitalL_showPatterns()
 command! Lnext call CapitalL_cycle(1)
 command! Lprevious call CapitalL_cycle(-1)
 command! -nargs=1 Lposition call CapitalL_setPosition(<f-args>)
+command! Lformat call CapitalL_formatList()
 
 "" Functions
 function! CapitalL_lopen()
