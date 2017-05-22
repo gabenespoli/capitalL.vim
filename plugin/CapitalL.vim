@@ -25,6 +25,7 @@ command! Lopen call CapitalL_lopen()
 command! Lclose call CapitalL_lclose()
 command! Lvimgrep call CapitalL_lvimgrep()
 command! -nargs=1 Ladd call CapitalL_add(<f-args>)
+command! Lrm call CapitalL_rm()
 command! Lshow call CapitalL_showPatterns()
 command! Lnext call CapitalL_cycle(1)
 command! Lprevious call CapitalL_cycle(-1)
@@ -326,21 +327,3 @@ function! CapitalL_cycle(...)
     execute ":call CapitalL_lopen()"
 endfunction
 
-function! CapitalL_moveToBufWin(buffername)
-    " move to a window by number
-    let currentWin = winnr()
-    if type(a:buffername) == 0
-        let desiredWin = a:buffername
-    elseif type(a:buffername) == 1
-        let desiredWin = bufwinnr(a:buffername)
-    endif
-    if desiredWin > 0
-       :exe desiredWin . "wincmd w"
-    else
-       echo "Cannot move to a window that is not active."
-    endif
-    return currentWin
-endfunction
- 
-        " add the pattern, change the grep
-        " move back to the loc list
