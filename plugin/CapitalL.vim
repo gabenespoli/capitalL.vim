@@ -30,7 +30,7 @@ command! -nargs=1 Lposition call CapitalL_setPosition(<f-args>)
 "" Functions
 function! CapitalL_lopen()
     execute ":call CapitalL_lclose()"
-    execute ":call CapitalL_lvimgrep()"
+    "execute ":call CapitalL_lvimgrep()"
 
     "get buffer variables together before switching to loclist buffer
     if !exists("b:CapitalL_position")
@@ -100,6 +100,7 @@ function! CapitalL_setPosition(position)
         return
     endif
     let b:CapitalL_position = a:position
+    execute "call CapitalL_lopen()"
 endfunction
 
 function! CapitalL_parsePosition(position)
@@ -120,10 +121,6 @@ function! CapitalL_lclose()
     execute "lclose"
 endfunction
 
-function! CapitalL_toggle()
-    execute "call CapitalL_ToggleList('Location List', 'l')"
-endfunction
-
 function! CapitalL_GetBufferList()
 " taken from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
     redir =>buflist
@@ -132,23 +129,21 @@ function! CapitalL_GetBufferList()
     return buflist
 endfunction
 
-function! CapitalL_ToggleList(bufname, pfx)
+function! CapitalL_toggle()
 " modified from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
     let buflist = CapitalL_GetBufferList()
-    for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+    for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "Location List"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
         if bufwinnr(bufnum) != -1
-          exec(a:pfx.'close')
+          exec('lclose')
           return
         endif
     endfor
     " call custom grep functions if list is empty
-    if a:pfx == 'l' && len(getloclist(0)) == 0
+    if len(getloclist(0)) == 0
         execute "call CapitalL_lvimgrep()"
-    elseif a:pfx == 'c' && len(getqflist(0)) == 0
-        execute "call CapitalL_cvimgrep()"
     endif
     let winnr = winnr()
-    exec(toupper(a:pfx).'open')
+    exec('Lopen')
     if winnr() != winnr
         wincmd p
     endif
@@ -180,11 +175,13 @@ function! CapitalL_lvimgrep()
 endfunction
 
 function! CapitalL_showPatterns()
+    execute "call CapitalL_lclose()"
     if !exists("b:CapitalL_patterns")
         echo "No CapitalL patterns are currently specified."
     else
         echo b:CapitalL_patterns
     endif
+    execute "call CapitalL_lopen()"
 endfunction
 
 function! CapitalL_add(pattern)
@@ -236,9 +233,9 @@ function! CapitalL_cycle(...)
         let adj = a:1
     endif
 
-    let startPattern = b:CapitalL_currentPattern
-    let stopCycle = 0
-    while stopCycle == 0
+    "let startPattern = b:CapitalL_currentPattern
+    "let stopCycle = 0
+    "while stopCycle == 0
         "cycle the patterns
         let b:CapitalL_currentPattern = b:CapitalL_currentPattern + adj
         " wrap around if index will be out of range
@@ -248,7 +245,7 @@ function! CapitalL_cycle(...)
         if b:CapitalL_currentPattern < 0
             let b:CapitalL_currentPattern = len(b:CapitalL_patterns) - 1
         endif
-    endwhile
+    "endwhile
 
     execute ":call CapitalL_lopen()"
 endfunction
