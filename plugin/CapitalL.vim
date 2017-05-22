@@ -1,5 +1,10 @@
 "" CapitalL.vim: Easier location lists in vim.  
 
+" notes
+" - most of these functions start with Lclose and end with Lopen, 
+"   so that buffer-specific variables are accessible if the 
+"   current window is a loc list
+
 "" Defaults
 if !exists("g:CapitalL_defaultPosition")
     let g:CapitalL_defaultPosition = "left"
@@ -24,7 +29,8 @@ command! -nargs=1 Lposition let b:CapitalL_position = <f-args>
 
 "" Functions
 function! CapitalL_lopen()
-    execute "call CapitalL_lvimgrep()"
+    execute ":call CapitalL_lclose()"
+    execute ":call CapitalL_lvimgrep()"
 
     "get buffer variables together before switching to loclist buffer
     if !exists("b:CapitalL_position")
@@ -41,8 +47,8 @@ function! CapitalL_lopen()
     execute position." lopen"
 
     "TODO make sure we're focused on the loclist window before adjusting it
-    "if the position is vertical, format and resize
-    if position == "topleft vertical" || position == "vertical"
+    "if the position is vertical, format and resize 
+    if position == "vertical" || position == "topleft vertical"
         execute "vertical resize ".width
         set modifiable
         silent %s/\v^([^|]*\|){2,2} //e
@@ -140,29 +146,26 @@ endfunction
 function! CapitalL_lvimgrep()
 " by default uses the values of patterns and currentPattern
 " - todo: if an input is given, grep that, else grep like normal
+
+    execute ":call CapitalL_lclose()"
+
     if !exists("b:CapitalL_patterns")
         let b:CapitalL_patterns = ['TODO']
     endif
     " make sure it is a list variable
-    if type("b:CapitalL_patterns") != 3
+    if type(b:CapitalL_patterns) != 3
         let b:CapitalL_patterns = [b:CapitalL_patterns]
     end
     if !exists("b:CapitalL_currentPattern")
         let b:CapitalL_currentPattern = 0
     endif
     " make sure current pattern ind doesn't exceed number of patterns
-    if b:CapitalL_currentPattern > len(b:CapitalL_patterns) - 1 || b:CapitalL_currentPattern < 0
+    if b:CapitalL_currentPattern < 0
         echohl ErrorMsg
         echo "CapitalL.vim: The current pattern index exceeds the number of patterns."
         return
     endif
-    " if we're in a loclist, get filename of associated file
-    if exists("b:CapitalL_associatedFile")
-        let filename = b:CapitalL_associatedfile
-    else
-        let filename = '%'
-    endif
-    execute "silent! lvimgrep /".b:CapitalL_patterns[b:CapitalL_currentPattern]."/g ".filename
+    execute "silent! lvimgrep /".b:CapitalL_patterns[b:CapitalL_currentPattern]."/g %"
 endfunction
 
 function! CapitalL_showPatterns()
@@ -174,31 +177,48 @@ function! CapitalL_showPatterns()
 endfunction
 
 function! CapitalL_add(pattern)
+    " add a new pattern to the list and change loc list to that pattern
+    execute "call CapitalL_lclose()"
     if !exists("b:CapitalL_patterns")
-        let b:CapitalL_patterns = []
-    endif
-    " if it's not a list, make it one before adding
-    if type("b:CaptialL_patterns") != 3
-        let b:CapitalL_patterns = [b:CapitalL_patterns, a:pattern]
-    else
+        let b:CapitalL_patterns = [a:pattern]
+    elseif type(b:CaptialL_patterns) == 3
+        " if it's not a list, make it one before adding
         let b:CapitalL_patterns = b:CapitalL_patterns + [a:pattern]
+    else
+        let b:CapitalL_patterns = [b:CapitalL_patterns, a:pattern]
     endif
+    " update current pattern to the new one
+    let b:CapitalL_currentPattern = len(b:CapitalL_patterns) - 1
+    execute "call CapitalL_lopen()"
+endfunction
+
+function! CapitalL_rm()
+    execute "call CapitalL_lclose()"
+    " remove the currently selected pattern from the patterns list
+    execute "call remove(b:CapitalL_patterns, b:CapitalL_currentPattern)"
+    " adjust the pattern index
+    if b:CapitalL_currentPattern != 0
+        let b:CapitalL_currentPattern = b:CapitalL_currentPattern - 1
+    endif
+    execute "call CapitalL_lopen()"
 endfunction
 
 function! CapitalL_cycle(...)
+    execute ":call CapitalL_lclose()"
 " - current pattern is indexed by b:CapitalL_pattern
 " - it is an index of the list b:CapitalL_patterns
-    execute ":call CapitalL_lclose()"
     if !exists("b:CapitalL_currentPattern")
         let b:CapitalL_currentPattern = 0
     endif
     if !exists("b:CapitalL_patterns")
         let b:CapitalL_patterns = ['TODO']
-    elseif type("b:CapitalL_patterns") != 3
-        " make sure it is a list variable
+    endif
+    " make sure it is a list variable
+    if type(b:CapitalL_patterns) != 3
         let b:CapitalL_patterns = [b:CapitalL_patterns]
-    end
+    endif
 
+    " If no input default cycle forwards
     if a:0 == 0
         let adj = 1
     else
@@ -208,27 +228,16 @@ function! CapitalL_cycle(...)
     let startPattern = b:CapitalL_currentPattern
     let stopCycle = 0
     while stopCycle == 0
-        "cycle to the next grep pattern
+        "cycle the patterns
         let b:CapitalL_currentPattern = b:CapitalL_currentPattern + adj
+        " wrap around if index will be out of range
         if b:CapitalL_currentPattern > len(b:CapitalL_patterns) - 1
             let b:CapitalL_currentPattern = 0
         endif
         if b:CapitalL_currentPattern < 0
             let b:CapitalL_currentPattern = len(b:CapitalL_patterns) - 1
         endif
-
-        "do the grep
-        execute ":call CapitalL_lvimgrep()"
-
-        "exit if grep returns something
-        if len(getloclist(0)) > 0
-            let stopCycle = 1
-        endif
-
-        "exit if we've tried all the possible patterns
-        if b:CapitalL_currentPattern == startPattern
-            let stopCycle = 1
-        endif
     endwhile
+
     execute ":call CapitalL_lopen()"
 endfunction
