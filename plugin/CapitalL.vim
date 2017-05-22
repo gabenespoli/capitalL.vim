@@ -193,17 +193,16 @@ function! CapitalL_lvimgrep()
 endfunction
 
 function! CapitalL_showPatterns()
-    let currentWindow = winnr()
     if exists("b:CapitalL_associatedFile")
-        call CapitalL_moveToBufWin(b:CapitalL_associatedFile)
+        let moveBackHere = CapitalL_moveToBufWin(b:CapitalL_associatedFile)
     endif
     if !exists("b:CapitalL_patterns")
         echo "No CapitalL patterns are currently specified."
     else
         echo b:CapitalL_patterns
     endif
-    if winnr() != currentWindow
-        execute currentWindow . "wincmd w"
+    if exists("moveBackHere")
+        execute moveBackHere . "wincmd w"
     endif
 endfunction
 
@@ -281,10 +280,8 @@ function! CapitalL_moveToBufWin(buffername)
     elseif type(a:buffername) == 1
         let desiredWin = bufwinnr(a:buffername)
     endif
-
-
-    if bnr > 0
-       :exe bnr . "wincmd w"
+    if desiredWin > 0
+       :exe desiredWin . "wincmd w"
     else
        echo "Cannot move to a window that is not active."
     endif
