@@ -36,17 +36,16 @@ function! CapitalL_lopen()
     "execute ":call CapitalL_lvimgrep()"
 
     "get buffer variables together before switching to loclist buffer
+    let associatedBufnr = bufnr(expand('%'))
     if !exists("b:CapitalL_position")
         let b:CapitalL_position = g:CapitalL_defaultPosition
     endif
-    " TODO make this an absolute path to avoid duplicate relative paths.
-    " This will require expanding the names in the buflist when searching for
-    " this filename
-    let associatedBufnr = bufnr(expand('%'))
+    let position = CapitalL_parsePosition(b:CapitalL_position)
 
     execute position." lopen"
+
     if position == "topleft vertical" || position == "vertical"
-        execute "call CapitalL_formatList(".&filetype.",".width.")"
+        execute "call CapitalL_formatList()"
     endif
 
     set cursorline
