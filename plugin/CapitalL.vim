@@ -30,7 +30,7 @@ command! Lshow call CapitalL_showPatterns()
 command! Lnext call CapitalL_cycle(1)
 command! Lprevious call CapitalL_cycle(-1)
 command! -nargs=1 Lposition call CapitalL_setPosition(<f-args>)
-command! Lformat call CapitalL_formatList()
+command! Lrefresh call CapitalL_refresh()
 
 "" Functions
 function! CapitalL_lopen()
@@ -62,7 +62,7 @@ function! CapitalL_lopen()
 
     if g:CapitalL_enableKeybindings == 1
         nnoremap <buffer> q :Lclose<CR>
-        nnoremap <buffer> r :call CapitalL_formatList()<CR>
+        nnoremap <buffer> r :call CapitalL_refresh<CR>
         nnoremap <buffer> l <CR>zt
         nnoremap <buffer> } :call CapitalL_cycle(1)<CR>
         nnoremap <buffer> { :call CapitalL_cycle(-1)<CR>
@@ -89,6 +89,11 @@ function! CapitalL_lopen()
     endif
 
     normal! gg
+endfunction
+
+function! CapitalL_refresh()
+    execute "call CapitalL_lvimgrep()"
+    execute "call CapitalL_formatList()"
 endfunction
 
 function! CapitalL_setPosition(position)
@@ -248,6 +253,8 @@ function! CapitalL_formatList()
                 endif
 
                 set nomodified
+                "TODO set nomodifiable. for some reason this affects other
+                "windows the way it is now
                 "set nomodifiable
             endif
 
