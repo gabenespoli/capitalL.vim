@@ -159,16 +159,12 @@ function! CapitalL_toggle()
 endfunction
 
 function! CapitalL_lvimgrep()
-" by default uses the values of patterns and currentPattern
-" - todo: if an input is given, grep that, else grep like normal
-
     " if we're in a loc list, move to the associated file
     if exists("b:CapitalL_associatedBufnr")
         let listWin = winnr()
         let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
         execute fileWin . "wincmd w"
     endif
-
     if !exists("b:CapitalL_patterns")
         echo "No CapitalL patterns are associated with this buffer. Use :Ladd to add some."
         " if we were in a loc list, move back
@@ -180,21 +176,18 @@ function! CapitalL_lvimgrep()
     if !exists("b:CapitalL_currentPattern")
         let b:CapitalL_currentPattern = 0
     endif
-
     " make sure it is a list variable
     if type(b:CapitalL_patterns) != 3
         let b:CapitalL_patterns = [b:CapitalL_patterns]
     endif
-
     " make sure current pattern ind doesn't exceed number of patterns
     if b:CapitalL_currentPattern < 0
         echohl ErrorMsg
         echo "CapitalL.vim: The current pattern index exceeds the number of patterns."
         return
     endif
-
+    " do the lvimgrep
     execute "silent! lvimgrep /".b:CapitalL_patterns[b:CapitalL_currentPattern]."/g %"
-
     " if we were in a loc list, move back
     if exists("listWin")
         execute listWin . "wincmd w"
@@ -245,14 +238,22 @@ function! CapitalL_add(pattern)
 endfunction
 
 function! CapitalL_rm()
-    execute "call CapitalL_lclose()"
+    " if we're in a loc list, move to the associated file
+    if exists("b:CapitalL_associatedBufnr")
+        let listWin = winnr()
+        let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
+        execute fileWin . "wincmd w"
+    endif
     " remove the currently selected pattern from the patterns list
     execute "call remove(b:CapitalL_patterns, b:CapitalL_currentPattern)"
     " adjust the pattern index
     if b:CapitalL_currentPattern != 0
         let b:CapitalL_currentPattern = b:CapitalL_currentPattern - 1
     endif
-    execute "call CapitalL_lopen()"
+    " if we were in a loc list, move back
+    if exists("listWin")
+        execute listWin . "wincmd w"
+    endif
 endfunction
 
 function! CapitalL_cycle(...)
