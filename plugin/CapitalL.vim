@@ -274,6 +274,8 @@ function! CapitalL_showPatterns()
 endfunction
 
 function! CapitalL_add(pattern)
+    "TODO allow for many args, and combine them with OR into one lvimgrep
+    " - e.g. \(pattern1\|pattern2\|etc\)
     " if we're in a loc list, move to the associated file
     if exists("b:CapitalL_associatedBufnr")
         let listWin = winnr()
