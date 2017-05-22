@@ -47,7 +47,7 @@ function! CapitalL_lopen()
     " TODO make this an absolute path to avoid duplicate relative paths.
     " This will require expanding the names in the buflist when searching for
     " this filename
-    let associatedFile = expand('%')
+    let associatedBufnr = bufnr(expand('%'))
     let filetype = &filetype
 
     execute position." lopen"
@@ -65,7 +65,7 @@ function! CapitalL_lopen()
     set cursorline
     setlocal nowrap
 
-    let b:CapitalL_associatedFile = associatedFile
+    let b:CapitalL_associatedBufnr = associatedBufnr
 
     if g:CapitalL_enableKeybindings == 1
         nnoremap <buffer> q :Lclose<CR>
@@ -163,7 +163,7 @@ function! CapitalL_lvimgrep()
 " - todo: if an input is given, grep that, else grep like normal
 
     " if we're in a loclist, get filename of associated file
-    if exists("b:CapitalL_associatedFile")
+    if exists("b:CapitalL_associatedBufnr")
         let filename = b:CapitalL_associatedfile
     else
         let filename = '%'
@@ -193,8 +193,8 @@ function! CapitalL_lvimgrep()
 endfunction
 
 function! CapitalL_showPatterns()
-    if exists("b:CapitalL_associatedFile")
-        let moveBackHere = CapitalL_moveToBufWin(b:CapitalL_associatedFile)
+    if exists("b:CapitalL_associatedBufnr")
+        let moveBackHere = CapitalL_moveToBufWin(b:CapitalL_associatedBufnr)
     endif
     if !exists("b:CapitalL_patterns")
         echo "No CapitalL patterns are currently specified."
@@ -208,6 +208,7 @@ endfunction
 
 function! CapitalL_add(pattern)
     " add a new pattern to the list and change loc list to that pattern
+    if exists("b:CapitalL_associatedBufnr")
     
     if !exists("b:CapitalL_patterns")
         let b:CapitalL_patterns = [a:pattern]
@@ -266,9 +267,6 @@ function! CapitalL_cycle(...)
     endif
 
     execute ":call CapitalL_lopen()"
-endfunction
-
-function! CapitalL_moveToLocationList()
 endfunction
 
 function! CapitalL_moveToBufWin(buffername)
