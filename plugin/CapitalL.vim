@@ -62,7 +62,7 @@ function! CapitalL_lopen()
 
     if g:CapitalL_enableKeybindings == 1
         nnoremap <buffer> q :Lclose<CR>
-        nnoremap <buffer> r :call CapitalL_refresh<CR>
+        nnoremap <buffer> r :call CapitalL_refresh()<CR>
         nnoremap <buffer> l <CR>zt
         nnoremap <buffer> } :call CapitalL_cycle(1)<CR>
         nnoremap <buffer> { :call CapitalL_cycle(-1)<CR>
