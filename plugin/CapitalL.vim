@@ -162,8 +162,8 @@ function! CapitalL_lvimgrep()
         " if we were in a loc list, move back
         if exists("listWin")
             execute listWin . "wincmd w"
-            return
         endif
+        return
     endif
     if !exists("b:CapitalL_currentPattern")
         let b:CapitalL_currentPattern = 0
