@@ -200,7 +200,7 @@ function! CapitalL_formatList()
     execute listWin . "wincmd w"
     
     "if the position is vertical, format and resize 
-    execute "vertical resize ".b:Cap
+    execute "vertical resize ".width
     set modifiable
     silent %s/\v^([^|]*\|){2,2} //e
     execute "set syntax=".filetype
