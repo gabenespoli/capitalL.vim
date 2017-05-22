@@ -203,11 +203,6 @@ endfunction
 function! CapitalL_add(pattern)
     " add a new pattern to the list and change loc list to that pattern
     
-    " if we're in a loclist
-    " find winnr of associated file
-    " move to that win
-    " add the pattern, change the grep
-    " move back to the loc list
     if !exists("b:CapitalL_patterns")
         let b:CapitalL_patterns = [a:pattern]
     elseif type(b:CaptialL_patterns) == 3
@@ -266,3 +261,19 @@ function! CapitalL_cycle(...)
 
     execute ":call CapitalL_lopen()"
 endfunction
+
+function! CapitalL_moveToLocationList()
+endfunction
+
+function! CapitalL_moveToBuffer(buffername)
+    "https://stackoverflow.com/questions/35465597/how-do-i-detect-if-a-specific-buffer-exists-in-vimscript
+    let bnr = bufwinnr(a:buffername)
+    if bnr > 0
+       :exe bnr . "wincmd w"
+    else
+       echo a:buffername . ' is not open and in view.'
+    endif
+endfunction
+ 
+        " add the pattern, change the grep
+        " move back to the loc list
