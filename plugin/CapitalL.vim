@@ -54,7 +54,7 @@ function! CapitalL_lopen()
 
     "TODO make sure we're focused on the loclist window before adjusting it
     "if the position is vertical, format and resize 
-    if position == "vertical" || position == "topleft vertical"
+position == "topleft vertical"
         execute "vertical resize ".width
         set modifiable
         silent %s/\v^([^|]*\|){2,2} //e
@@ -174,7 +174,8 @@ function! CapitalL_lvimgrep()
         " if we were in a loc list, move back
         if exists("listWin")
             execute listWin . "wincmd w"
-        return
+            return
+        endif
     endif
     if !exists("b:CapitalL_currentPattern")
         let b:CapitalL_currentPattern = 0
@@ -183,7 +184,7 @@ function! CapitalL_lvimgrep()
     " make sure it is a list variable
     if type(b:CapitalL_patterns) != 3
         let b:CapitalL_patterns = [b:CapitalL_patterns]
-    end
+    endif
 
     " make sure current pattern ind doesn't exceed number of patterns
     if b:CapitalL_currentPattern < 0
