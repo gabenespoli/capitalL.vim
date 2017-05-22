@@ -224,12 +224,12 @@ function! CapitalL_formatList()
                 execute "set syntax=".filetype
                 if filetype == "markdown" || filetype == "pandoc"
                     " add special formatting for md files here
-                    silent %s/^\s*\#\ //g
-                    silent %s/^\s*\#\#\ /\ \ /g
-                    silent %s/^\s*\#\#\#\ /\ \ \ \ /g
-                    silent %s/^\s*\#\#\#\#\ /\ \ \ \ \ \ /g
-                    silent %s/^\s*\#\#\#\#\#\ /\ \ \ \ \ \ \ \ /g
-                    silent %s/^\s*\#\#\#\#\#\#\ /\ \ \ \ \ \ \ \ \ \ /g
+                    silent! %s/^\s*\#\ //g
+                    silent! %s/^\s*\#\#\ /\ \ /g
+                    silent! %s/^\s*\#\#\#\ /\ \ \ \ /g
+                    silent! %s/^\s*\#\#\#\#\ /\ \ \ \ \ \ /g
+                    silent! %s/^\s*\#\#\#\#\#\ /\ \ \ \ \ \ \ \ /g
+                    silent! %s/^\s*\#\#\#\#\#\#\ /\ \ \ \ \ \ \ \ \ \ /g
                     syn match LmarkdownH1 /^\S.*\n/
                     syn match LmarkdownH2 /^\s\s\S.*\n/
                     syn match LmarkdownH3 /^\s\s\s\s\S.*\n/
