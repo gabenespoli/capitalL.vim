@@ -32,8 +32,16 @@ command! -nargs=1 Lposition call CapitalL_setPosition(<f-args>)
 
 "" Functions
 function! CapitalL_lopen()
-    execute ":call CapitalL_lclose()"
-    "execute ":call CapitalL_lvimgrep()"
+    " open the loc list associated with the current file
+    " if the loc list is empty, populate it
+    " if we are in a loc list, go to the associated file and repopulate it
+    " - this makes Lopen work like an Lrefresh function too
+    
+    " if we're in a loc list, redo Lvimgrep (like Lrefresh)
+    " Lvimgrep will move to the associated file and back
+    if exists("b:CapitalL_associatedBufnr")
+        execute "call CapitalL_lvimgrep()"
+    endif
 
     "get buffer variables together before switching to loclist buffer
     let associatedBufnr = bufnr(expand('%'))
@@ -122,7 +130,7 @@ function! CapitalL_GetBufferList()
 endfunction
 
 function! CapitalL_toggle()
-" modified from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
+" inspiration from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
     let buflist = CapitalL_GetBufferList()
     " find buffer numbers of location lists
     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "Location List"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
