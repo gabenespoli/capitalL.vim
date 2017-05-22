@@ -164,13 +164,12 @@ function! CapitalL_lvimgrep()
 
     " if we're in a loclist, get filename of associated file
     if exists("b:CapitalL_associatedBufnr")
-        let filename = b:CapitalL_associatedfile
-    else
-        let filename = '%'
+        let moveBackHere = CapitalL_moveToBufWin(b:CapitalL_associatedBufnr)
     endif
 
     if !exists("b:CapitalL_patterns")
         echo "No CapitalL patterns are associated with this buffer. Use :Ladd to add some."
+        call CapitalL_moveToBufWin(moveBackHere)
         return
     endif
     if !exists("b:CapitalL_currentPattern")
@@ -194,15 +193,18 @@ endfunction
 
 function! CapitalL_showPatterns()
     if exists("b:CapitalL_associatedBufnr")
-        let moveBackHere = CapitalL_moveToBufWin(b:CapitalL_associatedBufnr)
+        " we're in a loc list
+        let listWin = winnr()
+        let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
+        execute fileWin . "wincmd w"
     endif
-    if !exists("b:CapitalL_patterns")
-        echo "No CapitalL patterns are currently specified."
-    else
+    if exists("b:CapitalL_patterns")
         echo b:CapitalL_patterns
+    else
+        echo "No CapitalL patterns are currently specified."
     endif
-    if exists("moveBackHere")
-        execute moveBackHere . "wincmd w"
+    if exists("listWin")
+        execute listWin . "wincmd w"
     endif
 endfunction
 
@@ -270,8 +272,7 @@ function! CapitalL_cycle(...)
 endfunction
 
 function! CapitalL_moveToBufWin(buffername)
-    " move to a buffer by name, return the winnr where you're going from
-    " modified from: https://stackoverflow.com/questions/35465597/how-do-i-detect-if-a-specific-buffer-exists-in-vimscript
+    " move to a window by number
     let currentWin = winnr()
     if type(a:buffername) == 0
         let desiredWin = a:buffername
