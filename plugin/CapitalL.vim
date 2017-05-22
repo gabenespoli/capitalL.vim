@@ -162,14 +162,18 @@ function! CapitalL_lvimgrep()
 " by default uses the values of patterns and currentPattern
 " - todo: if an input is given, grep that, else grep like normal
 
-    " if we're in a loclist, get filename of associated file
+    " if we're in a loc list, move to the associated file
     if exists("b:CapitalL_associatedBufnr")
-        let moveBackHere = CapitalL_moveToBufWin(b:CapitalL_associatedBufnr)
+        let listWin = winnr()
+        let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
+        execute fileWin . "wincmd w"
     endif
 
     if !exists("b:CapitalL_patterns")
         echo "No CapitalL patterns are associated with this buffer. Use :Ladd to add some."
-        call CapitalL_moveToBufWin(moveBackHere)
+        " if we were in a loc list, move back
+        if exists("listWin")
+            execute listWin . "wincmd w"
         return
     endif
     if !exists("b:CapitalL_currentPattern")
@@ -189,6 +193,11 @@ function! CapitalL_lvimgrep()
     endif
 
     execute "silent! lvimgrep /".b:CapitalL_patterns[b:CapitalL_currentPattern]."/g %"
+
+    " if we were in a loc list, move back
+    if exists("listWin")
+        execute listWin . "wincmd w"
+    endif
 endfunction
 
 function! CapitalL_showPatterns()
