@@ -30,11 +30,17 @@ Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 `Lposition <position>` = Change the position of the Location List for the current buffer. Can be 'left', 'right', 'top', or 'bottom'.
 
+`Lformat` = Reformats all active Location Lists that were initialized by CapitalL (also adjusts width of window).
+
+`Lrefresh` = Runs `Lvimgrep` and `Lformat`.
+
 ## Keybindings in the Location List Window
 
 These keybindings are available in the Location List window only. They can be enabled or disabled with the `g:CapitalL_enableKeybindings` variable.
 
 `q` = Close the Location List (`Lclose`)
+
+`r` = Refresh the Location List (`Lrefresh`)
 
 `l` = Go to the currently selected line in the associated file, and put that line at the top of the screen.
 
