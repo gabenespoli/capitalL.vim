@@ -307,18 +307,25 @@ function! CapitalL_rm()
 endfunction
 
 function! CapitalL_cycle(...)
-    execute ":call CapitalL_lclose()"
-" - current pattern is indexed by b:CapitalL_pattern
-" - it is an index of the list b:CapitalL_patterns
+    " if we're in a loc list, move to the associated file
+    if exists("b:CapitalL_associatedBufnr")
+        let listWin = winnr()
+        let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
+        execute fileWin . "wincmd w"
+    endif
+    " make sure patterns exist as a non-empty list
     if !exists("b:CapitalL_patterns")
         let b:CapitalL_patterns = g:CapitalL_defaultPattern
     endif
-    if !exists("b:CapitalL_currentPattern")
-        let b:CapitalL_currentPattern = 0
-    endif
-    " make sure it is a list variable
     if type(b:CapitalL_patterns) != 3
         let b:CapitalL_patterns = [b:CapitalL_patterns]
+    endif
+    if len(b:CapitalL_patterns) == 0
+        echo "No CapitalL_patterns exist. Use :Ladd <pattern> to add some."
+        return
+    endif
+    if !exists("b:CapitalL_currentPattern")
+        let b:CapitalL_currentPattern = 0
     endif
 
     " If no input default cycle forwards
@@ -328,7 +335,7 @@ function! CapitalL_cycle(...)
         let adj = a:1
     endif
 
-    "cycle the patterns
+    " cycle the patterns
     let b:CapitalL_currentPattern = b:CapitalL_currentPattern + adj
     " wrap around if index will be out of range
     if b:CapitalL_currentPattern > len(b:CapitalL_patterns) - 1
@@ -338,6 +345,13 @@ function! CapitalL_cycle(...)
         let b:CapitalL_currentPattern = len(b:CapitalL_patterns) - 1
     endif
 
-    execute ":call CapitalL_lopen()"
+    " redo the Lvimgrep
+    " Lvimgrep will reformat the list too
+    execute "call CapitalL_lvimgrep()"
+
+    " if we were in a loc list, move back
+    if exists("listWin")
+        execute listWin . "wincmd w"
+    endif
 endfunction
 
