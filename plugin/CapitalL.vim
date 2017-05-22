@@ -247,7 +247,8 @@ function! CapitalL_formatList()
                     hi link LmarkdownH6 markdownH6
                 endif
 
-                set nomodified nomodifiable
+                set nomodified
+                "set nomodifiable
             endif
 
             setlocal cursorline
