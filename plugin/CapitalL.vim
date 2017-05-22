@@ -44,7 +44,10 @@ function! CapitalL_lopen()
     endif
     let position = CapitalL_parsePosition(b:CapitalL_position)
     let width = b:CapitalL_width
-    let associatedFile = expand('%:p')
+    " TODO make this an absolute path to avoid duplicate relative paths.
+    " This will require expanding the names in the buflist when searching for
+    " this filename
+    let associatedFile = expand('%')
     let filetype = &filetype
 
     execute position." lopen"
@@ -190,18 +193,21 @@ function! CapitalL_lvimgrep()
 endfunction
 
 function! CapitalL_showPatterns()
-    execute "call CapitalL_lclose()"
     if !exists("b:CapitalL_patterns")
         echo "No CapitalL patterns are currently specified."
     else
         echo b:CapitalL_patterns
     endif
-    execute "call CapitalL_lopen()"
 endfunction
 
 function! CapitalL_add(pattern)
     " add a new pattern to the list and change loc list to that pattern
-    execute "call CapitalL_lclose()"
+    
+    " if we're in a loclist
+    " find winnr of associated file
+    " move to that win
+    " add the pattern, change the grep
+    " move back to the loc list
     if !exists("b:CapitalL_patterns")
         let b:CapitalL_patterns = [a:pattern]
     elseif type(b:CaptialL_patterns) == 3
