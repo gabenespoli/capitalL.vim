@@ -25,7 +25,7 @@ command! -nargs=1 Ladd call CapitalL_add(<f-args>)
 command! Lshow call CapitalL_showPatterns()
 command! Lnext call CapitalL_cycle(1)
 command! Lprevious call CapitalL_cycle(-1)
-command! -nargs=1 Lposition let b:CapitalL_position = <f-args>
+command! -nargs=1 Lposition call CapitalL_setPosition(<f-args>)
 
 "" Functions
 function! CapitalL_lopen()
@@ -89,6 +89,17 @@ function! CapitalL_lopen()
     endif
 
     normal! gg
+endfunction
+
+function! CapitalL_setPosition(position)
+    execute "call CapitalL_lclose()"
+    let possible = ["left","right","top","bottom"]
+    if index(possible,a:position) < 0
+        echohl ErrorMsg
+        echo "Position must be left, right, top, or bottom.
+        return
+    endif
+    let b:CapitalL_position = a:position
 endfunction
 
 function! CapitalL_parsePosition(position)
