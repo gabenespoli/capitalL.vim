@@ -222,16 +222,16 @@ function! CapitalL_formatList()
                 set modifiable
                 silent %s/\v^([^|]*\|){2,2} //e
                 execute "set syntax=".filetype
-                if filetype == "markdown" || filetype == "pandoc"
+                "if filetype == "markdown" || filetype == "pandoc"
                     " add special formatting for md files here
-                    silent %s/^#/\ \ /g
-                    silent %s/^#/\ \ /g
-                    silent %s/^#/\ \ /g
-                    silent %s/^#/\ \ /g
-                    silent %s/^#/\ \ /g
-                    silent %s/^#/\ \ /g
-                    silent %s/^\ //g
-                endif
+                "    silent %s/^#/\ \ /g
+                "    silent %s/^#/\ \ /g
+                "    silent %s/^#/\ \ /g
+                "    silent %s/^#/\ \ /g
+                "    silent %s/^#/\ \ /g
+                "    silent %s/^#/\ \ /g
+                "    silent %s/^\ //g
+                "endif
                 set nomodified
             endif
 
