@@ -32,14 +32,17 @@ command! -nargs=1 Lposition call CapitalL_setPosition(<f-args>)
 
 "" Functions
 function! CapitalL_lopen()
-    " open the loc list associated with the current file
-    " if the loc list is empty, populate it
-    " if we are in a loc list, go to the associated file and repopulate it
-    " - this makes Lopen work like an Lrefresh function too
-    
     " if we're in a loc list, redo Lvimgrep (like Lrefresh)
     " Lvimgrep will move to the associated file and back
     if exists("b:CapitalL_associatedBufnr")
+        execute "call CapitalL_lvimgrep()"
+        return
+    endif
+    " after this part we know we are not in a loc list
+
+    " if the loc list is empty, populate it
+    " Lvimgrep will check pattern and currentpattern vars
+    if len(getloclist(0)) == 0
         execute "call CapitalL_lvimgrep()"
     endif
 
@@ -56,8 +59,6 @@ function! CapitalL_lopen()
         execute "call CapitalL_formatList()"
     endif
 
-    set cursorline
-    setlocal nowrap
 
     let b:CapitalL_associatedBufnr = associatedBufnr
 
@@ -190,6 +191,7 @@ endfunction
 
 function! CapitalL_formatList()
     " we should be in a loc list
+    " this means that b:position will exist in the associated file
     " make sure of this and then move to the file to get buffer vars
     if !exists("b:CapitalL_associatedBufnr")
         echo "This buffer is not a CapitalL Location List. The b:CapitalL_associatedBufnr variable is not set."
@@ -204,25 +206,31 @@ function! CapitalL_formatList()
         let b:CapitalL_width = g:CapitalL_defaultWidth
     endif
     let width = b:CapitalL_width
+    let position = b:CapitalL_position
     let filetype = &filetype
     execute listWin . "wincmd w"
     
     "if the position is vertical, format and resize 
-    execute "vertical resize ".width
-    set modifiable
-    silent %s/\v^([^|]*\|){2,2} //e
-    execute "set syntax=".filetype
-    if filetype == "markdown" || filetype == "pandoc"
-        " add special formatting for md files here
-        silent %s/^#/\ \ /g
-        silent %s/^#/\ \ /g
-        silent %s/^#/\ \ /g
-        silent %s/^#/\ \ /g
-        silent %s/^#/\ \ /g
-        silent %s/^#/\ \ /g
-        silent %s/^\ //g
-    endif
-    set nomodified cursorline
+    if position == "left" || position == "right"
+        execute "vertical resize ".width
+        set modifiable
+        silent %s/\v^([^|]*\|){2,2} //e
+        execute "set syntax=".filetype
+        if filetype == "markdown" || filetype == "pandoc"
+            " add special formatting for md files here
+            silent %s/^#/\ \ /g
+            silent %s/^#/\ \ /g
+            silent %s/^#/\ \ /g
+            silent %s/^#/\ \ /g
+            silent %s/^#/\ \ /g
+            silent %s/^#/\ \ /g
+            silent %s/^\ //g
+        endif
+        set nomodified
+endif
+
+    set cursorline
+    setlocal nowrap
 endfunction
 
 function! CapitalL_showPatterns()
