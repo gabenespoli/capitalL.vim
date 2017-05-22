@@ -300,6 +300,8 @@ function! CapitalL_rm()
     if b:CapitalL_currentPattern != 0
         let b:CapitalL_currentPattern = b:CapitalL_currentPattern - 1
     endif
+    " redo the grep (remove the removed loc list from view)
+    execute "call CapitalL_lvimgrep()"
     " if we were in a loc list, move back
     if exists("listWin")
         execute listWin . "wincmd w"
