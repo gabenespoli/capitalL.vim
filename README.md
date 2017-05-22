@@ -78,3 +78,4 @@ If the filetype is markdown or pandoc, then the Location List is formatted diffe
 
 - Allow for multiple inputs into Ladd and combine them with logical or: `\(pattern1\|pattern2\)`
 
+- implement a function to change the special formatting of the list to the markdown version. Implement a pseudo-markdown-headings formatting that can use any comment character, but the first heading level is ignored (i.e., in vim, `""` is a level 1 heading, `"""` is a level 2 heading, etc., and `"` are ignored). This allows relatively easy implementation of some document structure to code files.
