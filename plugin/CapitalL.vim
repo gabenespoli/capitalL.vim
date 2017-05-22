@@ -65,7 +65,7 @@ function! CapitalL_lopen()
     set cursorline
     setlocal nowrap
 
-    let b:CapitalL_filename = associatedFile
+    let b:CapitalL_associatedFile = associatedFile
 
     if g:CapitalL_enableKeybindings == 1
         nnoremap <buffer> q :Lclose<CR>
@@ -193,10 +193,17 @@ function! CapitalL_lvimgrep()
 endfunction
 
 function! CapitalL_showPatterns()
+    let currentWindow = winnr()
+    if exists("b:CapitalL_associatedFile")
+        call CapitalL_moveToBufWin(b:CapitalL_associatedFile)
+    endif
     if !exists("b:CapitalL_patterns")
         echo "No CapitalL patterns are currently specified."
     else
         echo b:CapitalL_patterns
+    endif
+    if winnr() != currentWindow
+        execute currentWindow . "wincmd w"
     endif
 endfunction
 
@@ -265,14 +272,23 @@ endfunction
 function! CapitalL_moveToLocationList()
 endfunction
 
-function! CapitalL_moveToBuffer(buffername)
-    "https://stackoverflow.com/questions/35465597/how-do-i-detect-if-a-specific-buffer-exists-in-vimscript
-    let bnr = bufwinnr(a:buffername)
+function! CapitalL_moveToBufWin(buffername)
+    " move to a buffer by name, return the winnr where you're going from
+    " modified from: https://stackoverflow.com/questions/35465597/how-do-i-detect-if-a-specific-buffer-exists-in-vimscript
+    let currentWin = winnr()
+    if type(a:buffername) == 0
+        let desiredWin = a:buffername
+    elseif type(a:buffername) == 1
+        let desiredWin = bufwinnr(a:buffername)
+    endif
+
+
     if bnr > 0
        :exe bnr . "wincmd w"
     else
-       echo a:buffername . ' is not open and in view.'
+       echo "Cannot move to a window that is not active."
     endif
+    return currentWin
 endfunction
  
         " add the pattern, change the grep
