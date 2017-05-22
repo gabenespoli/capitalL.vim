@@ -132,13 +132,16 @@ endfunction
 function! CapitalL_toggle()
 " modified from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
     let buflist = CapitalL_GetBufferList()
+    " find buffer numbers of location lists
     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "Location List"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+        " if one of those loc lists is in view, run lclose and return
         if bufwinnr(bufnum) != -1
-          exec('lclose')
+          execute "lclose"
           return
         endif
     endfor
-    " call custom grep functions if list is empty
+
+    " if loc list is empty, populate it before opening
     if len(getloclist(0)) == 0
         execute "call CapitalL_lvimgrep()"
     endif
