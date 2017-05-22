@@ -39,20 +39,14 @@ function! CapitalL_lopen()
     if !exists("b:CapitalL_position")
         let b:CapitalL_position = g:CapitalL_defaultPosition
     endif
-    if !exists("b:CapitalL_width")
-        let b:CapitalL_width = g:CapitalL_defaultWidth
-    endif
-    let position = CapitalL_parsePosition(b:CapitalL_position)
-    let width = b:CapitalL_width
     " TODO make this an absolute path to avoid duplicate relative paths.
     " This will require expanding the names in the buflist when searching for
     " this filename
     let associatedBufnr = bufnr(expand('%'))
-    let filetype = &filetype
 
     execute position." lopen"
     if position == "topleft vertical" || position == "vertical"
-        execute "call CapitalL_formatList()"
+        execute "call CapitalL_formatList(".&filetype.",".width.")"
     endif
 
     set cursorline
@@ -187,14 +181,31 @@ function! CapitalL_lvimgrep()
     endif
 endfunction
 
-function! CapitalL_formatList(filetype)
-    "TODO make sure we're focused on the loclist window before adjusting it
+function! CapitalL_formatList()
+    " we should be in a loc list
+    " make sure of this and then move to the file to get buffer vars
+    if !exists("b:CapitalL_associatedBufnr")
+        echo "This buffer is not a CapitalL Location List. The b:CapitalL_associatedBufnr variable is not set."
+        return
+    endif
+
+    " move to associated file, get vars, move back
+    let listWin = winnr()
+    let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
+    execute fileWin . "wincmd w"
+    if !exists("b:CapitalL_width")
+        let b:CapitalL_width = g:CapitalL_defaultWidth
+    endif
+    let width = b:CapitalL_width
+    let filetype = &filetype
+    execute listWin . "wincmd w"
+    
     "if the position is vertical, format and resize 
-    execute "vertical resize ".width
+    execute "vertical resize ".b:Cap
     set modifiable
     silent %s/\v^([^|]*\|){2,2} //e
-    execute "set syntax=".a:filetype
-    if a:filetype == "markdown" || a:filetype == "pandoc"
+    execute "set syntax=".filetype
+    if filetype == "markdown" || filetype == "pandoc"
         " add special formatting for md files here
         silent %s/^#/\ \ /g
         silent %s/^#/\ \ /g
