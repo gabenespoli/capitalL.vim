@@ -215,13 +215,14 @@ function! CapitalL_formatList()
             let position = b:CapitalL_position
             let filetype = &filetype
             execute listWin . "wincmd w"
-    
+
             "if the position is vertical, format and resize 
             if position == "left" || position == "right"
                 execute "vertical resize ".width
                 set modifiable
                 silent %s/\v^([^|]*\|){2,2} //e
                 execute "set syntax=".filetype
+
                 if filetype == "markdown" || filetype == "pandoc"
                     " add special formatting for md files here
                     silent! %s/^\s*\#\ //g
@@ -243,10 +244,11 @@ function! CapitalL_formatList()
                     hi link LmarkdownH5 markdownH5
                     hi link LmarkdownH6 markdownH6
                 endif
-                set nomodified
+
+                set nomodified nomodifiable
             endif
 
-            set cursorline
+            setlocal cursorline
             setlocal nowrap
 
         endif
