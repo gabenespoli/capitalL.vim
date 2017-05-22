@@ -184,6 +184,7 @@ function! CapitalL_lvimgrep()
     if exists("listWin")
         execute listWin . "wincmd w"
     endif
+    execute "call CapitalL_formatList()"
 endfunction
 
 function! CapitalL_formatList()
