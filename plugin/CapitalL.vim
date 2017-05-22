@@ -192,8 +192,8 @@ function! CapitalL_lvimgrep()
 endfunction
 
 function! CapitalL_showPatterns()
+    " if we're in a loc list, move to the associated file
     if exists("b:CapitalL_associatedBufnr")
-        " we're in a loc list
         let listWin = winnr()
         let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
         execute fileWin . "wincmd w"
@@ -203,26 +203,35 @@ function! CapitalL_showPatterns()
     else
         echo "No CapitalL patterns are currently specified."
     endif
+    " if we were in a loc list, move back
     if exists("listWin")
         execute listWin . "wincmd w"
     endif
 endfunction
 
 function! CapitalL_add(pattern)
-    " add a new pattern to the list and change loc list to that pattern
+    " if we're in a loc list, move to the associated file
     if exists("b:CapitalL_associatedBufnr")
-    
+        let listWin = winnr()
+        let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
+        execute fileWin . "wincmd w"
+    endif
+    " make sure patterns exists and is a list
     if !exists("b:CapitalL_patterns")
         let b:CapitalL_patterns = [a:pattern]
     elseif type(b:CaptialL_patterns) == 3
-        " if it's not a list, make it one before adding
         let b:CapitalL_patterns = b:CapitalL_patterns + [a:pattern]
     else
         let b:CapitalL_patterns = [b:CapitalL_patterns, a:pattern]
     endif
     " update current pattern to the new one
     let b:CapitalL_currentPattern = len(b:CapitalL_patterns) - 1
-    execute "call CapitalL_lopen()"
+    " lvimgrep the new pattern
+    execute call CapitalL_lvimgrep()
+    " if we were in a loc list, move back
+    if exists("listWin")
+        execute listWin . "wincmd w"
+    endif
 endfunction
 
 function! CapitalL_rm()
