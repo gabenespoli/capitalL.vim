@@ -51,15 +51,8 @@ function! CapitalL_lopen()
     let filetype = &filetype
 
     execute position." lopen"
-
-    "TODO make sure we're focused on the loclist window before adjusting it
-    "if the position is vertical, format and resize 
-    if position == "topleft vertical"
-        execute "vertical resize ".width
-        set modifiable
-        silent %s/\v^([^|]*\|){2,2} //e
-        execute "set syntax=".filetype
-        set nomodified cursorline
+    if position == "topleft vertical" || position == "vertical"
+        execute "call CapitalL_formatList()"
     endif
 
     set cursorline
@@ -194,6 +187,26 @@ function! CapitalL_lvimgrep()
     endif
 endfunction
 
+function! CapitalL_formatList(filetype)
+    "TODO make sure we're focused on the loclist window before adjusting it
+    "if the position is vertical, format and resize 
+    execute "vertical resize ".width
+    set modifiable
+    silent %s/\v^([^|]*\|){2,2} //e
+    execute "set syntax=".a:filetype
+    if a:filetype == "markdown" || a:filetype == "pandoc"
+        " add special formatting for md files here
+        silent %s/^#/\ \ /g
+        silent %s/^#/\ \ /g
+        silent %s/^#/\ \ /g
+        silent %s/^#/\ \ /g
+        silent %s/^#/\ \ /g
+        silent %s/^#/\ \ /g
+        silent %s/^\ //g
+    endif
+    set nomodified cursorline
+endfunction
+
 function! CapitalL_showPatterns()
     " if we're in a loc list, move to the associated file
     if exists("b:CapitalL_associatedBufnr")
@@ -230,7 +243,7 @@ function! CapitalL_add(pattern)
     " update current pattern to the new one
     let b:CapitalL_currentPattern = len(b:CapitalL_patterns) - 1
     " lvimgrep the new pattern
-    execute call CapitalL_lvimgrep()
+    execute "call CapitalL_lvimgrep()"
     " if we were in a loc list, move back
     if exists("listWin")
         execute listWin . "wincmd w"
