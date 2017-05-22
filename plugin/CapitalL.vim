@@ -54,7 +54,7 @@ function! CapitalL_lopen()
 
     "TODO make sure we're focused on the loclist window before adjusting it
     "if the position is vertical, format and resize 
-position == "topleft vertical"
+    if position == "topleft vertical"
         execute "vertical resize ".width
         set modifiable
         silent %s/\v^([^|]*\|){2,2} //e
