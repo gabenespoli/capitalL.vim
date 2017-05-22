@@ -187,47 +187,60 @@ function! CapitalL_lvimgrep()
 endfunction
 
 function! CapitalL_formatList()
-    " we should be in a loc list
-    " this means that b:position will exist in the associated file
-    " make sure of this and then move to the file to get buffer vars
-    if !exists("b:CapitalL_associatedBufnr")
-        echo "This buffer is not a CapitalL Location List. The b:CapitalL_associatedBufnr variable is not set."
-        return
-    endif
+    " format all CapitalL location lists that are active
+    let currentWin = winnr()
 
-    " move to associated file, get vars, move back
-    let listWin = winnr()
-    let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
-    execute fileWin . "wincmd w"
-    if !exists("b:CapitalL_width")
-        let b:CapitalL_width = g:CapitalL_defaultWidth
-    endif
-    let width = b:CapitalL_width
-    let position = b:CapitalL_position
-    let filetype = &filetype
-    execute listWin . "wincmd w"
+    " get list of all buffers
+    let buflist = CapitalL_GetBufferList()
+    " find buffer numbers of location lists
+    for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "Location List"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+        " if this is an active CapitalL location list, format it
+        if bufwinnr(bufnum) != -1
+            execute bufwinnr(bufnum) . "wincmd w"
+
+            if !exists("b:CapitalL_associatedBufnr")
+                "This buffer is not a CapitalL Location List. The b:CapitalL_associatedBufnr variable is not set.
+                continue
+            endif
+
+            " move to associated file, get vars, move back
+            let listWin = winnr()
+            let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
+            execute fileWin . "wincmd w"
+            if !exists("b:CapitalL_width")
+                let b:CapitalL_width = g:CapitalL_defaultWidth
+            endif
+            let width = b:CapitalL_width
+            let position = b:CapitalL_position
+            let filetype = &filetype
+            execute listWin . "wincmd w"
     
-    "if the position is vertical, format and resize 
-    if position == "left" || position == "right"
-        execute "vertical resize ".width
-        set modifiable
-        silent %s/\v^([^|]*\|){2,2} //e
-        execute "set syntax=".filetype
-        if filetype == "markdown" || filetype == "pandoc"
-            " add special formatting for md files here
-            silent %s/^#/\ \ /g
-            silent %s/^#/\ \ /g
-            silent %s/^#/\ \ /g
-            silent %s/^#/\ \ /g
-            silent %s/^#/\ \ /g
-            silent %s/^#/\ \ /g
-            silent %s/^\ //g
-        endif
-        set nomodified
-endif
+            "if the position is vertical, format and resize 
+            if position == "left" || position == "right"
+                execute "vertical resize ".width
+                set modifiable
+                silent %s/\v^([^|]*\|){2,2} //e
+                execute "set syntax=".filetype
+                if filetype == "markdown" || filetype == "pandoc"
+                    " add special formatting for md files here
+                    silent %s/^#/\ \ /g
+                    silent %s/^#/\ \ /g
+                    silent %s/^#/\ \ /g
+                    silent %s/^#/\ \ /g
+                    silent %s/^#/\ \ /g
+                    silent %s/^#/\ \ /g
+                    silent %s/^\ //g
+                endif
+                set nomodified
+            endif
 
-    set cursorline
-    setlocal nowrap
+            set cursorline
+            setlocal nowrap
+
+        endif
+    endfor
+    " move back to original window
+    execute currentWin . "wincmd w"
 endfunction
 
 function! CapitalL_showPatterns()
