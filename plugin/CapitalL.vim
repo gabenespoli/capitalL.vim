@@ -20,7 +20,7 @@ command! -nargs=1 Ladd call CapitalL_add(<f-args>)
 command! Lshow call CapitalL_showPatterns()
 command! Lnext call CapitalL_cycle(1)
 command! Lprevious call CapitalL_cycle(-1)
-command! -nargs=1 Lpos let b:CapitalL_position = <f-args>
+command! -nargs=1 Lposition let b:CapitalL_position = <f-args>
 
 "" Functions
 function! CapitalL_lopen()
@@ -142,12 +142,19 @@ function! CapitalL_lvimgrep()
 " - todo: if an input is given, grep that, else grep like normal
     if !exists("b:CapitalL_patterns")
         let b:CapitalL_patterns = ['TODO']
-        "echohl ErrorMsg
-        "echo "No CapitalL patterns are set for this buffer. Set b:CaptialL_patterns"
-        "return
+    endif
+    " make sure it is a list variable
+    if type("b:CapitalL_patterns") != 3
+        let b:CapitalL_patterns = [b:CapitalL_patterns]
     end
     if !exists("b:CapitalL_currentPattern")
         let b:CapitalL_currentPattern = 0
+    endif
+    " make sure current pattern ind doesn't exceed number of patterns
+    if b:CapitalL_currentPattern > len(b:CapitalL_patterns) - 1 || b:CapitalL_currentPattern < 0
+        echohl ErrorMsg
+        echo "CapitalL.vim: The current pattern index exceeds the number of patterns."
+        return
     endif
     " if we're in a loclist, get filename of associated file
     if exists("b:CapitalL_associatedFile")
@@ -158,18 +165,23 @@ function! CapitalL_lvimgrep()
     execute "silent! lvimgrep /".b:CapitalL_patterns[b:CapitalL_currentPattern]."/g ".filename
 endfunction
 
+function! CapitalL_showPatterns()
+    if !exists("b:CapitalL_patterns")
+        echo "No CapitalL patterns are currently specified."
+    else
+        echo b:CapitalL_patterns
+    endif
+endfunction
+
 function! CapitalL_add(pattern)
     if !exists("b:CapitalL_patterns")
         let b:CapitalL_patterns = []
     endif
-    let b:CapitalL_patterns = b:CapitalL_patterns + [a:pattern]
-endfunction
-
-function! CapitalL_showPatterns()
-    if !exists("b:CapitalL_patterns")
-        echo No CapitalL patterns are currently specified.
+    " if it's not a list, make it one before adding
+    if type("b:CaptialL_patterns") != 3
+        let b:CapitalL_patterns = [b:CapitalL_patterns, a:pattern]
     else
-        echo b:CapitalL_patterns
+        let b:CapitalL_patterns = b:CapitalL_patterns + [a:pattern]
     endif
 endfunction
 
@@ -180,6 +192,12 @@ function! CapitalL_cycle(...)
     if !exists("b:CapitalL_currentPattern")
         let b:CapitalL_currentPattern = 0
     endif
+    if !exists("b:CapitalL_patterns")
+        let b:CapitalL_patterns = ['TODO']
+    elseif type("b:CapitalL_patterns") != 3
+        " make sure it is a list variable
+        let b:CapitalL_patterns = [b:CapitalL_patterns]
+    end
 
     if a:0 == 0
         let adj = 1
