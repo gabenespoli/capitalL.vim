@@ -230,6 +230,18 @@ function! CapitalL_formatList()
                     silent %s/^\s*\#\#\#\#\ /\ \ \ \ \ \ /g
                     silent %s/^\s*\#\#\#\#\#\ /\ \ \ \ \ \ \ \ /g
                     silent %s/^\s*\#\#\#\#\#\#\ /\ \ \ \ \ \ \ \ \ \ /g
+                    syn match LmarkdownH1 /^\S.*\n/
+                    syn match LmarkdownH2 /^\s\s\S.*\n/
+                    syn match LmarkdownH3 /^\s\s\s\s\S.*\n/
+                    syn match LmarkdownH4 /^\s\s\s\s\s\s\S.*\n/
+                    syn match LmarkdownH5 /^\s\s\s\s\s\s\s\s\S.*\n/
+                    syn match LmarkdownH6 /^\s\s\s\s\s\s\s\s\s\s\S.*\n/
+                    hi link lMarkdownH1 markdownH1
+                    hi link lMarkdownH2 markdownH2
+                    hi link lMarkdownH3 markdownH3
+                    hi link lMarkdownH4 markdownH4
+                    hi link lMarkdownH5 markdownH5
+                    hi link lMarkdownH6 markdownH6
                 endif
                 set nomodified
             endif
