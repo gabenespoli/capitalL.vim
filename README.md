@@ -70,9 +70,11 @@ These variables can be set in a file in the `ftplugin` folder. `b:CapitalL_patte
 
 `b:CaptialL_currentPattern` = An index specifying which pattern in `b:CapitalL_patterns` is being used for this buffer's Location List.
 
+## Special Markdown Formatting
+
+If the filetype is markdown or pandoc, then the Location List is formatted differently. The #'s for headings are replaced with 2 spaces each (except for level 1). Each heading is given the syntax LmarkdownH1, LmarkdownH2, etc., and the highlights are linked to markdownH1, markdownH2, etc. This indented format that removes the leading #'s is easier to read and see the outline of the document. The syntax highlighting for markdown headings is retained, but also customizable, if for example you wanted to see level 1 headings with a different background.
+
 ## TODO
 
 - Allow for multiple inputs into Ladd and combine them with logical or: `\(pattern1\|pattern2\)`
-
-- Add special formatting of Location List for markdown files (replace #'s with indent, use default markdown heading formatting).
 
