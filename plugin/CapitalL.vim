@@ -222,7 +222,7 @@ function! CapitalL_add(pattern)
     " make sure patterns exists and is a list
     if !exists("b:CapitalL_patterns")
         let b:CapitalL_patterns = [a:pattern]
-    elseif type(b:CaptialL_patterns) == 3
+    elseif type(b:CapitalL_patterns) == 3
         let b:CapitalL_patterns = b:CapitalL_patterns + [a:pattern]
     else
         let b:CapitalL_patterns = [b:CapitalL_patterns, a:pattern]
