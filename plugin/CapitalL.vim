@@ -248,19 +248,15 @@ function! CapitalL_cycle(...)
         let adj = a:1
     endif
 
-    "let startPattern = b:CapitalL_currentPattern
-    "let stopCycle = 0
-    "while stopCycle == 0
-        "cycle the patterns
-        let b:CapitalL_currentPattern = b:CapitalL_currentPattern + adj
-        " wrap around if index will be out of range
-        if b:CapitalL_currentPattern > len(b:CapitalL_patterns) - 1
-            let b:CapitalL_currentPattern = 0
-        endif
-        if b:CapitalL_currentPattern < 0
-            let b:CapitalL_currentPattern = len(b:CapitalL_patterns) - 1
-        endif
-    "endwhile
+    "cycle the patterns
+    let b:CapitalL_currentPattern = b:CapitalL_currentPattern + adj
+    " wrap around if index will be out of range
+    if b:CapitalL_currentPattern > len(b:CapitalL_patterns) - 1
+        let b:CapitalL_currentPattern = 0
+    endif
+    if b:CapitalL_currentPattern < 0
+        let b:CapitalL_currentPattern = len(b:CapitalL_patterns) - 1
+    endif
 
     execute ":call CapitalL_lopen()"
 endfunction
