@@ -55,12 +55,8 @@ function! CapitalL_lopen()
 
     execute position." lopen"
 
-    if position == "topleft vertical" || position == "vertical"
-        execute "call CapitalL_formatList()"
-    endif
-
-
     let b:CapitalL_associatedBufnr = associatedBufnr
+    execute "call CapitalL_formatList()"
 
     if g:CapitalL_enableKeybindings == 1
         nnoremap <buffer> q :Lclose<CR>
