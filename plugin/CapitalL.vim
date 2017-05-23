@@ -103,6 +103,10 @@ function! CapitalL_lopen()
     normal! gg
 endfunction
 
+function! CapitalL_lclose()
+    execute "lclose"
+endfunction
+
 function! CapitalL_refresh()
     execute "call CapitalL_lvimgrep()"
     execute "call CapitalL_formatList()"
@@ -132,10 +136,6 @@ function! CapitalL_parsePosition(position)
     else
         return "topleft vertical"
     endif
-endfunction
-
-function! CapitalL_lclose()
-    execute "lclose"
 endfunction
 
 function! CapitalL_GetBufferList()
@@ -405,3 +405,10 @@ function! CapitalL_cycle(...)
     endif
 endfunction
 
+function! CapitalL_copen()
+    execute "copen"
+endfunction
+
+function! CapitalL_cclose()
+    execute "cclose"
+endfunction
