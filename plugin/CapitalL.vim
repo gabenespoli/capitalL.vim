@@ -408,9 +408,19 @@ function! CapitalL_cycle(...)
 endfunction
 
 function! CapitalL_copen()
-    " if we're in the loc list, first switch to the main file
+    " if we're in a loc list, move to the associated file
+    if exists("b:CapitalL_associatedBufnr")
+        let listWin = winnr()
+        let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
+        execute fileWin . "wincmd w"
+    endif
+    " open the quickfix window
     let position = CapitalL_parsePosition(g:CapitalL_qf_position)
     execute position." copen"
+    " if we were in a loc list, move back
+    if exists("listWin")
+        execute listWin . "wincmd w"
+    endif
 endfunction
 
 function! CapitalL_cclose()
