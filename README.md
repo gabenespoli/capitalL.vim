@@ -78,19 +78,19 @@ These variables can be set in your vimrc if you don't want the defaults.
 
 `g:CapitalL_qf_width` = As above.
 
-`g:CapitalL_defaultPattern` = This defaults to `['TODO']`
+`g:CapitalL_defaultPattern` = A list of the patterns to cycle through if there is no buffer-specific variable (i.e., set in the ftplugin file). Default `['TODO']`
 
 `g:CapitalL_enableKeybindings` = Enter 1 or 0 to enable or disable the default keybindings in the Location List buffer. Default 1.
 
 ## Buffer-Specific Variables
 
-These variables can be set in a file in the `ftplugin` folder. `b:CapitalL_patterns` is required for this plugin to do anything.
+These variables can be set in a file in the ftplugin folder. `b:CapitalL_patterns` is required for this plugin to do anything.
 
 `b:CapitalL_position` = The position of the Location List associated with the buffer. Defaults to `g:CapitalL_defaultPosition`.
 
 `b:CapitalL_width` = The width of the Location List associated with the buffer if it is on the left or right. Defaults to `g:CapitalL_defaultWidth`.
 
-`b:CapitalL_patterns` = A list of patterns to use with `lvimgrep` to create the location lists. The defaults can be found in the `ftplugin` folder of this repository. The default if no ftplugin file is found is `['TODO']'`.
+`b:CapitalL_patterns` = A list of patterns to use with `Lvimgrep` to create the location lists. The defaults can be found in the `ftplugin` folder of this repository. The default if no ftplugin file is found is `['TODO']'`.
 
 `b:CaptialL_currentPattern` = An index specifying which pattern in `b:CapitalL_patterns` is being used for this buffer's Location List.
 
