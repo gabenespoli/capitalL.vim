@@ -80,6 +80,8 @@ function! CapitalL_lopen()
         nnoremap <buffer> { :call CapitalL_cycle(-1)<CR>
         nnoremap <buffer> ]] :call CapitalL_cycle(1)<CR>
         nnoremap <buffer> [[ :call CapitalL_cycle(-1)<CR>
+        nnoremap <buffer> <C-d> 5j
+        nnoremap <buffer> <C-u> 5k
         "keybindings for staying in loclist after doing something
         if position == "topleft vertical"
             nnoremap <buffer> J j<CR>zt<C-w>h
@@ -406,6 +408,7 @@ function! CapitalL_cycle(...)
 endfunction
 
 function! CapitalL_copen()
+    let position = CapitalL_parsePosition(g:CapitalL_qf_position)
     execute "copen"
 endfunction
 
