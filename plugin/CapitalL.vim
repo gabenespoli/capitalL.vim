@@ -73,7 +73,7 @@ function! CapitalL_lopen()
     execute "call CapitalL_formatList()"
 
     if g:CapitalL_enableKeybindings == 1
-        execute "call CapitalL_addKeybindings('l')"
+        execute "call CapitalL_addKeybindings('l','".position."')"
     endif
 
     normal! gg
@@ -400,33 +400,33 @@ function! CapitalL_addKeybindings(type,position)
     nnoremap <buffer> <C-u> 5k
 
     "keybindings for staying in loclist after doing something
-    if position == "topleft vertical" || position == "left"
+    if a:position == "topleft vertical" || a:position == "left"
         nnoremap <buffer> J j<CR>zt<C-w>h
         nnoremap <buffer> K k<CR>zt<C-w>h
         nnoremap <buffer> o <CR>zt<C-w>h
-    elseif position == "vertical" || position == "right"
+    elseif a:position == "vertical" || a:position == "right"
         nnoremap <buffer> J j<CR>zt<C-w>l
         nnoremap <buffer> K k<CR>zt<C-w>l
         nnoremap <buffer> o <CR>zt<C-w>l
-    elseif position == "topleft" || position == "top"
+    elseif a:position == "topleft" || a:position == "top"
         nnoremap <buffer> J j<CR>zt<C-w>k
         nnoremap <buffer> K k<CR>zt<C-w>k
         nnoremap <buffer> o <CR>zt<C-w>k
-    elseif position == "botright" || position == "bottom"
+    elseif a:position == "botright" || a:position == "bottom"
         nnoremap <buffer> J j<CR>zt<C-w>j
         nnoremap <buffer> K k<CR>zt<C-w>j
         nnoremap <buffer> o <CR>zt<C-w>j
     endif
 
-    if bufname == "Location List"
+    if a:type == "l"
         nnoremap <buffer> r :call CapitalL_refresh()<CR>
         nnoremap <buffer> } :call CapitalL_cycle(1)<CR>
         nnoremap <buffer> { :call CapitalL_cycle(-1)<CR>
         nnoremap <buffer> ]] :call CapitalL_cycle(1)<CR>
         nnoremap <buffer> [[ :call CapitalL_cycle(-1)<CR>
 
-    elseif bufname == "Quickfix List"
-        nnoremap <buffer> r :call CapitalL_refresh()<CR>
+    elseif a:type == "c" || a:type = "qf"
+        nnoremap <buffer> r :call CapitalL_refresh("c")<CR>
 
     endif
 
