@@ -14,11 +14,11 @@ Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 ## Commands
 
-`Lopen` = Open the Location List buffer. If it is on the left or right, reformat it. This runs `Lvimgrep` first to make sure the Location List is updated and for the current file.
+`Lopen`, `Copen` = Open the Location List or Quickfix Window. If it is on the left or right, reformat the text. For Location Lists, this runs `Lvimgrep` first to make sure it is updated.
 
-`Lclose` = Close the Location List buffer.
+`Lclose`, `Copen` = Close the Location List or Quickfix Window and run `Lrefresh`.
 
-`Ltoggle` = Toggle whether the Location List is open or closed.
+`Ltoggle`, `Ctoggle` = Toggle whether the Location List is open or closed.
 
 `Lvimgrep` = Populate the Location List by using `lvimgrep` and the string present in `b:CapitalL_patterns[b:CapitalL_currentPattern]`.
 
@@ -42,13 +42,11 @@ nnoremap <localleader>q :Ctoggle<CR>
 nnoremap <localleader>L :Lrefresh<CR>
 ```
 
-### Keybindings in the Location List and Quickfix Windows
-
-These keybindings are on by default, and can be turned off by adding `g:CapitalL_enableKeybindings = 0` to your vimrc.
+These keybindings are only available in the Location List or Quickfix Window. They are on by default, but can be turned off by adding `g:CapitalL_enableKeybindings = 0` to your vimrc.
 
 `q` = Close the List (`Lclose` or `Cclose`).
 
-`r` = Refresh the formatting of all lists (`Lrefresh`). If the cursor is focused in a Location List, also redo `Lvimgrep`.
+`r` = Refresh the formatting of all lists (`Lrefresh`). If the cursor is focused in a Location List, also run `Lvimgrep`.
 
 `l` = Go to the currently selected line in the associated file, and put that line at the top of the screen.
 
@@ -56,7 +54,7 @@ These keybindings are on by default, and can be turned off by adding `g:CapitalL
 
 `J` and `K` = Go to the next or previous item in the list, open it, and move focus back to the list. It's like typing `jo` or `ko`.
 
-These keybindings are available in the Location List (not the Quickfix List).
+These keybindings are only available in the Location List (i.e., not the Quickfix Window).
 
 `}` or `]]` = Cycle to the next pattern (`Lnext`).
 
@@ -66,9 +64,13 @@ These keybindings are available in the Location List (not the Quickfix List).
 
 These variables can be set in your vimrc if you don't want the defaults.
 
-`g:CapitalL_defaultPosition` = The default position of the Location List. Can be `'left'`, `'right'`, `'top'`, or `'bottom'`. Default `'left'`.
+`g:CapitalL_defaultPosition` = The default position of the Location List. Can be 'left', 'right', 'top', or 'bottom'. Default 'left'.
+
+`g:CapitalL_qf_position` = As above, but for the Quickfix Window. Default 'right'.
 
 `g:CapitalL_defaultWidth` = The default width of a Location List positioned on the left or right. Default 40.
+
+`g:CapitalL_qf_width` = As above.
 
 `g:CapitalL_defaultPattern` = This defaults to `['TODO']`
 
@@ -90,12 +92,7 @@ These variables can be set in a file in the `ftplugin` folder. `b:CapitalL_patte
 
 If the filetype is markdown or pandoc, then the Location List is formatted differently. The #'s for headings are replaced with 2 spaces each (except for level 1). Each heading is given the syntax LmarkdownH1, LmarkdownH2, etc., and the highlights are linked to markdownH1, markdownH2, etc. This indented format that removes the leading #'s is easier to read and see the outline of the document. The syntax highlighting for markdown headings is retained, but also customizable, if for example you wanted to see level 1 headings with a different background.
 
-## Analogous Quickfix Window Functionality
-
-There are analogous functions `Copen`, `Cclose`, `Ctoggle`, and associated variables `g:CapitalL_qf_position` and `g:CapitalL_qf_width`. For controlling the quickfix window.
-
 ## TODO
-
 
 - Allow for multiple inputs into Ladd and combine them with logical or: `\(pattern1\|pattern2\)`
 
