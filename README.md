@@ -78,7 +78,7 @@ These variables can be set in your vimrc if you don't want the defaults.
 
 `g:CapitalL_qf_width` = As above.
 
-`g:CapitalL_defaultPattern` = A list of the patterns to cycle through if there is no buffer-specific variable (i.e., set in the ftplugin file). Default `['TODO']`
+`g:CapitalL_defaultPattern` = A list of the patterns to cycle through if there is no buffer-specific variable (i.e., set in the ftplugin file). Default `['TODO']`.
 
 `g:CapitalL_enableKeybindings` = Enter 1 or 0 to enable or disable the default keybindings in the Location List buffer. Default 1.
 
