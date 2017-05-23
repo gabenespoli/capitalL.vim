@@ -81,11 +81,12 @@ endfunction
 
 function! CapitalL_lclose()
     execute "lclose"
+    execute "call CapitalL_formatLists()"
 endfunction
 
 function! CapitalL_refresh()
     execute "call CapitalL_lvimgrep()"
-    execute "call CapitalL_formatList()"
+    execute "call CapitalL_formatLists()"
 endfunction
 
 function! CapitalL_setPosition(position)
@@ -126,11 +127,11 @@ function! CapitalL_toggle(...)
 " inspiration from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
 
     if a:0 == 0 || a:1 == "l"
+        let type = "l"
         let bufname = "Location List"
-        let pfx = "l"
     elseif a:1 == "c" || a:1 == "qf"
+        let type = "c"
         let bufname = "Quickfix List"
-        let pfx = "c"
     endif
 
     let buflist = CapitalL_GetBufferList()
@@ -138,17 +139,17 @@ function! CapitalL_toggle(...)
     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
         " if one of those loc lists is in view, run lclose and return
         if bufwinnr(bufnum) != -1
-          execute pfx."close"
+          execute toupper(type)."close"
           return
         endif
     endfor
 
     " if loc list is empty, populate it before opening
-    if pfx == "l" && len(getloclist(0)) == 0
+    if type == "l" && len(getloclist(0)) == 0
         execute "call CapitalL_lvimgrep()"
     endif
     let winnr = winnr()
-    execute toupper(pfx)."open"
+    execute toupper(type)."open"
     if winnr() != winnr
         wincmd p
     endif
@@ -191,34 +192,57 @@ function! CapitalL_lvimgrep()
     execute "call CapitalL_formatList()"
 endfunction
 
-function! CapitalL_formatList()
-    " format all CapitalL location lists that are active
+function! CapitalL_formatLists()
+    execute "call CapitalL_formatList('l')"
+    execute "call CapitalL_formatList('c')"
+endfunction
+
+function! CapitalL_formatList(...)
+
+    if a:0 == 0 || a:1 == "l"
+        let type = "l"
+        let bufname = "Location List"
+    elseif a:1 == "c" || a:1 == "qf"
+        let type = "c"
+        let bufname = "Quickfix List"
+    endif
+
     let currentWin = winnr()
 
     " get list of all buffers
     let buflist = CapitalL_GetBufferList()
-    " find buffer numbers of location lists
-    for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "Location List"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
-        " if this is an active CapitalL location list, format it
+
+    " find buffer number of location lists or quickfix window
+    for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+
+        " if this is an active window, move to it
         if bufwinnr(bufnum) != -1
             execute bufwinnr(bufnum) . "wincmd w"
 
-            if !exists("b:CapitalL_associatedBufnr")
-                "This buffer is not a CapitalL Location List. The b:CapitalL_associatedBufnr variable is not set.
-                continue
-            endif
+            " get variables controlling the formatting
+            if type == "l"
+                if !exists("b:CapitalL_associatedBufnr")
+                    "This buffer is not a CapitalL Location List. The b:CapitalL_associatedBufnr variable is not set.
+                    continue
+                endif
 
-            " move to associated file, get vars, move back
-            let listWin = winnr()
-            let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
-            execute fileWin . "wincmd w"
-            if !exists("b:CapitalL_width")
-                let b:CapitalL_width = g:CapitalL_defaultWidth
+                " move to associated file, get vars, move back
+                let listWin = winnr()
+                let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
+                execute fileWin . "wincmd w"
+                if !exists("b:CapitalL_width")
+                    let b:CapitalL_width = g:CapitalL_defaultWidth
+                endif
+                let width = b:CapitalL_width
+                let position = b:CapitalL_position
+                let filetype = &filetype
+                execute listWin . "wincmd w"
+
+            elseif type == "c" || type == "qf"
+                let width = g:CapitalL_qf_width
+                let position = g:CapitalL_qf_position
+
             endif
-            let width = b:CapitalL_width
-            let position = b:CapitalL_position
-            let filetype = &filetype
-            execute listWin . "wincmd w"
 
             "if the position is vertical, format and resize 
             if position == "left" || position == "right"
@@ -227,7 +251,9 @@ function! CapitalL_formatList()
                 endif
                 set modifiable
                 silent %s/\v^([^|]*\|){2,2} //e
-                execute "set syntax=".filetype
+                if type == "l"
+                    execute "set syntax=".filetype
+                endif
 
                 if filetype == "markdown" || filetype == "pandoc"
                     " add special formatting for md files here
@@ -382,12 +408,14 @@ function! CapitalL_cycle(...)
 endfunction
 
 function! CapitalL_copen()
+    " if we're in the loc list, first switch to the main file
     let position = CapitalL_parsePosition(g:CapitalL_qf_position)
-    execute position."copen"
+    execute position." copen"
 endfunction
 
 function! CapitalL_cclose()
     execute "cclose"
+    execute "call CapitalL_formatLists()"
 endfunction
 
 function! CapitalL_addKeybindings(type,position)
