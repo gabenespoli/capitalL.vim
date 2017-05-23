@@ -9,22 +9,20 @@
 if !exists("g:CapitalL_defaultPosition")
     let g:CapitalL_defaultPosition = "left"
 endif
+if !exists("g:CapitalL_qf_position")
+    let g:CapitalL_qf_position = "right"
+endif
 if !exists("g:CapitalL_width")
     let g:CapitalL_defaultWidth = 40
+endif
+if !exists("g:CapitalL_qf_width")
+    let g:CapitalL_qf_width = 40
 endif
 if !exists("g:CapitalL_enableKeybindings")
     let g:CapitalL_enableKeybindings = 1
 endif
 if !exists("g:CapitalL_defaultPattern")
     let g:CapitalL_defaultPattern = ['TODO']
-endif
-
-" Defaults for quickfix window
-if !exists("g:CapitalL_qf_position")
-    let g:CapitalL_qf_position = ""
-endif
-if !exists("g:CapitalL_qf_width")
-    let g:CapitalL_qf_width = 0
 endif
 
 "" Commands
