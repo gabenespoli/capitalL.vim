@@ -38,7 +38,7 @@ command!            Lrm         call CapitalL_rm()
 command!            Lnext       call CapitalL_cycle(1)
 command!            Lprevious   call CapitalL_cycle(-1)
 command! -nargs=1   Lposition   call CapitalL_setPosition(<f-args>)
-command!            Lrefresh    call CapitalL_refresh()
+command! -nargs=*   Lrefresh    call CapitalL_refresh(<f-args>)
 
 command!            Ctoggle     call CapitalL_toggle("c")
 command!            Copen       call CapitalL_copen()
