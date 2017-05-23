@@ -136,7 +136,7 @@ function! CapitalL_parsePosition(position)
     elseif a:position == "bottom"
         return "botright"
     else
-        return "topleft vertical"
+        return ""
     endif
 endfunction
 
