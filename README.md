@@ -34,6 +34,8 @@ Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 ## Keybindings
 
+### Global
+
 There are no global keybindings enabled by default. Consider adding the following keybindings to your vimrc.
 
 ```
@@ -41,6 +43,8 @@ nnoremap <localleader>l :Ltoggle<CR>
 nnoremap <localleader>q :Ctoggle<CR>
 nnoremap <localleader>L :Lrefresh<CR>
 ```
+
+### Location List & Quickfix Window
 
 These keybindings are only available in the Location List or Quickfix Window. They are on by default, but can be turned off by adding `g:CapitalL_enableKeybindings = 0` to your vimrc.
 
@@ -53,6 +57,8 @@ These keybindings are only available in the Location List or Quickfix Window. Th
 `o` = Same as `l` except keep move the cursor back to Location List.
 
 `J` and `K` = Go to the next or previous item in the list, open it, and move focus back to the list. It's like typing `jo` or `ko`.
+
+### Location List Only
 
 These keybindings are only available in the Location List (i.e., not the Quickfix Window).
 
