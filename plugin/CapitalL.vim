@@ -28,7 +28,7 @@ if !exists("g:CapitalL_qf_width")
 endif
 
 "" Commands
-command!            Ltoggle     call CapitalL_toggle()
+command!            Ltoggle     call CapitalL_ltoggle()
 command!            Lopen       call CapitalL_lopen()
 command!            Lclose      call CapitalL_lclose()
 command!            Lvimgrep    call CapitalL_lvimgrep()
@@ -142,7 +142,7 @@ function! CapitalL_GetBufferList()
     return buflist
 endfunction
 
-function! CapitalL_toggle()
+function! CapitalL_ltoggle()
 " inspiration from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
     let buflist = CapitalL_GetBufferList()
     " find buffer numbers of location lists
