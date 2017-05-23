@@ -19,18 +19,26 @@ if !exists("g:CapitalL_defaultPattern")
     let g:CapitalL_defaultPattern = ['TODO']
 endif
 
+" Defaults for quickfix window
+if !exists("g:CapitalL_qf_defaultPosition")
+    let g:CapitalL_qf_defaultPosition = ""
+endif
+if !exists("g:CapitalL_qf_width")
+    let g:CapitalL_qf_defaultWidth = 0
+endif
+
 "" Commands
-command! Ltoggle call CapitalL_toggle()
-command! Lopen call CapitalL_lopen()
-command! Lclose call CapitalL_lclose()
-command! Lvimgrep call CapitalL_lvimgrep()
-command! -nargs=1 Ladd call CapitalL_add(<f-args>)
-command! Lrm call CapitalL_rm()
-command! Lshow call CapitalL_showPatterns()
-command! Lnext call CapitalL_cycle(1)
-command! Lprevious call CapitalL_cycle(-1)
-command! -nargs=1 Lposition call CapitalL_setPosition(<f-args>)
-command! Lrefresh call CapitalL_refresh()
+command!            Ltoggle     call CapitalL_toggle()
+command!            Lopen       call CapitalL_lopen()
+command!            Lclose      call CapitalL_lclose()
+command!            Lvimgrep    call CapitalL_lvimgrep()
+command!            Lshow       call CapitalL_showPatterns()
+command! -nargs=1   Ladd        call CapitalL_add(<f-args>)
+command!            Lrm         call CapitalL_rm()
+command!            Lnext       call CapitalL_cycle(1)
+command!            Lprevious   call CapitalL_cycle(-1)
+command! -nargs=1   Lposition   call CapitalL_setPosition(<f-args>)
+command!            Lrefresh    call CapitalL_refresh()
 
 "" Functions
 function! CapitalL_lopen()
@@ -225,7 +233,9 @@ function! CapitalL_formatList()
 
             "if the position is vertical, format and resize 
             if position == "left" || position == "right"
-                execute "vertical resize ".width
+                if width > 0
+                    execute "vertical resize ".width
+                endif
                 set modifiable
                 silent %s/\v^([^|]*\|){2,2} //e
                 execute "set syntax=".filetype
