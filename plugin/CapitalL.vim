@@ -46,6 +46,14 @@ command!            Cclose      call CapitalL_cclose()
 
 "" Functions
 function! CapitalL_lopen()
+    " if we're in a qf window, close it first, then open it again later
+    if &filetype == "qf"
+        execute "call CapitalL_cclose()"
+        let openqf = 1
+    else
+        let openqf = 0
+    endif
+
     " if we're in a loc list, redo Lvimgrep (like Lrefresh)
     " Lvimgrep will move to the associated file and back
     if exists("b:CapitalL_associatedBufnr")
@@ -77,6 +85,10 @@ function! CapitalL_lopen()
     endif
 
     normal! gg
+
+    if openqf == 1
+        execute "call CapitalL_copen()"
+    endif
 endfunction
 
 function! CapitalL_lclose()
