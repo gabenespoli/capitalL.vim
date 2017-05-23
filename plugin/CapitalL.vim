@@ -28,7 +28,7 @@ if !exists("g:CapitalL_qf_width")
 endif
 
 "" Commands
-command!            Ltoggle     call CapitalL_ltoggle()
+command!            Ltoggle     call CapitalL_toggle("l")
 command!            Lopen       call CapitalL_lopen()
 command!            Lclose      call CapitalL_lclose()
 command!            Lvimgrep    call CapitalL_lvimgrep()
@@ -39,6 +39,10 @@ command!            Lnext       call CapitalL_cycle(1)
 command!            Lprevious   call CapitalL_cycle(-1)
 command! -nargs=1   Lposition   call CapitalL_setPosition(<f-args>)
 command!            Lrefresh    call CapitalL_refresh()
+
+command!            Copen       call CapitalL_copen()
+command!            Cclose      call CapitalL_cclose()
+command!            Ctoggle     call CapitalL_ctoggle("c")
 
 "" Functions
 function! CapitalL_lopen()
@@ -142,24 +146,33 @@ function! CapitalL_GetBufferList()
     return buflist
 endfunction
 
-function! CapitalL_ltoggle()
+function! CapitalL_toggle(...)
 " inspiration from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
+
+    if a:0 == 0 || a:1 == "l"
+        let bufname = "Location List"
+        let pfx = "l"
+    elseif a:1 == "c" || a:1 == "qf"
+        let bufname = "Quickfix List"
+        let pfx = "c"
+    endif
+
     let buflist = CapitalL_GetBufferList()
     " find buffer numbers of location lists
-    for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "Location List"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+    for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
         " if one of those loc lists is in view, run lclose and return
         if bufwinnr(bufnum) != -1
-          execute "lclose"
+          execute pfx."close"
           return
         endif
     endfor
 
     " if loc list is empty, populate it before opening
-    if len(getloclist(0)) == 0
+    if pfx == "l" && len(getloclist(0)) == 0
         execute "call CapitalL_lvimgrep()"
     endif
     let winnr = winnr()
-    exec('Lopen')
+    execute toupper(pfx)."open"
     if winnr() != winnr
         wincmd p
     endif
