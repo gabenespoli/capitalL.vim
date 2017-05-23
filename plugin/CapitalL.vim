@@ -241,6 +241,7 @@ function! CapitalL_formatList(...)
             elseif type == "c" || type == "qf"
                 let width = g:CapitalL_qf_width
                 let position = g:CapitalL_qf_position
+                let filetype = "qf"
 
             endif
 
