@@ -40,9 +40,9 @@ command!            Lprevious   call CapitalL_cycle(-1)
 command! -nargs=1   Lposition   call CapitalL_setPosition(<f-args>)
 command!            Lrefresh    call CapitalL_refresh()
 
+command!            Ctoggle     call CapitalL_toggle("c")
 command!            Copen       call CapitalL_copen()
 command!            Cclose      call CapitalL_cclose()
-command!            Ctoggle     call CapitalL_ctoggle("c")
 
 "" Functions
 function! CapitalL_lopen()
