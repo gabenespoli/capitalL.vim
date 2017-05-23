@@ -20,7 +20,7 @@ if !exists("g:CapitalL_defaultPattern")
 endif
 
 " Defaults for quickfix window
-if !exists("g:CapitalL_qfPosition")
+if !exists("g:CapitalL_qf_position")
     let g:CapitalL_qf_position = ""
 endif
 if !exists("g:CapitalL_qf_width")
