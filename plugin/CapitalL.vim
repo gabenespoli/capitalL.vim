@@ -95,8 +95,10 @@ function! CapitalL_lclose()
     execute "call CapitalL_formatLists()"
 endfunction
 
-function! CapitalL_refresh()
-    execute "call CapitalL_lvimgrep()"
+function! CapitalL_refresh(...)
+    if a:0 > 0 && a:1 == "l"
+        execute "call CapitalL_lvimgrep()"
+    endif
     execute "call CapitalL_formatLists()"
 endfunction
 
@@ -209,6 +211,8 @@ function! CapitalL_formatLists()
 endfunction
 
 function! CapitalL_formatList(...)
+    " adjusts position, width, and text formatting of windows
+    " input is 'l' (default), 'c', or 'qf'
 
     if a:0 == 0 || a:1 == "l"
         let type = "l"
@@ -470,14 +474,14 @@ function! CapitalL_addKeybindings(type,position)
     endif
 
     if a:type == "l"
-        nnoremap <buffer> r :call CapitalL_refresh()<CR>
+        nnoremap <buffer> r :call CapitalL_refresh("l")<CR>
         nnoremap <buffer> } :call CapitalL_cycle(1)<CR>
         nnoremap <buffer> { :call CapitalL_cycle(-1)<CR>
         nnoremap <buffer> ]] :call CapitalL_cycle(1)<CR>
         nnoremap <buffer> [[ :call CapitalL_cycle(-1)<CR>
 
     elseif a:type == "c" || a:type = "qf"
-        nnoremap <buffer> r :call CapitalL_refresh("c")<CR>
+        nnoremap <buffer> r :call CapitalL_refresh()<CR>
 
     endif
 
