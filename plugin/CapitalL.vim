@@ -78,14 +78,13 @@ function! CapitalL_lopen()
     execute position." lopen"
 
     let b:CapitalL_associatedBufnr = associatedBufnr
-    execute "call CapitalL_formatList()"
 
     if g:CapitalL_enableKeybindings == 1
         execute "call CapitalL_addKeybindings('l','".position."')"
     endif
 
+    execute "call CapitalL_formatLists()"
     normal! gg
-
     if openqf == 1
         execute "call CapitalL_copen()"
     endif
@@ -430,6 +429,7 @@ function! CapitalL_copen()
     " open the quickfix window
     let position = CapitalL_parsePosition(g:CapitalL_qf_position)
     execute position." copen"
+    execute "call CapitalL_formatLists()"
     " if we were in a loc list, move back
     if exists("listWin")
         execute listWin . "wincmd w"
