@@ -449,27 +449,21 @@ function! CapitalL_addKeybindings(type,position)
 
     nnoremap <buffer> q :Lclose<CR>
     nnoremap <buffer> l <CR>zt
-    nnoremap <buffer> <C-d> 5j
-    nnoremap <buffer> <C-u> 5k
+
+    " often j and k are remapped to gj and gk, we don't want that here
+    nnoremap <buffer> j j
+    nnoremap <buffer> k k
+    nnoremap <buffer> J 5j
+    nnoremap <buffer> K 5k
 
     "keybindings for staying in loclist after doing something
-    if a:position == "topleft vertical" || a:position == "left"
-        nnoremap <buffer> J j<CR>zt<C-w>h
-        nnoremap <buffer> K k<CR>zt<C-w>h
-        nnoremap <buffer> o <CR>zt<C-w>h
-    elseif a:position == "vertical" || a:position == "right"
-        nnoremap <buffer> J j<CR>zt<C-w>l
-        nnoremap <buffer> K k<CR>zt<C-w>l
-        nnoremap <buffer> o <CR>zt<C-w>l
-    elseif a:position == "topleft" || a:position == "top"
-        nnoremap <buffer> J j<CR>zt<C-w>k
-        nnoremap <buffer> K k<CR>zt<C-w>k
-        nnoremap <buffer> o <CR>zt<C-w>k
-    elseif a:position == "botright" || a:position == "bottom"
-        nnoremap <buffer> J j<CR>zt<C-w>j
-        nnoremap <buffer> K k<CR>zt<C-w>j
-        nnoremap <buffer> o <CR>zt<C-w>j
-    endif
+    nnoremap <buffer> <C-e> j<CR>zt:wincmd w<CR>
+    nnoremap <buffer> <C-y> k<CR>zt:wincmd w<CR>
+    nnoremap <buffer> <C-d> 5j<CR>zt:wincmd w<CR>
+    nnoremap <buffer> <C-u> 5k<CR>zt:wincmd w<CR>
+    nnoremap <buffer> <C-f> 10j<CR>zt:wincmd w<CR>
+    nnoremap <buffer> <C-b> 10k<CR>zt:wincmd w<CR>
+    nnoremap <buffer> o <CR>zt:wincmd w<CR>
 
     if a:type == "l"
         nnoremap <buffer> r :call CapitalL_refresh("l")<CR>
@@ -477,10 +471,8 @@ function! CapitalL_addKeybindings(type,position)
         nnoremap <buffer> { :call CapitalL_cycle(-1)<CR>
         nnoremap <buffer> ]] :call CapitalL_cycle(1)<CR>
         nnoremap <buffer> [[ :call CapitalL_cycle(-1)<CR>
-
     elseif a:type == "c" || a:type = "qf"
         nnoremap <buffer> r :call CapitalL_refresh()<CR>
-
     endif
 
 

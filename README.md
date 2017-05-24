@@ -48,15 +48,23 @@ nnoremap <localleader>L :Lrefresh<CR>
 
 These keybindings are only available in the Location List or Quickfix Window. They are on by default, but can be turned off by adding `g:CapitalL_enableKeybindings = 0` to your vimrc.
 
+`j` and `k` = Select the next or previous item in the list. Since j/k are often mapped to gj/gk (to move the cursor by visual line, not line number), these keys are explicitly remapped back to j/k.
+
+`J` and `K` = Same as above but jump by 5 items.
+
+`l` or `enter` = Go to the currently selected line in the associated file, and put that line at the top of the screen. `enter` is the vim default for this.
+
+`o` = Same as above except keep the cursor in Location List or Quickfix Window.
+
+`<C-e>` and `<C-y>` = Select the next or previous item in the list, move to that location in the file, and keep focus in the Location List or Quickfix Window. This is analogous to pressing `jo`.
+
+`<C-d>` and `<C-u>` = Same as above but jump by 5 items.
+
+`<C-f>` and `<C-b>` = Same as above but jump by 10 lines.
+
 `q` = Close the List (`Lclose` or `Cclose`).
 
 `r` = Refresh the formatting of all lists (`Lrefresh`). If the cursor is focused in a Location List, also run `Lvimgrep`.
-
-`l` = Go to the currently selected line in the associated file, and put that line at the top of the screen.
-
-`o` = Same as `l` except keep move the cursor back to Location List.
-
-`J` and `K` = Go to the next or previous item in the list, open it, and move focus back to the list. It's like typing `jo` or `ko`.
 
 ### Location List Only
 
@@ -103,3 +111,6 @@ If the filetype is markdown or pandoc, then the Location List is formatted diffe
 - Allow for multiple inputs into Ladd and combine them with logical or: `\(pattern1\|pattern2\)`
 
 - implement a function to change the special formatting of the list to the markdown version. Implement a pseudo-markdown-headings formatting that can use any comment character, but the first heading level is ignored (i.e., in vim, `""` is a level 1 heading, `"""` is a level 2 heading, etc., and `"` are ignored). This allows relatively easy implementation of some document structure to code files.
+
+- make setPosition function take an optional arg, and if no arg is passed, it "re-sets" the position that is currently active, or grabs the default
+
