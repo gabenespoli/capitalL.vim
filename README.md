@@ -12,7 +12,7 @@ Some example patterns that I find useful:
 
 - A temporary replacement for vim's search functionality (`/` and `?`) if you want to see a list of search results instead of having to cycle through them with `n` and `N`.
 
-Once in the Location List, use `[[`/`{` and `]]`/`}` to cycle through patterns. This plugin includes functions to control the Quickfix Window as well, but only its position and keybindings; this plugin won't populate the Quickfix Window with anything.
+Once in the Location List, use `[[`/`{` and `]]`/`}` to cycle through patterns. This plugin can control the Quickfix Window too, but only its position and keybindings (i.e., it won't populate the Quickfix Window with anything).
 
 ![CapitalL.vim. Search pattern is \(^\"\"\|^function\)](http://i.imgur.com/OQKSzrM.png)
 
