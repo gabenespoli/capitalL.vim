@@ -8,7 +8,7 @@ Some example patterns that I find useful:
 
 - Lines beginning with a function definition (e.g., `function` in vim/octave/matlab, `class` and `def` in python), so you can get an overview of what's in the file and jump around quickly.
 
-- The word "TODO", so I can see a list of my todos in a file and jump to them.
+- The word "TODO", so you can see a list of your todos in a file and jump to them.
 
 - A temporary replacement for vim's search functionality (`/` and `?`) if you want to see a list of search results instead of having to cycle through them with `n` and `N`.
 
