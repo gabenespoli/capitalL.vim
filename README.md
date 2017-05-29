@@ -61,7 +61,7 @@ nnoremap <localleader>q :Ctoggle<CR>
 
 These keybindings are only available in the Location List or Quickfix Window. They are enabled by default, but can be disabled by adding `let g:CapitalL_enableKeybindings = 0` to your vimrc.
 
-`o`, `l` or `enter` = Go to the currently selected line in the associated file, and put that line at the top of the screen. `enter` is the vim default for this. `o` stands for "open"; `l` is like opening a file in [ranger](https://github.com/ranger/ranger).
+`o`/`l` (or `enter`) = Go to the currently selected line in the associated file, and put that line at the top of the screen. `o` stands for "open"; `l` is like opening a file in [ranger](https://github.com/ranger/ranger); `enter` is the vim default. 
 
 `i` = Same as above except keep the cursor in Location List or Quickfix Window. This is like file preview in [ranger](https://github.com/ranger/ranger).
 
