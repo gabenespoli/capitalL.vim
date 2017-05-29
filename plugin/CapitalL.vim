@@ -443,6 +443,7 @@ function! CapitalL_addKeybindings(type,position)
     " position should be 
 
     nnoremap <buffer> q :Lclose<CR>
+    nnoremap <buffer> o <CR>zt
     nnoremap <buffer> l <CR>zt
 
     " keybindings for jumping around the list like less
@@ -463,7 +464,7 @@ function! CapitalL_addKeybindings(type,position)
     nnoremap <buffer> <C-u> 5k<CR>zt:wincmd p<CR>
     nnoremap <buffer> <C-f> 10j<CR>zt:wincmd p<CR>
     nnoremap <buffer> <C-b> 10k<CR>zt:wincmd p<CR>
-    nnoremap <buffer> o <CR>zt:wincmd p<CR>
+    nnoremap <buffer> i <CR>zt:wincmd p<CR>
 
     if a:type == "l"
         nnoremap <buffer> r :call CapitalL_refresh("l")<CR>
