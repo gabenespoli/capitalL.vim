@@ -18,9 +18,11 @@ Once in the Location List, use `[[`/`{` and `]]`/`}` to cycle through patterns. 
 
 Some other features:
 
+- Since there isn't any editing that needs to be done in the Location List, many keys are rebound so it acts a bit more like less and ranger.
+
 - The Location List inherits the same filetype as the file so that it gets the same syntax highlighting. This is only apparent when the Location List is positioned on the left or right, when CapitalL reformats the list (i.e., strips the filename and line/col number information).
 
-- Since there isn't any editing that needs to be done in the Location List, many keys are rebound so it acts a bit more like less and ranger.
+- If the filetype is markdown or pandoc, then the Location List is formatted differently. The #'s for headings are replaced with 2 spaces each (except for level 1). This indented format is easier to read (without the leading #'s everywhere) and see the outline of the document. Each heading is given the syntax LmarkdownH1, LmarkdownH2, etc., and the highlights are linked to markdownH1, markdownH2, etc. This means that the syntax highlighting for markdown headings is retained, but also customizable for the Location List only.
 
 ## Installation
 
@@ -116,10 +118,6 @@ These variables can be set in a file in the ftplugin folder. If not set when ope
 `b:CapitalL_patterns` = A list of patterns to use with `Lvimgrep` to create the location lists. The defaults can be found in the `ftplugin` folder of this repository. Otherwise it defaults to `g:CapitalL_defaultPattern`.
 
 `b:CaptialL_currentPattern` = An index specifying which pattern in `b:CapitalL_patterns` is currently being used for this buffer's Location List.
-
-## Special Markdown Formatting
-
-If the filetype is markdown or pandoc, then the Location List is formatted differently. The #'s for headings are replaced with 2 spaces each (except for level 1). This indented format is easier to read (without the leading #'s everywhere) and see the outline of the document. Each heading is given the syntax LmarkdownH1, LmarkdownH2, etc., and the highlights are linked to markdownH1, markdownH2, etc. This means that the syntax highlighting for markdown headings is retained, but also customizable for the Location List only.
 
 ## TODO
 
