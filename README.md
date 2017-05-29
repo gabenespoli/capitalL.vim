@@ -4,9 +4,7 @@ The vim Location List is a buffer containing links to certain lines of file whic
 
 The Location List is specified as the same filetype as the file so that it inherits the same syntax highlighting. This is only apparent when the Location List is positioned on the left or right, when CapitalL reformats the list (i.e., strips the filename and line/col number information).
 
-![CapitalL.vim. Search pattern is ^\"\"](http://i.imgur.com/nAOs0em.png)
-
-![CapitalL.vim. Search pattern is ^function](http://i.imgur.com/B4o7yFi.png)
+![CapitalL.vim. Search pattern is \(^\"\"\|^function\)](http://i.imgur.com/OQKSzrM.png)
 
 ## Installation
 
