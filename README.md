@@ -52,14 +52,14 @@ Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 There are no global keybindings enabled by default. Consider adding the following keybindings to your vimrc.
 
-```
+```vim
 nnoremap <localleader>l :Ltoggle<CR>
 nnoremap <localleader>q :Ctoggle<CR>
 ```
 
 ### Location List & Quickfix Window
 
-These keybindings are only available in the Location List or Quickfix Window. They are on by default, but can be turned off by adding `g:CapitalL_enableKeybindings = 0` to your vimrc.
+These keybindings are only available in the Location List or Quickfix Window. They are enabled by default, but can be disabled by adding `let g:CapitalL_enableKeybindings = 0` to your vimrc.
 
 `o`, `l` or `enter` = Go to the currently selected line in the associated file, and put that line at the top of the screen. `enter` is the vim default for this. `o` stands for "open"; `l` is like opening a file in [ranger](https://github.com/ranger/ranger).
 
@@ -85,9 +85,9 @@ These keybindings are only available in the Location List or Quickfix Window. Th
 
 These keybindings are only available in the Location List (i.e., not the Quickfix Window).
 
-`}` or `]]` = Cycle to the next pattern (`Lnext`).
+`]]` or `}` = Cycle to the next pattern (`Lnext`).
 
-`{` or `[[` = Cycle to the previous pattern (`Lprevious`).
+`[[` or `{` = Cycle to the previous pattern (`Lprevious`).
 
 ## Global Variables
 
@@ -99,7 +99,7 @@ These variables can be set in your vimrc if you don't want the defaults.
 
 `g:CapitalL_defaultWidth` = The default width of a Location List positioned on the left or right. Default 40.
 
-`g:CapitalL_qf_width` = As above.
+`g:CapitalL_qf_width` = As above, but for the Quickfix Window.
 
 `g:CapitalL_defaultPattern` = A list of the patterns to cycle through if there is no buffer-specific variable (i.e., set in the ftplugin file). Default `['TODO']`.
 
@@ -107,15 +107,15 @@ These variables can be set in your vimrc if you don't want the defaults.
 
 ## Buffer-Specific Variables
 
-These variables can be set in a file in the ftplugin folder. `b:CapitalL_patterns` is required for this plugin to do anything.
+These variables can be set in a file in the ftplugin folder. If not set when opening a file, the default value will be inherited from the corresponding global variable.
 
 `b:CapitalL_position` = The position of the Location List associated with the buffer. Defaults to `g:CapitalL_defaultPosition`.
 
 `b:CapitalL_width` = The width of the Location List associated with the buffer if it is on the left or right. Defaults to `g:CapitalL_defaultWidth`.
 
-`b:CapitalL_patterns` = A list of patterns to use with `Lvimgrep` to create the location lists. The defaults can be found in the `ftplugin` folder of this repository. The default if no ftplugin file is found is `['TODO']'`.
+`b:CapitalL_patterns` = A list of patterns to use with `Lvimgrep` to create the location lists. The defaults can be found in the `ftplugin` folder of this repository. Otherwise it defaults to `g:CapitalL_defaultPattern`.
 
-`b:CaptialL_currentPattern` = An index specifying which pattern in `b:CapitalL_patterns` is being used for this buffer's Location List.
+`b:CaptialL_currentPattern` = An index specifying which pattern in `b:CapitalL_patterns` is currently being used for this buffer's Location List.
 
 ## Special Markdown Formatting
 
@@ -125,5 +125,5 @@ If the filetype is markdown or pandoc, then the Location List is formatted diffe
 
 - Allow for multiple inputs into Ladd and combine them with logical or: `\(pattern1\|pattern2\)`
 
-- implement a function to change the special formatting of the list to the markdown version. Implement a pseudo-markdown-headings formatting that can use any comment character, but the first heading level is ignored (i.e., in vim, `""` is a level 1 heading, `"""` is a level 2 heading, etc., and `"` are ignored). This allows relatively easy implementation of some document structure to code files.
+- implement a function to change the special formatting of the list to the markdown version. Implement a pseudo-markdown-headings formatting that can use any comment character, but the first heading level is ignored (i.e., in vim, `""` is a level 1 heading, `"""` is a level 2 heading, etc., and `"` are ignored). This allows relatively easy implementation of some document structure to code files. The goal would be to have the "headings" indented, without leading comment characters, and linked to the LmarkdownH1, etc. highlights.
 
