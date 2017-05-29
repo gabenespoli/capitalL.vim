@@ -1,12 +1,24 @@
 # CapitalL: Easier location lists in vim.
 
-The vim Location List is a buffer containing links to certain lines of file which match a pattern. It can be populated using `lvimgrep` and a regex pattern, and opened using `lopen`. CapitalL is a vim plugin which stores multiple patterns in a variable, so that you can cycle through different patterns easily. For instance, one pattern could be lines beginning with two comment characters (e.g., `""` in vim, `##` in bash/python, `%%` in octave/matlab), and another could be lines beginning with a function definition (e.g., `function` in vim/octave/matlab, `class` and `def` in python). It can also be useful to list TODOs present in a file, or as a temporary replacement for `/` and `?` if you want to see a list of search results instead of having to cycle through them with `n` and `N`.
+The vim Location List is a buffer containing links to certain lines of file which match a pattern. It can be populated using `lvimgrep` and a regex pattern, and opened using `lopen`. CapitalL is a vim plugin which stores multiple patterns in a variable, so that you can cycle through different patterns easily.
 
-CapitalL also defines many new keybindings in the Location List inspired by vim (obviously), less, and ranger.
+Some example patterns that I find useful:
+
+- Lines beginning with two comment characters (e.g., `""` in vim, `##` in bash/python, `%%` in octave/matlab), essentially creating an interactive document outline.
+
+- Lines beginning with a function definition (e.g., `function` in vim/octave/matlab, `class` and `def` in python), so you can get an overview of what's in the file and jump around quickly.
+
+- The word "TODO", so I can see a list of my todos in a file and jump to them.
+
+- A temporary replacement for vim's search functionality (`/` and `?`) if you want to see a list of search results instead of having to cycle through them with `n` and `N`.
 
 ![CapitalL.vim. Search pattern is \(^\"\"\|^function\)](http://i.imgur.com/OQKSzrM.png)
 
-The Location List is specified as the same filetype as the file so that it inherits the same syntax highlighting. This is only apparent when the Location List is positioned on the left or right, when CapitalL reformats the list (i.e., strips the filename and line/col number information).
+Some other features:
+
+- The Location List inherits the same filetype as the file so that it gets the same syntax highlighting. This is only apparent when the Location List is positioned on the left or right, when CapitalL reformats the list (i.e., strips the filename and line/col number information).
+
+- Since there isn't any editing that needs to be done in the Location List, many keys are rebound so it acts a bit more like less and ranger.
 
 ## Installation
 
