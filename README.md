@@ -46,9 +46,11 @@ nnoremap <localleader>L :Lrefresh<CR>
 
 These keybindings are only available in the Location List or Quickfix Window. They are on by default, but can be turned off by adding `g:CapitalL_enableKeybindings = 0` to your vimrc.
 
-`j` and `k` = Select the next or previous item in the list. Since j/k are often mapped to gj/gk (to move the cursor by visual line, not line number), these keys are explicitly remapped back to j/k.
+`j`/`e` and `k`/`y` = Select the next or previous item in the list. Since j/k are often mapped to gj/gk (to move the cursor by visual line, not line number), these keys are explicitly remapped back to j/k.
 
-`J` and `K` = Same as above but jump by 5 items.
+`d` and `u` = Same as above but jump by 5 items.
+
+`f` and `b` = Same as above but jump by 10 items.
 
 `l` or `enter` = Go to the currently selected line in the associated file, and put that line at the top of the screen. `enter` is the vim default for this.
 
