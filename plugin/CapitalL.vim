@@ -457,13 +457,13 @@ function! CapitalL_addKeybindings(type,position)
     nnoremap <buffer> K 5k
 
     "keybindings for staying in loclist after doing something
-    nnoremap <buffer> <C-e> j<CR>zt:wincmd w<CR>
-    nnoremap <buffer> <C-y> k<CR>zt:wincmd w<CR>
-    nnoremap <buffer> <C-d> 5j<CR>zt:wincmd w<CR>
-    nnoremap <buffer> <C-u> 5k<CR>zt:wincmd w<CR>
-    nnoremap <buffer> <C-f> 10j<CR>zt:wincmd w<CR>
-    nnoremap <buffer> <C-b> 10k<CR>zt:wincmd w<CR>
-    nnoremap <buffer> o <CR>zt:wincmd w<CR>
+    nnoremap <buffer> <C-e> j<CR>zt:wincmd p<CR>
+    nnoremap <buffer> <C-y> k<CR>zt:wincmd p<CR>
+    nnoremap <buffer> <C-d> 5j<CR>zt:wincmd p<CR>
+    nnoremap <buffer> <C-u> 5k<CR>zt:wincmd p<CR>
+    nnoremap <buffer> <C-f> 10j<CR>zt:wincmd p<CR>
+    nnoremap <buffer> <C-b> 10k<CR>zt:wincmd p<CR>
+    nnoremap <buffer> o <CR>zt:wincmd p<CR>
 
     if a:type == "l"
         nnoremap <buffer> r :call CapitalL_refresh("l")<CR>
