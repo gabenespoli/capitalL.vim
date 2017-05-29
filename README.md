@@ -41,7 +41,6 @@ There are no global keybindings enabled by default. Consider adding the followin
 ```
 nnoremap <localleader>l :Ltoggle<CR>
 nnoremap <localleader>q :Ctoggle<CR>
-nnoremap <localleader>L :Lrefresh<CR>
 ```
 
 ### Location List & Quickfix Window
