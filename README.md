@@ -60,7 +60,7 @@ These keybindings are only available in the Location List or Quickfix Window. Th
 
 `f` and `b` = Same as above but jump by 10 items.
 
-`<C-e>` and `<C-y>` = Select the next or previous item in the list, move to that location in the file, and keep focus in the Location List or Quickfix Window. This is analogous to pressing `ji`.
+`<C-e>` and `<C-y>` = Select the next or previous item in the list, move to that location in the file, and keep focus in the Location List or Quickfix Window. This is analogous to pressing `ji` (or `<enter><C-w>p` if you aren't using the CapitalL keybindings).
 
 `<C-d>` and `<C-u>` = Same as above but jump by 5 items.
 
