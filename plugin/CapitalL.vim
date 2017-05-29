@@ -1,10 +1,5 @@
 "" CapitalL.vim: Easier location lists in vim.  
 
-" notes
-" - most of these functions start with Lclose and end with Lopen, 
-"   so that buffer-specific variables are accessible if the 
-"   current window is a loc list
-
 "" Defaults
 if !exists("g:CapitalL_defaultPosition")
     let g:CapitalL_defaultPosition = "left"
@@ -450,11 +445,16 @@ function! CapitalL_addKeybindings(type,position)
     nnoremap <buffer> q :Lclose<CR>
     nnoremap <buffer> l <CR>zt
 
+    " keybindings for jumping around the list like less
     " often j and k are remapped to gj and gk, we don't want that here
     nnoremap <buffer> j j
     nnoremap <buffer> k k
-    nnoremap <buffer> J 5j
-    nnoremap <buffer> K 5k
+    nnoremap <buffer> e j
+    nnoremap <buffer> y k
+    nnoremap <buffer> d 5j
+    nnoremap <buffer> u 5k
+    nnoremap <buffer> f 10j
+    nnoremap <buffer> b 10k
 
     "keybindings for staying in loclist after doing something
     nnoremap <buffer> <C-e> j<CR>zt:wincmd p<CR>
