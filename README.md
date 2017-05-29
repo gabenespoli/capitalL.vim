@@ -1,10 +1,12 @@
 # CapitalL: Easier location lists in vim.
 
-The vim Location List is a buffer containing links to certain lines of file which match a pattern. It can be populated using `lvimgrep` and a regex pattern, and opened using `lopen`. CapitalL is a vim plugin which stores multiple patterns in a variable, so that you can cycle through different patterns easily. For instance, one pattern could be lines beginning with two comment characters (e.g., `""` in vim, `##` in bash/python, `%%` in octave/matlab), and another could be lines beginning with a function definition (e.g., `function` in vim/octave/matlab, `class` and `def` in python). It can also be used to list TODOs present in a file.
+The vim Location List is a buffer containing links to certain lines of file which match a pattern. It can be populated using `lvimgrep` and a regex pattern, and opened using `lopen`. CapitalL is a vim plugin which stores multiple patterns in a variable, so that you can cycle through different patterns easily. For instance, one pattern could be lines beginning with two comment characters (e.g., `""` in vim, `##` in bash/python, `%%` in octave/matlab), and another could be lines beginning with a function definition (e.g., `function` in vim/octave/matlab, `class` and `def` in python). It can also be useful to list TODOs present in a file, or as a temporary replacement for `/` and `?` if you want to see a list of search results instead of having to cycle through them with `n` and `N`.
 
-The Location List is specified as the same filetype as the file so that it inherits the same syntax highlighting. This is only apparent when the Location List is positioned on the left or right, when CapitalL reformats the list (i.e., strips the filename and line/col number information).
+CapitalL also defines many new keybindings in the Location List inspired by vim (obviously), less, and ranger.
 
 ![CapitalL.vim. Search pattern is \(^\"\"\|^function\)](http://i.imgur.com/OQKSzrM.png)
+
+The Location List is specified as the same filetype as the file so that it inherits the same syntax highlighting. This is only apparent when the Location List is positioned on the left or right, when CapitalL reformats the list (i.e., strips the filename and line/col number information).
 
 ## Installation
 
@@ -24,7 +26,7 @@ Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 `Lprevious` = Same as `Lnext`, but cycles through patterns in the opposite direction.
 
-`Ladd <pattern>` = Add a pattern to the list. This is useful for "on-the-fly" location lists, instead of adding a pattern to the ftplugin file.
+`Ladd <pattern>` = Add a pattern to the list. This is useful for "on-the-fly" location lists, instead of adding a pattern to the ftplugin file. I sometimes find it useful to use this instead of `/` or `?` for searching, since I can see all search results in a list instead of using `n`/`N` to cycle through them until I find the line I want.
 
 `Lposition <position>` = Change the position of the Location List for the current buffer. Can be 'left', 'right', 'top', or 'bottom'.
 
@@ -46,23 +48,23 @@ nnoremap <localleader>L :Lrefresh<CR>
 
 These keybindings are only available in the Location List or Quickfix Window. They are on by default, but can be turned off by adding `g:CapitalL_enableKeybindings = 0` to your vimrc.
 
+`o`, `l` or `enter` = Go to the currently selected line in the associated file, and put that line at the top of the screen. `enter` is the vim default for this. `o` stands for "open"; `l` is like opening a file in [ranger](https://github.com/ranger/ranger).
+
+`i` = Same as above except keep the cursor in Location List or Quickfix Window. This is like file preview in [ranger](https://github.com/ranger/ranger).
+
+`q` = Close the List (`Lclose` or `Cclose`).
+
 `j`/`e` and `k`/`y` = Select the next or previous item in the list. Since j/k are often mapped to gj/gk (to move the cursor by visual line, not line number), these keys are explicitly remapped back to j/k.
 
 `d` and `u` = Same as above but jump by 5 items.
 
 `f` and `b` = Same as above but jump by 10 items.
 
-`l` or `enter` = Go to the currently selected line in the associated file, and put that line at the top of the screen. `enter` is the vim default for this.
-
-`o` = Same as above except keep the cursor in Location List or Quickfix Window.
-
-`<C-e>` and `<C-y>` = Select the next or previous item in the list, move to that location in the file, and keep focus in the Location List or Quickfix Window. This is analogous to pressing `jo`.
+`<C-e>` and `<C-y>` = Select the next or previous item in the list, move to that location in the file, and keep focus in the Location List or Quickfix Window. This is analogous to pressing `ji`.
 
 `<C-d>` and `<C-u>` = Same as above but jump by 5 items.
 
 `<C-f>` and `<C-b>` = Same as above but jump by 10 lines.
-
-`q` = Close the List (`Lclose` or `Cclose`).
 
 `r` = Refresh the formatting of all lists (`Lrefresh`). If the cursor is focused in a Location List, also run `Lvimgrep`.
 
