@@ -12,6 +12,8 @@ Some example patterns that I find useful:
 
 - A temporary replacement for vim's search functionality (`/` and `?`) if you want to see a list of search results instead of having to cycle through them with `n` and `N`.
 
+Once in the Location List, use `[[`/`{` and `]]`/`}` to cycle through patterns. This plugin includes functions to control the Quickfix Window as well, but only its position and keybindings; this plugin won't populate the Quickfix Window with anything.
+
 ![CapitalL.vim. Search pattern is \(^\"\"\|^function\)](http://i.imgur.com/OQKSzrM.png)
 
 Some other features:
@@ -117,13 +119,11 @@ These variables can be set in a file in the ftplugin folder. `b:CapitalL_pattern
 
 ## Special Markdown Formatting
 
-If the filetype is markdown or pandoc, then the Location List is formatted differently. The #'s for headings are replaced with 2 spaces each (except for level 1). Each heading is given the syntax LmarkdownH1, LmarkdownH2, etc., and the highlights are linked to markdownH1, markdownH2, etc. This indented format that removes the leading #'s is easier to read and see the outline of the document. The syntax highlighting for markdown headings is retained, but also customizable, if for example you wanted to see level 1 headings with a different background.
+If the filetype is markdown or pandoc, then the Location List is formatted differently. The #'s for headings are replaced with 2 spaces each (except for level 1). This indented format is easier to read (without the leading #'s everywhere) and see the outline of the document. Each heading is given the syntax LmarkdownH1, LmarkdownH2, etc., and the highlights are linked to markdownH1, markdownH2, etc. This means that the syntax highlighting for markdown headings is retained, but also customizable for the Location List only.
 
 ## TODO
 
 - Allow for multiple inputs into Ladd and combine them with logical or: `\(pattern1\|pattern2\)`
 
 - implement a function to change the special formatting of the list to the markdown version. Implement a pseudo-markdown-headings formatting that can use any comment character, but the first heading level is ignored (i.e., in vim, `""` is a level 1 heading, `"""` is a level 2 heading, etc., and `"` are ignored). This allows relatively easy implementation of some document structure to code files.
-
-- make setPosition function take an optional arg, and if no arg is passed, it "re-sets" the position that is currently active, or grabs the default
 
