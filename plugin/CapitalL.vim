@@ -244,7 +244,7 @@ function! CapitalL_formatList(...)
                 let width = b:CapitalL_width
                 let position = b:CapitalL_position
                 let filetype = &filetype
-                execute listWin . "wincmd w"
+                execute listWin . "wincmd p"
 
             elseif type == "c" || type == "qf"
                 let width = g:CapitalL_qf_width
