@@ -26,7 +26,7 @@ command!            Lopen       call CapitalL_lopen()
 command!            Lclose      call CapitalL_lclose()
 command!            Lvimgrep    call CapitalL_lvimgrep()
 command!            Lshow       call CapitalL_showPatterns()
-command! -nargs=1   Ladd        call CapitalL_add(<f-args>)
+command! -nargs=1   Lnew        call CapitalL_new(<f-args>)
 command!            Lrm         call CapitalL_rm()
 command!            Lnext       call CapitalL_cycle(1)
 command!            Lprevious   call CapitalL_cycle(-1)
@@ -169,7 +169,7 @@ function! CapitalL_lvimgrep()
         execute fileWin . "wincmd w"
     endif
     if !exists("b:CapitalL_patterns")
-        echo "No CapitalL patterns are associated with this buffer. Use :Ladd to add some."
+        echo "No CapitalL patterns are associated with this buffer. Use :Lnew to add some."
         " if we were in a loc list, move back
         if exists("listWin")
             execute listWin . "wincmd w"
@@ -319,7 +319,7 @@ function! CapitalL_showPatterns()
     endif
 endfunction
 
-function! CapitalL_add(pattern)
+function! CapitalL_new(pattern)
     "TODO allow for many args, and combine them with OR into one lvimgrep
     " - e.g. \(pattern1\|pattern2\|etc\)
     " if we're in a loc list, move to the associated file
@@ -382,7 +382,7 @@ function! CapitalL_cycle(...)
         let b:CapitalL_patterns = [b:CapitalL_patterns]
     endif
     if len(b:CapitalL_patterns) == 0
-        echo "No CapitalL_patterns exist. Use :Ladd <pattern> to add some."
+        echo "No CapitalL_patterns exist. Use :Lnew <pattern> to create some."
         return
     endif
     if !exists("b:CapitalL_currentPattern")
