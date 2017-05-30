@@ -10,9 +10,9 @@ Some example patterns that I find useful:
 
 - The word "TODO", so you can see a list of your todos in a file and jump to them.
 
-- A temporary replacement for vim's search functionality (`/` and `?`) if you want to see a list of search results instead of having to cycle through them with `n` and `N`.
+- A temporary replacement for vim's search functionality: `/` and `?`. For times when you would rather see a list of search results instead of having to cycle through them with `n` and `N`.
 
-Once in the Location List, use `[[`/`{` and `]]`/`}` to cycle through patterns. This plugin can control the Quickfix Window too, but only its position and keybindings (i.e., it won't populate the Quickfix Window with anything).
+Once in the Location List, use `[[` and `]]` or `{` and `}` to cycle through patterns. This plugin can control the Quickfix Window too, but only its position and keybindings (i.e., it won't populate the Quickfix Window with anything).
 
 ![CapitalL.vim. Search pattern is \(^\"\"\|^function\)](http://i.imgur.com/OQKSzrM.png)
 
@@ -42,7 +42,7 @@ Vundle `Plugin 'gabenespoli/CapitalL.vim'`
 
 `Lprevious` = Same as `Lnext`, but cycles through patterns in the opposite direction.
 
-`Ladd <pattern>` = Add a pattern to the list. This is useful for "on-the-fly" location lists, instead of adding a pattern to the ftplugin file. I sometimes find it useful to use this instead of `/` or `?` for searching, since I can see all search results in a list instead of using `n`/`N` to cycle through them until I find the line I want.
+`Lnew <pattern>` = Add a pattern to the list. This is useful for "on-the-fly" location lists, instead of adding a pattern to the ftplugin file. I sometimes find it useful to use this instead of `/` or `?` for searching, since I can see all search results in a list instead of using `n`/`N` to cycle through them until I find the line I want.
 
 `Lposition <position>` = Change the position of the Location List for the current buffer. Can be 'left', 'right', 'top', or 'bottom'.
 
@@ -121,7 +121,9 @@ These variables can be set in a file in the ftplugin folder. If not set when ope
 
 ## TODO
 
-- Allow for multiple inputs into Ladd and combine them with logical or: `\(pattern1\|pattern2\)`
+- Create function Ladd to add a pattern to the current pattern with OR.
+
+- Allow for multiple inputs into Lnew (and Ladd) and combine them with OR: `\(pattern1\|pattern2\)`
 
 - implement a function to change the special formatting of the list to the markdown version. Implement a pseudo-markdown-headings formatting that can use any comment character, but the first heading level is ignored (i.e., in vim, `""` is a level 1 heading, `"""` is a level 2 heading, etc., and `"` are ignored). This allows relatively easy implementation of some document structure to code files. The goal would be to have the "headings" indented, without leading comment characters, and linked to the LmarkdownH1, etc. highlights.
 
