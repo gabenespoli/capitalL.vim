@@ -458,6 +458,8 @@ function! CapitalL_addKeybindings(type,position)
     nnoremap <buffer> b 10k
 
     "keybindings for staying in loclist after doing something
+    nnoremap <buffer> J j<CR>zt:wincmd p<CR>
+    nnoremap <buffer> K k<CR>zt:wincmd p<CR>
     nnoremap <buffer> <C-e> j<CR>zt:wincmd p<CR>
     nnoremap <buffer> <C-y> k<CR>zt:wincmd p<CR>
     nnoremap <buffer> <C-d> 5j<CR>zt:wincmd p<CR>
