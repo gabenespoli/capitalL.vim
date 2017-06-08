@@ -166,13 +166,13 @@ function! CapitalL_lvimgrep()
     if exists("b:CapitalL_associatedBufnr")
         let listWin = winnr()
         let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
-        execute fileWin . "wincmd p"
+        execute fileWin . "wincmd w"
     endif
     if !exists("b:CapitalL_patterns")
         echo "No CapitalL patterns are associated with this buffer. Use :Lnew to add some."
         " if we were in a loc list, move back
         if exists("listWin")
-            execute listWin . "wincmd p"
+            execute listWin . "wincmd w"
         endif
         return
     endif
@@ -193,7 +193,7 @@ function! CapitalL_lvimgrep()
     execute "silent! lvimgrep /".b:CapitalL_patterns[b:CapitalL_currentPattern]."/g %"
     " if we were in a loc list, move back
     if exists("listWin")
-        execute listWin . "wincmd p"
+        execute listWin . "wincmd w"
     endif
     execute "call CapitalL_formatList()"
 endfunction
@@ -225,7 +225,7 @@ function! CapitalL_formatList(...)
 
         " if this is an active window, move to it
         if bufwinnr(bufnum) != -1
-            execute bufwinnr(bufnum) . "wincmd p"
+            execute bufwinnr(bufnum) . "wincmd w"
 
             " get variables controlling the formatting
             if type == "l"
@@ -237,7 +237,7 @@ function! CapitalL_formatList(...)
                 " move to associated file, get vars, move back
                 let listWin = winnr()
                 let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
-                execute fileWin . "wincmd p"
+                execute fileWin . "wincmd w"
                 if !exists("b:CapitalL_width")
                     let b:CapitalL_width = g:CapitalL_defaultWidth
                 endif
@@ -298,7 +298,7 @@ function! CapitalL_formatList(...)
         endif
     endfor
     " move back to original window
-    execute currentWin . "wincmd p"
+    execute currentWin . "wincmd w"
 endfunction
 
 function! CapitalL_showPatterns()
@@ -306,7 +306,7 @@ function! CapitalL_showPatterns()
     if exists("b:CapitalL_associatedBufnr")
         let listWin = winnr()
         let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
-        execute fileWin . "wincmd p"
+        execute fileWin . "wincmd w"
     endif
     if exists("b:CapitalL_patterns")
         echo b:CapitalL_patterns
@@ -315,7 +315,7 @@ function! CapitalL_showPatterns()
     endif
     " if we were in a loc list, move back
     if exists("listWin")
-        execute listWin . "wincmd p"
+        execute listWin . "wincmd w"
     endif
 endfunction
 
@@ -342,7 +342,7 @@ function! CapitalL_new(pattern)
     execute "call CapitalL_lvimgrep()"
     " if we were in a loc list, move back
     if exists("listWin")
-        execute listWin . "wincmd p"
+        execute listWin . "wincmd w"
     endif
 endfunction
 
@@ -351,7 +351,7 @@ function! CapitalL_rm()
     if exists("b:CapitalL_associatedBufnr")
         let listWin = winnr()
         let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
-        execute fileWin . "wincmd p"
+        execute fileWin . "wincmd w"
     endif
     " remove the currently selected pattern from the patterns list
     execute "call remove(b:CapitalL_patterns, b:CapitalL_currentPattern)"
@@ -363,7 +363,7 @@ function! CapitalL_rm()
     execute "call CapitalL_lvimgrep()"
     " if we were in a loc list, move back
     if exists("listWin")
-        execute listWin . "wincmd p"
+        execute listWin . "wincmd w"
     endif
 endfunction
 
@@ -372,7 +372,7 @@ function! CapitalL_cycle(...)
     if exists("b:CapitalL_associatedBufnr")
         let listWin = winnr()
         let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
-        execute fileWin . "wincmd p"
+        execute fileWin . "wincmd w"
     endif
     " make sure patterns exist as a non-empty list
     if !exists("b:CapitalL_patterns")
@@ -412,7 +412,7 @@ function! CapitalL_cycle(...)
 
     " if we were in a loc list, move back
     if exists("listWin")
-        execute listWin . "wincmd p"
+        execute listWin . "wincmd w"
     endif
 endfunction
 
@@ -421,7 +421,7 @@ function! CapitalL_copen()
     if exists("b:CapitalL_associatedBufnr")
         let listWin = winnr()
         let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
-        execute fileWin . "wincmd p"
+        execute fileWin . "wincmd w"
     endif
     " open the quickfix window
     let position = CapitalL_parsePosition(g:CapitalL_qf_position)
