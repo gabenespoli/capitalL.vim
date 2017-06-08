@@ -244,7 +244,7 @@ function! CapitalL_formatList(...)
                 let width = b:CapitalL_width
                 let position = b:CapitalL_position
                 let filetype = &filetype
-                execute listWin . "wincmd p"
+                execute listWin . "wincmd w"
 
             elseif type == "c" || type == "qf"
                 let width = g:CapitalL_qf_width
@@ -326,7 +326,7 @@ function! CapitalL_new(pattern)
     if exists("b:CapitalL_associatedBufnr")
         let listWin = winnr()
         let fileWin = bufwinnr(b:CapitalL_associatedBufnr)
-        execute fileWin . "wincmd p"
+        execute fileWin . "wincmd w"
     endif
     " make sure patterns exists and is a list
     if !exists("b:CapitalL_patterns")
@@ -429,7 +429,7 @@ function! CapitalL_copen()
     execute "call CapitalL_formatLists()"
     " if we were in a loc list, move back
     if exists("listWin")
-        execute listWin . "wincmd p"
+        execute listWin . "wincmd w"
     endif
 endfunction
 
