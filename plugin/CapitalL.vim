@@ -292,7 +292,7 @@ function! CapitalL_formatList(...)
                 "set nomodifiable
             endif
 
-            "setlocal cursorline
+            setlocal cursorline
             setlocal nowrap
 
         endif
